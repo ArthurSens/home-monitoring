@@ -10,6 +10,7 @@ Also an opportunity to build some data to work with for my Prometheus contributi
 * Alert rules:
   * Disk usage is always annoying me
   * Power supply can't stay off for too long
+  * I often work while sunbathing because why not, but this can lead to hardware heating up
 * Data exploration:
   * I have network problems every day, still couldn't discover where is the problem
   * Sometimes, all my CPU is consumed at once, not sure why... I need to add an proccess exporter to the setup
