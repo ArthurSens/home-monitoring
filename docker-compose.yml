@@ -6,6 +6,7 @@ services:
     ports:
       - 81:9090
     volumes: 
+      - ./prometheus/rules:/etc/prometheus/rules
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./prometheus/storage:/prometheus
     command: 

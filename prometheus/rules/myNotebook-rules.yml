@@ -1,0 +1,27 @@
+groups: 
+- name: myNotebook #yamllint disable-line
+  rules: 
+
+  - alert: DiskUsage
+    expr: avg(100 - ((node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes)) > 95
+    for: 5m
+    labels: 
+      severity: warning
+    annotations:
+      description: "Disk usage is almost full."
+
+  - alert: PowerSupplyOff
+    expr: node_power_supply_online == 0
+    for: 40m
+    labels:
+      severity: critical
+    annotations:
+      description: "Notebook is not charging for way too long."
+
+  - alert: HardwareHeatingUp
+    expr: node_hwmon_temp_celsius > node_hwmon_temp_crit_celsius * 0.8
+    for: 5m
+    labels:
+      severity: critical
+    annotations: 
+      description: "Hardware is heating up. Get the f*** out of the sun."
