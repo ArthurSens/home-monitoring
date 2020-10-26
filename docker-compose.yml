@@ -19,8 +19,10 @@ services:
     user: "1000:1000"
     ports: 
       - 82:3000
-    environment:
-      GF_SECURITY_ADMIN_PASSWORD: admin
+    environment: 
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
     volumes: 
       - ./grafana/provisioning:/etc/grafana/provisioning
   alertmanager:
@@ -32,3 +34,26 @@ services:
   node_exporter:
     privileged: true
     image: prom/node-exporter:v1.0.1
+  telegrambot: 
+    image: metalmatze/alertmanager-bot:0.4.2
+    command: 
+    - --alertmanager.url=http://alertmanager:9093
+    - --log.level=debug
+    - --store=bolt
+    - --bolt.path=/data/bog.db
+    environment: 
+      TELEGRAM_ADMIN: ${TELEGRAM_ADMIN}
+      TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
+    volumes: 
+      - ./alertmanager-bot/storage:/data
+  # process_exporter:
+  #   user: "1000:1000"
+  #   privileged: true
+  #   image: arthursens/process-exporter
+  #   volumes: 
+  #   - /proc:/host/proc
+  #   command:
+  #   - --procfs
+  #   - /host/proc
+  #   - -config.path
+  #   - /config/config.yml
