@@ -1,5 +1,6 @@
 version: '3.4'
 services:
+
   prometheus:
     image: prom/prometheus:v2.22.0
     user: "1000:1000"
@@ -14,8 +15,16 @@ services:
       - --web.enable-admin-api 
       - --web.enable-lifecycle
       - --storage.tsdb.retention.time=2d
+    logging:
+      driver: loki
+      options:
+        loki-url: 'http://localhost:3100/api/prom/push'
+        mode: non-blocking
+        max-buffer-size: 4m
+
+
   grafana:
-    image: grafana/grafana:7.2.1
+    image: grafana/grafana:7.3.0-beta1
     user: "1000:1000"
     ports: 
       - 82:3000
@@ -25,6 +34,14 @@ services:
       - GF_AUTH_DISABLE_LOGIN_FORM=true
     volumes: 
       - ./grafana/provisioning:/etc/grafana/provisioning
+    logging:
+      driver: loki
+      options:
+        loki-url: 'http://localhost:3100/api/prom/push'
+        mode: non-blocking
+        max-buffer-size: 4m
+
+
   alertmanager:
     image: prom/alertmanager:v0.21.0
     ports: 
@@ -33,9 +50,25 @@ services:
       - --config.file=/etc/alertmanager/alertmanager.yml
     volumes: 
       - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    logging:
+      driver: loki
+      options:
+        loki-url: 'http://localhost:3100/api/prom/push'
+        mode: non-blocking
+        max-buffer-size: 4m
+
+
   node_exporter:
     privileged: true
     image: prom/node-exporter:v1.0.1
+    logging:
+      driver: loki
+      options:
+        loki-url: 'http://localhost:3100/api/prom/push'
+        mode: non-blocking
+        max-buffer-size: 4m
+
+
   telegrambot: 
     image: metalmatze/alertmanager-bot:0.4.2
     command: 
@@ -48,14 +81,63 @@ services:
       TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
     volumes: 
       - ./alertmanager-bot/storage:/data
-  # process_exporter:
-  #   user: "1000:1000"
-  #   privileged: true
-  #   image: arthursens/process-exporter
-  #   volumes: 
-  #   - /proc:/host/proc
-  #   command:
-  #   - --procfs
-  #   - /host/proc
-  #   - -config.path
-  #   - /config/config.yml
+    logging:
+      driver: loki
+      options:
+        loki-url: 'http://localhost:3100/api/prom/push'
+        mode: non-blocking
+        max-buffer-size: 4m
+
+
+  loki:
+    image: grafana/loki:2.0.0
+    command: -config.file=/etc/loki/local-config.yaml
+    ports:
+      - "3100:3100"                                   # loki needs to be exposed so it receives logs
+    environment:
+      - JAEGER_AGENT_HOST=tempo
+      - JAEGER_ENDPOINT=http://tempo:14268/api/traces # send traces to Tempo
+      - JAEGER_SAMPLER_TYPE=const
+      - JAEGER_SAMPLER_PARAM=1
+    logging:
+      driver: loki
+      options:
+        loki-url: 'http://localhost:3100/api/prom/push'
+        mode: non-blocking
+        max-buffer-size: 4m
+  
+
+  tempo:
+    image: grafana/tempo:latest
+    command: 
+      - "-storage.trace.backend=local"                  # tell tempo where to permanently put traces
+      - "-storage.trace.local.path=/tmp/tempo/traces"   
+      - "-storage.trace.wal.path=/tmp/tempo/wal"        # tell tempo where to store the wal
+      - "-auth.enabled=false"                           # disables the requirement for the X-Scope-OrgID header
+      - "-server.http-listen-port=3100" 
+    volumes:
+      - ./tempo/tempo.yaml:/etc/tempo.yaml
+      - /tmp/tempo:/tmp/tempo
+    ports:
+      - "14268"  # jaeger ingest
+    logging:
+      driver: loki
+      options:
+        loki-url: 'http://localhost:3100/api/prom/push'
+        mode: non-blocking
+        max-buffer-size: 4m
+
+
+  tempo-query:
+    image: grafana/tempo-query:latest
+    command: ["--grpc-storage-plugin.configuration-file=/etc/tempo-query.yaml"]
+    volumes:
+      - ./tempo/tempo-query.yaml:/etc/tempo-query.yaml
+    ports:
+      - "16686:16686"  # jaeger-ui
+    logging:
+      driver: loki
+      options:
+        loki-url: 'http://localhost:3100/api/prom/push'
+        mode: non-blocking
+        max-buffer-size: 4m
