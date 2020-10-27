@@ -30,7 +30,9 @@ services:
     ports: 
       - 83:9093
     command:
-    - --config.file=/etc/alertmanager/alertmanager.yml
+      - --config.file=/etc/alertmanager/alertmanager.yml
+    volumes: 
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
   node_exporter:
     privileged: true
     image: prom/node-exporter:v1.0.1

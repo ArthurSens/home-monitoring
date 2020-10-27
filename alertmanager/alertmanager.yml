@@ -1,0 +1,13 @@
+global:
+route:
+  receiver: telegram-bot
+  group_by:
+  - alertname
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 1h
+receivers:
+- name: telegram-bot
+  webhook_configs:
+  - send_resolved: true
+    url: http://telegrambot:8080

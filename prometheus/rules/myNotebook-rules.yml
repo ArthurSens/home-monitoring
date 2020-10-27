@@ -15,7 +15,7 @@ groups:
   # My battery is not the best and I leave my notebook off the charge quite often
   - alert: PowerSupplyOff
     expr: node_power_supply_online == 0
-    for: 40m
+    for: 30m
     labels:
       severity: critical
     annotations:
