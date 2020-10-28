@@ -77,14 +77,10 @@ services:
     - --log.level=debug
     - --store=bolt
     - --bolt.path=/data/bog.db
+    - --jaeger.endpoint=http://tempo:14268/api/traces
     environment: 
       TELEGRAM_ADMIN: ${TELEGRAM_ADMIN}
       TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
-      JAEGER_AGENT_HOST: tempo
-      JAEGER_ENDPOINT: tempo:14268 # send traces to Tempo
-      # JAEGER_ENDPOINT: http://tempo:14268/api/traces # send traces to Tempo
-      JAEGER_SAMPLER_TYPE: const
-      JAEGER_SAMPLER_PARAM: 1
     volumes: 
       - ./alertmanager-bot/storage:/data
     ports: 
@@ -119,13 +115,13 @@ services:
     image: grafana/tempo:latest
     command: 
       - "-storage.trace.backend=local"                  # tell tempo where to permanently put traces
-      - "-storage.trace.local.path=/tmp/tempo/traces"   
-      - "-storage.trace.wal.path=/tmp/tempo/wal"        # tell tempo where to store the wal
+      - "-storage.trace.local.path=/data/tempo/traces"   
+      - "-storage.trace.wal.path=/data/tempo/wal"        # tell tempo where to store the wal
       - "-auth.enabled=false"                           # disables the requirement for the X-Scope-OrgID header
       - "-server.http-listen-port=3100" 
     volumes:
       - ./tempo/tempo.yaml:/etc/tempo.yaml
-      - /tmp/tempo:/tmp/tempo
+      - ./tempo/storage:/data/tempo
     ports:
       - "14268"  # jaeger ingest
     logging:
