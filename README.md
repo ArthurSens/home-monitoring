@@ -21,7 +21,7 @@
 ## Experimentations RoadMap
 * Data exploration:
   * I have network problems every day, still couldn't discover where is the problem
-  * Sometimes, all my CPU is consumed at once, not sure why... I need to add an proccess exporter to the setup
+  * Sometimes, all my CPU is consumed at once, not sure why... I need to add a proccess exporter to the setup
 
 * OpenTelemetry:
   * Add traces to Telegrambot

@@ -15,7 +15,7 @@ groups:
   # My battery is not the best and I leave my notebook off the charge quite often
   - alert: PowerSupplyOff
     expr: node_power_supply_online == 0
-    for: 30m
+    for: 30s # testing tracing at telegrambot
     labels:
       severity: critical
     annotations:
