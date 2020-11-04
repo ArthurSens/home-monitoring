@@ -17,6 +17,7 @@
 | [Alertmanager](https://github.com/prometheus/alertmanager)  | Alert management          |
 | [Telegrambot](https://github.com/metalmatze/alertmanager-bot)   | Alert routing to Telegram |
 | [Node-exporter](https://github.com/prometheus/node_exporter) | Notebook metrics exposure |
+| [Blackbox-exporter](https://github.com/prometheus/blackbox_exporter) | Metrics about external HTTPS probing results |
 
 ## Experimentations RoadMap
 * Data exploration:
