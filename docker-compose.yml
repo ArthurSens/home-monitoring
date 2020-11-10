@@ -158,3 +158,36 @@ services:
         loki-url: 'http://localhost:3100/api/prom/push'
         mode: non-blocking
         max-buffer-size: 4m
+
+  promscale: 
+    image: timescale/promscale:0.1.1
+    environment: 
+      TS_PROM_DB_HOST: "timescaleDB"
+      TS_PROM_DB_PASSWORD: ${TIMESCALE_PASSWORD}
+      TS_PROM_DB_USER: ${TIMESCALE_USER}
+      TS_PROM_DB_SSL_MODE: "disable"
+    depends_on: 
+      - timescaleDB 
+    restart: on-failure # TimescaleDB container is up but db process isn't, causes promscale to fail
+    logging:
+      driver: loki
+      options:
+        loki-url: 'http://localhost:3100/api/prom/push'
+        mode: non-blocking
+        max-buffer-size: 4m
+
+  timescaleDB:
+    image: timescaledev/promscale-extension:latest-pg12
+    environment: 
+      POSTGRES_PASSWORD: ${TIMESCALE_PASSWORD}
+    ports: 
+      - "5432:5432"
+    volumes: 
+      - ./timescaleDB/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./timescaleDB/storage:/var/lib/postgresql/data:Z
+    logging:
+      driver: loki
+      options:
+        loki-url: 'http://localhost:3100/api/prom/push'
+        mode: non-blocking
+        max-buffer-size: 4m
