@@ -95,39 +95,3 @@ services:
         loki-url: 'http://localhost:3100/api/prom/push'
         mode: non-blocking
         max-buffer-size: 4m
-  
-
-  tempo:
-    image: grafana/tempo:latest@sha256:7f90635cd02091d5d617a3f359e2343d2892c4326c463b31b6c2e47b39b140cb
-    command: 
-      - "-storage.trace.backend=local"                  # tell tempo where to permanently put traces
-      - "-storage.trace.local.path=/data/tempo/traces"   
-      - "-storage.trace.wal.path=/data/tempo/wal"        # tell tempo where to store the wal
-      - "-auth.enabled=false"                           # disables the requirement for the X-Scope-OrgID header
-      - "-server.http-listen-port=3100" 
-    volumes:
-      - ./tempo/tempo.yaml:/etc/tempo.yaml
-      - ./tempo/storage:/data/tempo
-    ports:
-      - "14268"  # jaeger ingest
-    logging:
-      driver: loki
-      options:
-        loki-url: 'http://localhost:3100/api/prom/push'
-        mode: non-blocking
-        max-buffer-size: 4m
-
-
-  tempo-query:
-    image: grafana/tempo-query:latest@sha256:e0559d0f0e4d2ef6fb3deacb226b5ac05b78ad26cac0233d2ba417d6473bb24b
-    command: ["--grpc-storage-plugin.configuration-file=/etc/tempo-query.yaml"]
-    volumes:
-      - ./tempo/tempo-query.yaml:/etc/tempo-query.yaml
-    ports:
-      - "16686:16686"  # jaeger-ui
-    logging:
-      driver: loki
-      options:
-        loki-url: 'http://localhost:3100/api/prom/push'
-        mode: non-blocking
-        max-buffer-size: 4m
