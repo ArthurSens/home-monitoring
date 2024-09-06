@@ -2,6 +2,7 @@ services:
 
   prometheus:
     image: prom/prometheus:v2.54.1@sha256:f6639335d34a77d9d9db382b92eeb7fc00934be8eae81dbc03b31cfe90411a94
+    restart: always # To re-read the configuration file
     user: "1000:1000"
     ports:
       - 81:9090
@@ -84,11 +85,19 @@ services:
     command: -config.file=/etc/loki/local-config.yaml
     ports:
       - "3100:3100"                                   # loki needs to be exposed so it receives logs
-    environment:
-      - JAEGER_AGENT_HOST=tempo
-      - JAEGER_ENDPOINT=http://tempo:14268/api/traces # send traces to Tempo
-      - JAEGER_SAMPLER_TYPE=const
-      - JAEGER_SAMPLER_PARAM=1
+    logging:
+      driver: loki
+      options:
+        loki-url: 'http://localhost:3100/api/prom/push'
+        mode: non-blocking
+        max-buffer-size: 4m
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.108.0
+    restart: always # To re-read the configuration file
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./opentelemetry-collector/config.yaml:/etc/otel-collector-config.yaml
     logging:
       driver: loki
       options:
