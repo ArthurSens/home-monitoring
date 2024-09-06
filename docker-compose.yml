@@ -24,7 +24,7 @@ services:
 
 
   grafana:
-    image: grafana/grafana:7.5.0
+    image: grafana/grafana:11.2.0@sha256:408afb9726de5122b00a2576763a8a57a3c86d5b0eff5305bc994ceb3eb96c3f
     user: "1000:1000"
     ports: 
       - 82:3000
