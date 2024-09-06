@@ -2,7 +2,7 @@ version: '3.4'
 services:
 
   prometheus:
-    image: prom/prometheus:v2.22.0
+    image: prom/prometheus:v2.22.0@sha256:60190123eb28250f9e013df55b7d58e04e476011911219f5cedac3c73a8b74e6
     user: "1000:1000"
     ports:
       - 81:9090
@@ -24,7 +24,7 @@ services:
 
 
   grafana:
-    image: grafana/grafana:7.5.0-beta1
+    image: grafana/grafana:7.5.0-beta1@sha256:bbaa6c877333216d0f747c9263cf1ac542613aa9c521f62d97b9c02fc476b056
     user: "1000:1000"
     ports: 
       - 82:3000
@@ -43,7 +43,7 @@ services:
 
 
   alertmanager:
-    image: prom/alertmanager:v0.21.0
+    image: prom/alertmanager:v0.21.0@sha256:24a5204b418e8fa0214cfb628486749003b039c279c56b5bddb5b10cd100d926
     ports: 
       - 83:9093
     command:
@@ -60,7 +60,7 @@ services:
 
   node_exporter:
     privileged: true
-    image: prom/node-exporter:v1.0.1
+    image: prom/node-exporter:v1.0.1@sha256:cf66a6bbd573fd819ea09c72e21b528e9252d58d01ae13564a29749de1e48e0f
     ports: 
       - "9100:9100"
     logging:
@@ -72,7 +72,7 @@ services:
 
 
   blackbox_exporter: 
-    image: prom/blackbox-exporter:v0.18.0
+    image: prom/blackbox-exporter:v0.18.0@sha256:1ffc3f109eb39c89df16cdaf359cb9127d4ca2b5313724e939c2c8769aff8176
     logging:
       driver: loki
       options:
@@ -81,7 +81,7 @@ services:
         max-buffer-size: 4m
 
   loki:
-    image: grafana/loki:2.9.10
+    image: grafana/loki:2.9.10@sha256:35b02acc67654ddc38273e519b4f26f3967a907b9db5489af300c21f37ee1ae7
     command: -config.file=/etc/loki/local-config.yaml
     ports:
       - "3100:3100"                                   # loki needs to be exposed so it receives logs
@@ -99,7 +99,7 @@ services:
   
 
   tempo:
-    image: grafana/tempo:latest
+    image: grafana/tempo:latest@sha256:7f90635cd02091d5d617a3f359e2343d2892c4326c463b31b6c2e47b39b140cb
     command: 
       - "-storage.trace.backend=local"                  # tell tempo where to permanently put traces
       - "-storage.trace.local.path=/data/tempo/traces"   
@@ -120,7 +120,7 @@ services:
 
 
   tempo-query:
-    image: grafana/tempo-query:latest
+    image: grafana/tempo-query:latest@sha256:e0559d0f0e4d2ef6fb3deacb226b5ac05b78ad26cac0233d2ba417d6473bb24b
     command: ["--grpc-storage-plugin.configuration-file=/etc/tempo-query.yaml"]
     volumes:
       - ./tempo/tempo-query.yaml:/etc/tempo-query.yaml
