@@ -15,6 +15,7 @@ services:
       - --web.enable-admin-api 
       - --web.enable-lifecycle
       - --storage.tsdb.retention.time=2d
+      - --web.enable-remote-write-receiver
     logging:
       driver: loki
       options:

@@ -4,11 +4,21 @@ receivers:
       grpc:
         endpoint: 0.0.0.0:4317
 
+  hostmetrics:
+    scrapers:
+      cpu:
+      disk:
+      load:
+      filesystem:
+      memory:
+      network:
+      paging:
+
+
 exporters:
-  prometheus:
-    endpoint: "0.0.0.0:8889"
-    const_labels:
-      label1: value1
+  prometheusremotewrite:
+    endpoint: http://prometheus:9090/api/v1/write
+   
 
 processors:
   batch:
@@ -24,6 +34,6 @@ service:
   extensions: [pprof, zpages, health_check]
   pipelines:
     metrics:
-      receivers: [otlp]
+      receivers: [otlp, hostmetrics]
       processors: [batch]
-      exporters: [prometheus]
+      exporters: [prometheusremotewrite]
