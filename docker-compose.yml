@@ -80,32 +80,6 @@ services:
         mode: non-blocking
         max-buffer-size: 4m
 
-
-
-  telegrambot: 
-    #image: metalmatze/alertmanager-bot:0.4.2
-    image: telegrambot # built from https://github.com/ArthurSens/alertmanager-bot -> branch 'tracing support'
-    command: 
-    - --alertmanager.url=http://alertmanager:9093
-    - --log.level=debug
-    - --store=bolt
-    - --bolt.path=/data/bog.db
-    - --jaeger.endpoint=http://tempo:14268/api/traces
-    environment: 
-      TELEGRAM_ADMIN: ${TELEGRAM_ADMIN}
-      TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
-    volumes: 
-      - ./alertmanager-bot/storage:/data
-    ports: 
-      - "8080:8080"
-    logging:
-      driver: loki
-      options:
-        loki-url: 'http://localhost:3100/api/prom/push'
-        mode: non-blocking
-        max-buffer-size: 4m
-
-
   loki:
     image: grafana/loki:2.0.0
     command: -config.file=/etc/loki/local-config.yaml
@@ -152,39 +126,6 @@ services:
       - ./tempo/tempo-query.yaml:/etc/tempo-query.yaml
     ports:
       - "16686:16686"  # jaeger-ui
-    logging:
-      driver: loki
-      options:
-        loki-url: 'http://localhost:3100/api/prom/push'
-        mode: non-blocking
-        max-buffer-size: 4m
-
-  promscale: 
-    image: timescale/promscale:0.1.1
-    environment: 
-      TS_PROM_DB_HOST: "timescaleDB"
-      TS_PROM_DB_PASSWORD: ${TIMESCALE_PASSWORD}
-      TS_PROM_DB_USER: ${TIMESCALE_USER}
-      TS_PROM_DB_SSL_MODE: "disable"
-    depends_on: 
-      - timescaleDB 
-    restart: on-failure # TimescaleDB container is up but db process isn't, causes promscale to fail
-    logging:
-      driver: loki
-      options:
-        loki-url: 'http://localhost:3100/api/prom/push'
-        mode: non-blocking
-        max-buffer-size: 4m
-
-  timescaleDB:
-    image: timescaledev/promscale-extension:latest-pg12
-    environment: 
-      POSTGRES_PASSWORD: ${TIMESCALE_PASSWORD}
-    ports: 
-      - "5432:5432"
-    volumes: 
-      - ./timescaleDB/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - ./timescaleDB/storage:/var/lib/postgresql/data:Z
     logging:
       driver: loki
       options:

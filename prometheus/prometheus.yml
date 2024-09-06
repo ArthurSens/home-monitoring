@@ -10,13 +10,6 @@ alerting:
     - targets:
       - alertmanager:9093
 
-remote_write: 
-  - url: http://promscale:9201/write
-
-remote_read: 
-  - url: http://promscale:9201/read
-
-
 scrape_configs:
   - job_name: 'prometheus'
     static_configs:
@@ -34,7 +27,6 @@ scrape_configs:
       - targets:
         - https://github.com/
         - https://www.wanikani.com/
-        - https://twitter.com/
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
