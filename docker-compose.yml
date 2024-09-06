@@ -43,7 +43,7 @@ services:
 
 
   alertmanager:
-    image: prom/alertmanager:v0.21.0@sha256:24a5204b418e8fa0214cfb628486749003b039c279c56b5bddb5b10cd100d926
+    image: prom/alertmanager:v0.27.0@sha256:e13b6ed5cb929eeaee733479dce55e10eb3bc2e9c4586c705a4e8da41e5eacf5
     ports: 
       - 83:9093
     command:
