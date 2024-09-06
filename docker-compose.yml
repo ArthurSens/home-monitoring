@@ -60,7 +60,7 @@ services:
 
   node_exporter:
     privileged: true
-    image: prom/node-exporter:v1.0.1@sha256:cf66a6bbd573fd819ea09c72e21b528e9252d58d01ae13564a29749de1e48e0f
+    image: prom/node-exporter:v1.8.2@sha256:4032c6d5bfd752342c3e631c2f1de93ba6b86c41db6b167b9a35372c139e7706
     ports: 
       - "9100:9100"
     logging:
