@@ -25,6 +25,7 @@ services:
       - --web.enable-lifecycle
       - --storage.tsdb.retention.time=2d
       - --web.enable-remote-write-receiver
+      - --enable-feature=otlp-write-receiver,created-timestamp-zero-ingestion,native-histograms,promql-experimental-functions
     logging: *logging
     depends_on:
       - loki
@@ -95,7 +96,15 @@ services:
     depends_on:
       - loki
 
-
+  otel-collector-hostmetrics:
+    image: otel/opentelemetry-collector-contrib:0.108.0@sha256:923eb1cfae32fe09676cfd74762b2b237349f2273888529594f6c6ffe1fb3d7e
+    restart: always # To re-read the configuration file
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./opentelemetry-collector/hostmetrics.yaml:/etc/otel-collector-config.yaml
+    logging: *logging
+    depends_on:
+      - loki
 
 
 
@@ -364,6 +373,8 @@ services:
     image: otel/demo:1.11.1-frontendproxy@sha256:146ea9519494f99c6d402d433cff29a70bae6598cbd6409fb5c063a220e21beb
     container_name: frontend-proxy
     restart: unless-stopped
+    ports:
+      - 84:8080
     environment:
       - FRONTEND_PORT=8080
       - FRONTEND_HOST=frontend:8080
@@ -420,7 +431,7 @@ services:
     restart: unless-stopped
     environment:
       - LOCUST_WEB_PORT=8089
-      - LOCUST_USERS=2
+      - LOCUST_USERS=10
       - LOCUST_HOST=loadgenerator
       - LOCUST_HEADLESS=false
       - LOCUST_AUTOSTART=true

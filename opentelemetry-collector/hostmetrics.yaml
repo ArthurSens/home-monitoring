@@ -1,10 +1,13 @@
 receivers:
-  otlp:
-    protocols:
-      grpc:
-        endpoint: 0.0.0.0:4317
-      http:
-        endpoint: 0.0.0.0:4318
+  hostmetrics:
+    scrapers:
+      cpu:
+      disk:
+      load:
+      filesystem:
+      memory:
+      network:
+      paging:
 
 exporters:
   # prometheusremotewrite:
@@ -14,7 +17,7 @@ exporters:
     endpoint: http://prometheus:9090/api/v1/otlp
     tls:
       insecure: true
-
+   
 processors:
   batch:
 
@@ -29,7 +32,7 @@ service:
   extensions: [pprof, zpages, health_check]
   pipelines:
     metrics:
-      receivers: [otlp]
+      receivers: [hostmetrics]
       processors: [batch]
       # exporters: [prometheusremotewrite]
       exporters: [otlphttp]
