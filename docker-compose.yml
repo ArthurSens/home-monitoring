@@ -116,7 +116,7 @@ services:
 
 
   accountingservice:
-    image: otel/demo:1.11.1-accountingservice
+    image: otel/demo:1.11.1-accountingservice@sha256:f09dfbd4adf590fcf94070cb832583c1e9572edd558b1c5761429a14d7bf4d9e
     container_name: accounting-service
     restart: unless-stopped
     environment:
@@ -135,7 +135,7 @@ services:
     logging: *logging
 
   kafka:
-    image: otel/demo:1.11.1-kafka
+    image: otel/demo:1.11.1-kafka@sha256:7a967505ac81471e9cc1ccf4e0127ba1ee671f607be432ec2ff8cc259f99d9bf
     container_name: kafka
     restart: unless-stopped
     environment:
@@ -159,7 +159,7 @@ services:
   
   # AdService
   adservice:
-    image: otel/demo:1.11.1-adservice
+    image: otel/demo:1.11.1-adservice@sha256:509fb536e401d44128b95975fed58d8181a9f3104d17e50b645d6e531384bafb
     container_name: ad-service
     restart: unless-stopped
     environment:
@@ -182,7 +182,7 @@ services:
 
   # Cart service
   cartservice:
-    image: otel/demo:1.11.1-cartservice
+    image: otel/demo:1.11.1-cartservice@sha256:b4ff68be3ef54dfe365cfdab71f35332933f1f27121ef3a839299ad53c92a836
     container_name: cart-service
     restart: unless-stopped
     environment:
@@ -207,7 +207,7 @@ services:
 
   # Checkout service
   checkoutservice:
-    image: otel/demo:1.11.1-checkoutservice
+    image: otel/demo:1.11.1-checkoutservice@sha256:d946019878299529d6272233daa8bc1e76d3ce4ddcee76448f14f8253c5d80e9
     container_name: checkout-service
     restart: unless-stopped
     environment:
@@ -250,7 +250,7 @@ services:
 
   # Currency service
   currencyservice:
-    image: otel/demo:1.11.1-currencyservice
+    image: otel/demo:1.11.1-currencyservice@sha256:c6ad7f28380165c04849c142b978a4e1738078f776ad21cdcfc58de66e458ee6
     container_name: currency-service
     restart: unless-stopped
     environment:
@@ -267,7 +267,7 @@ services:
 
   # Email service
   emailservice:
-    image: otel/demo:1.11.1-emailservice
+    image: otel/demo:1.11.1-emailservice@sha256:848727a693bde91351fda4eb036ec59642eee1ca9f3bc3d50ef96bc7c5004524
     container_name: email-service
     restart: unless-stopped
     environment:
@@ -285,7 +285,7 @@ services:
 
   # Fraud Detection service
   frauddetectionservice:
-    image: otel/demo:1.11.1-frauddetectionservice
+    image: otel/demo:1.11.1-frauddetectionservice@sha256:f3f73f902b94d5d399dbf418b11dbcafac6f2847a1b8299f09f76e0734e543c1
     container_name: frauddetection-service
     restart: unless-stopped
     environment:
@@ -309,7 +309,7 @@ services:
 
   # Frontend
   frontend:
-    image: otel/demo:1.11.1-frontend
+    image: otel/demo:1.11.1-frontend@sha256:3e8d9efdbf7b17743400e6f570df302437bb99aae97ecc20ed2ff55a9d24bd39
     container_name: frontend
     restart: unless-stopped
     environment:
@@ -361,7 +361,7 @@ services:
 
   # Frontend Proxy (Envoy)
   frontendproxy:
-    image: otel/demo:1.11.1-frontendproxy
+    image: otel/demo:1.11.1-frontendproxy@sha256:146ea9519494f99c6d402d433cff29a70bae6598cbd6409fb5c063a220e21beb
     container_name: frontend-proxy
     restart: unless-stopped
     environment:
@@ -397,7 +397,7 @@ services:
 
   # Imageprovider
   imageprovider:
-    image: otel/demo:1.11.1-imageprovider
+    image: otel/demo:1.11.1-imageprovider@sha256:e8acb917b786f3696ebf99e6cd9a1bed18d21a6853270a3afc4b6038d90afa82
     container_name: imageprovider
     restart: unless-stopped
     environment:
@@ -415,7 +415,7 @@ services:
 
   # Load Generator
   loadgenerator:
-    image: otel/demo:1.11.1-loadgenerator
+    image: otel/demo:1.11.1-loadgenerator@sha256:a95db305b4d0866b6637af1a45cc5b62355782d31c219b48360f104f43590c1e
     container_name: load-generator
     restart: unless-stopped
     environment:
@@ -444,7 +444,7 @@ services:
 
   # Payment service
   paymentservice:
-    image: otel/demo:1.11.1-paymentservice
+    image: otel/demo:1.11.1-paymentservice@sha256:0a27cca2ef0f8d8cafcdff171620c30a14d2a2128c7c8bef4a8c0cca95b12e43
     container_name: payment-service
     restart: unless-stopped
     environment:
@@ -466,7 +466,7 @@ services:
 
   # Product Catalog service
   productcatalogservice:
-    image: otel/demo:1.11.1-productcatalogservice
+    image: otel/demo:1.11.1-productcatalogservice@sha256:55a66eeb1aa320686fe6cfd84bb5fc5dac04b8fffe5333b8936126a64ed8d69a
     container_name: product-catalog-service
     restart: unless-stopped
     environment:
@@ -488,7 +488,7 @@ services:
 
   # Quote service
   quoteservice:
-    image: otel/demo:1.11.1-quoteservice
+    image: otel/demo:1.11.1-quoteservice@sha256:60758ab8a64b114d68b7dd5e5264525695fc54b3e239fe86d23accb5e135e184
     container_name: quote-service
     restart: unless-stopped
     environment:
@@ -507,7 +507,7 @@ services:
 
   # Recommendation service
   recommendationservice:
-    image: otel/demo:1.11.1-recommendationservice
+    image: otel/demo:1.11.1-recommendationservice@sha256:c57a5e4b0f72cb1cbc78670d2265f5007119a6575768500e4e196a547b1f0568
     container_name: recommendation-service
     restart: unless-stopped
     environment:
@@ -534,7 +534,7 @@ services:
 
   # Shipping service
   shippingservice:
-    image: otel/demo:1.11.1-shippingservice
+    image: otel/demo:1.11.1-shippingservice@sha256:9d5f194e6f428bcfa5f1013d0e77510e669ba453539e77d6242ee669c19cc9c5
     container_name: shipping-service
     restart: unless-stopped
     environment:
@@ -555,7 +555,7 @@ services:
   # ******************
   # Flagd, feature flagging service
   flagd:
-    image: ghcr.io/open-feature/flagd:v0.11.2
+    image: ghcr.io/open-feature/flagd:v0.11.2@sha256:d9fea4520b79e786c63549e6820aaad95589385bee00e4389402b0a901840ced
     container_name: flagd
     restart: unless-stopped
     environment:
@@ -579,7 +579,7 @@ services:
 
   # Valkey used by Cart service
   valkey-cart:
-    image: valkey/valkey:8.0-alpine
+    image: valkey/valkey:8.0-alpine@sha256:1f6b5c4df112ec869c17228911c6c33019b51756820a4432d423841eaf3c2fc7
     container_name: valkey-cart
     user: valkey
     restart: unless-stopped
