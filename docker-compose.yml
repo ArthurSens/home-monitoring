@@ -72,7 +72,7 @@ services:
 
 
   blackbox_exporter: 
-    image: prom/blackbox-exporter:v0.18.0@sha256:1ffc3f109eb39c89df16cdaf359cb9127d4ca2b5313724e939c2c8769aff8176
+    image: prom/blackbox-exporter:v0.25.0@sha256:b04a9fef4fa086a02fc7fcd8dcdbc4b7b35cc30cdee860fdc6a19dd8b208d63e
     logging:
       driver: loki
       options:
