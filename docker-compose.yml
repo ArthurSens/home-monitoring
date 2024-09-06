@@ -22,6 +22,9 @@ services:
         loki-url: 'http://localhost:3100/api/prom/push'
         mode: non-blocking
         max-buffer-size: 4m
+        loki-retries: 2
+        loki-max-backoff: 800ms
+        loki-timeout: 1s
     depends_on:
       - loki
 
@@ -43,6 +46,9 @@ services:
         loki-url: 'http://localhost:3100/api/prom/push'
         mode: non-blocking
         max-buffer-size: 4m
+        loki-retries: 2
+        loki-max-backoff: 800ms
+        loki-timeout: 1s
     depends_on:
       - loki
 
@@ -61,6 +67,9 @@ services:
         loki-url: 'http://localhost:3100/api/prom/push'
         mode: non-blocking
         max-buffer-size: 4m
+        loki-retries: 2
+        loki-max-backoff: 800ms
+        loki-timeout: 1s
     depends_on:
       - loki
 
@@ -76,6 +85,9 @@ services:
         loki-url: 'http://localhost:3100/api/prom/push'
         mode: non-blocking
         max-buffer-size: 4m
+        loki-retries: 2
+        loki-max-backoff: 800ms
+        loki-timeout: 1s
     depends_on:
       - loki
 
@@ -92,8 +104,11 @@ services:
       - loki
 
   loki:
-    image: grafana/loki:2.9.10@sha256:35b02acc67654ddc38273e519b4f26f3967a907b9db5489af300c21f37ee1ae7
-    command: -config.file=/etc/loki/local-config.yaml
+    image: grafana/loki:3.1.0
+    command: 
+      - --config.file=/etc/loki/config.yaml
+    volumes:
+      - ./loki/config.yaml:/etc/loki/config.yaml
     ports:
       - "3100:3100"                                   # loki needs to be exposed so it receives logs
     logging:
@@ -102,6 +117,9 @@ services:
         loki-url: 'http://localhost:3100/api/prom/push'
         mode: non-blocking
         max-buffer-size: 4m
+        loki-retries: 2
+        loki-max-backoff: 800ms
+        loki-timeout: 1s
 
   otel-collector:
     image: otel/opentelemetry-collector-contrib:0.108.0@sha256:923eb1cfae32fe09676cfd74762b2b237349f2273888529594f6c6ffe1fb3d7e
@@ -115,5 +133,8 @@ services:
         loki-url: 'http://localhost:3100/api/prom/push'
         mode: non-blocking
         max-buffer-size: 4m
+        loki-retries: 2
+        loki-max-backoff: 800ms
+        loki-timeout: 1s
     depends_on:
       - loki
