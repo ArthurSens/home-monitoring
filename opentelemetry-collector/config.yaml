@@ -16,8 +16,12 @@ receivers:
 
 
 exporters:
-  prometheusremotewrite:
-    endpoint: http://prometheus:9090/api/v1/write
+  # prometheusremotewrite:
+  #   endpoint: http://prometheus:9090/api/v1/write
+  # The Prometheus exporter gather all metrics from previous pipeline and exposes them in the desired port.
+  # One advantage over the Prometheus remote write exporter is includes metadata.
+  prometheus:
+    endpoint: 0.0.0.0:8889 
    
 
 processors:
@@ -36,4 +40,5 @@ service:
     metrics:
       receivers: [otlp, hostmetrics]
       processors: [batch]
-      exporters: [prometheusremotewrite]
+      # exporters: [prometheusremotewrite]
+      exporters: [prometheus]
