@@ -93,7 +93,7 @@ services:
         max-buffer-size: 4m
 
   otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.108.0
+    image: otel/opentelemetry-collector-contrib:0.108.0@sha256:923eb1cfae32fe09676cfd74762b2b237349f2273888529594f6c6ffe1fb3d7e
     restart: always # To re-read the configuration file
     command: ["--config=/etc/otel-collector-config.yaml"]
     volumes:
