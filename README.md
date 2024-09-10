@@ -16,3 +16,4 @@
 | [Alertmanager](https://github.com/prometheus/alertmanager)  | Alert management          |
 | [Node-exporter](https://github.com/prometheus/node_exporter) | Notebook metrics exposure |
 | [Blackbox-exporter](https://github.com/prometheus/blackbox_exporter) | Metrics about external HTTPS probing results |
+| [OpenTelemetry-Collector](https://github.com/open-telemetry/opentelemetry-collector-contrib) | General OTel metrics collection and pre-processing |
