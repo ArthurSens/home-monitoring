@@ -10,7 +10,7 @@ x-default-logging: &logging
 
 services:
   prometheus:
-    image: prom/prometheus:v3.0.0-beta.0
+    image: prom/prometheus:v3.0.0-beta.0@sha256:064b379ac7f9d34c5b9b6cdd8c68a5706603270c0594bdefed67cd85c3b290be
     restart: always # To re-read the configuration file
     user: "1000:1000"
     ports:
