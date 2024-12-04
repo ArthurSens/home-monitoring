@@ -87,7 +87,7 @@ services:
     logging: *logging
 
   otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.114.0@sha256:37fa87091cfaaec7234a27e4e395a40c31c2bfaea97a349a4afef6d9e9681197
+    image: otel/opentelemetry-collector-contrib:0.115.1@sha256:d2da12c4336a79758826700be9e21ecf4a9f7d945b7f8a58ba55ee3fa45427c8
     restart: always # To re-read the configuration file
     command: ["--config=/etc/otel-collector-config.yaml"]
     volumes:
@@ -97,7 +97,7 @@ services:
       - loki
 
   otel-collector-hostmetrics:
-    image: otel/opentelemetry-collector-contrib:0.114.0@sha256:37fa87091cfaaec7234a27e4e395a40c31c2bfaea97a349a4afef6d9e9681197
+    image: otel/opentelemetry-collector-contrib:0.115.1@sha256:d2da12c4336a79758826700be9e21ecf4a9f7d945b7f8a58ba55ee3fa45427c8
     restart: always # To re-read the configuration file
     command: ["--config=/etc/otel-collector-config.yaml"]
     volumes:
