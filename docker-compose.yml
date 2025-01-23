@@ -568,7 +568,7 @@ services:
   # ******************
   # Flagd, feature flagging service
   flagd:
-    image: ghcr.io/open-feature/flagd:v0.11.7@sha256:83c5cb98e639bca1f7d33f7546fce4ea0d69eeb6449d107712a96381f61c2d7f
+    image: ghcr.io/open-feature/flagd:v0.11.8@sha256:87807a3ba1a0f9ed8df2532f18cfba923fa037243e708ddbbec2e368d0d65612
     container_name: flagd
     restart: unless-stopped
     environment:
