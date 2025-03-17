@@ -144,7 +144,7 @@ services:
     logging: *logging
 
   kafka:
-    image: otel/demo:2.0.1-kafka@sha256:4b669767e236706565f7825b019053278402b68afe7aa3f8211f13438ef26bf0
+    image: otel/demo:2.0.2-kafka@sha256:0f1270d986ffd18ce73ca56e6c9b94077929fb31ae2be101036663213da0a4a1
     container_name: kafka
     restart: unless-stopped
     environment:
@@ -320,7 +320,7 @@ services:
 
   # Frontend
   frontend:
-    image: otel/demo:2.0.1-frontend@sha256:ad664cdcd0cd4b7515ddd8f557e03617084afc18aff79304ef9fe94983586af3
+    image: otel/demo:2.0.2-frontend@sha256:3a0c7649f63d59656f6ba76fcd7ec79c1974cc3db0ae624efdf38fbdc8a14d4c
     container_name: frontend
     restart: unless-stopped
     environment:
