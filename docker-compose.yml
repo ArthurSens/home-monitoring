@@ -77,7 +77,7 @@ services:
       - loki
 
   loki:
-    image: grafana/loki:3.5.6@sha256:2b10e3c0ba66ee115c018736b351c435006c809d32ea2c14be62be88d80f8372
+    image: grafana/loki:3.5.8@sha256:00981fd9455db8589c3aa6d06744af3138c4b2c32fdec62101e92c7a704b2642
     command: 
       - --config.file=/etc/loki/config.yaml
     volumes:
