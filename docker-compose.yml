@@ -592,7 +592,7 @@ services:
 
   # Valkey used by Cart service
   valkey-cart:
-    image: valkey/valkey:9.0-alpine@sha256:a869be9a1ae14b8253364c8e1fdcc6fd1c226edb2ae66385f22d1ef8379345c3
+    image: valkey/valkey:9.0-alpine@sha256:68677f85c863830af7836ff07c4a13b7f085ebeff62f4dedb71499ca27d229f2
     container_name: valkey-cart
     user: valkey
     restart: unless-stopped
