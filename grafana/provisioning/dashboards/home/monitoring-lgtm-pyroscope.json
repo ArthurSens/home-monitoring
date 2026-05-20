@@ -28,7 +28,7 @@
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "gridPos": {
         "x": 0,
@@ -40,7 +40,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "refId": "A",
           "expr": "sum by (status_code) (rate(loki_request_duration_seconds_count{job=\"loki\"}[5m]))",
@@ -65,7 +65,7 @@
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "gridPos": {
         "x": 12,
@@ -77,7 +77,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "refId": "A",
           "expr": "sum(rate(loki_distributor_lines_received_total{job=\"loki\"}[5m]))",
@@ -86,7 +86,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "refId": "B",
           "expr": "sum(rate(loki_distributor_bytes_received_total{job=\"loki\"}[5m]))",
@@ -111,7 +111,7 @@
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "gridPos": {
         "x": 0,
@@ -123,7 +123,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "refId": "A",
           "expr": "sum by (status_code) (rate(tempo_request_duration_seconds_count{job=\"tempo\"}[5m]))",
@@ -148,7 +148,7 @@
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "gridPos": {
         "x": 12,
@@ -160,7 +160,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "refId": "A",
           "expr": "sum(rate(tempo_distributor_spans_received_total{job=\"tempo\"}[5m]))",
@@ -185,7 +185,7 @@
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "gridPos": {
         "x": 0,
@@ -197,7 +197,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "refId": "A",
           "expr": "sum by (route, status_code) (rate(pyroscope_request_duration_seconds_count{job=\"pyroscope\"}[5m]))",
@@ -222,7 +222,7 @@
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "gridPos": {
         "x": 12,
@@ -234,7 +234,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "refId": "A",
           "expr": "sum(rate(pyroscope_distributor_received_decompressed_bytes_total_sum{job=\"pyroscope\"}[5m]))",
@@ -259,7 +259,7 @@
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "gridPos": {
         "x": 0,
@@ -271,7 +271,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "refId": "A",
           "expr": "sum by (job, name, state) (loki_ring_members{job=\"loki\"}) or sum by (job, name, state) (tempo_ring_members{job=\"tempo\"}) or sum by (job, name, state) (pyroscope_ring_members{job=\"pyroscope\"})",
@@ -296,7 +296,7 @@
       "type": "logs",
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "gridPos": {
         "x": 12,
@@ -308,7 +308,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
+            "uid": "${DS_LOKI}"
           },
           "refId": "A",
           "expr": "{docker_compose_project=\"home-monitoring\", docker_compose_service=~\"loki|tempo|pyroscope\"}",
@@ -347,7 +347,80 @@
     "pyroscope"
   ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "name": "DS_PROMETHEUS",
+        "label": "Prometheus datasource",
+        "type": "datasource",
+        "query": "prometheus",
+        "current": {
+          "selected": false,
+          "text": "Prometheus",
+          "value": "PBFA97CFB590B2093"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "options": [],
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false
+      },
+      {
+        "name": "DS_LOKI",
+        "label": "Loki datasource",
+        "type": "datasource",
+        "query": "loki",
+        "current": {
+          "selected": false,
+          "text": "Loki",
+          "value": "P8E80F9AEF21F6940"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "options": [],
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false
+      },
+      {
+        "name": "DS_TEMPO",
+        "label": "Tempo datasource",
+        "type": "datasource",
+        "query": "tempo",
+        "current": {
+          "selected": false,
+          "text": "Tempo",
+          "value": "tempo"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "options": [],
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false
+      },
+      {
+        "name": "DS_PYROSCOPE",
+        "label": "Pyroscope datasource",
+        "type": "datasource",
+        "query": "grafana-pyroscope-datasource",
+        "current": {
+          "selected": false,
+          "text": "Pyroscope",
+          "value": "pyroscope"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "options": [],
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false
+      }
+    ]
   },
   "time": {
     "from": "now-1h",

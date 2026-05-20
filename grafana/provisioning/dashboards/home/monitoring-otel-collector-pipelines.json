@@ -28,7 +28,7 @@
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "gridPos": {
         "x": 0,
@@ -40,7 +40,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "refId": "A",
           "expr": "sum by (receiver, data_type) (rate(otelcol_receiver_accepted_metric_points_total[5m])) or sum by (receiver, data_type) (rate(otelcol_receiver_accepted_log_records_total[5m])) or sum by (receiver, data_type) (rate(otelcol_receiver_accepted_spans_total[5m])) or sum by (receiver, data_type) (rate(otelcol_receiver_accepted_profiles_total[5m]))",
@@ -65,7 +65,7 @@
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "gridPos": {
         "x": 12,
@@ -77,7 +77,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "refId": "A",
           "expr": "sum by (receiver, data_type) (rate(otelcol_receiver_refused_metric_points_total[5m])) or sum by (receiver, data_type) (rate(otelcol_receiver_refused_log_records_total[5m])) or sum by (receiver, data_type) (rate(otelcol_receiver_refused_spans_total[5m])) or sum by (receiver, data_type) (rate(otelcol_receiver_refused_profiles_total[5m])) or sum by (receiver) (rate(otelcol_receiver_failed_log_records_total[5m]))",
@@ -102,7 +102,7 @@
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "gridPos": {
         "x": 0,
@@ -114,7 +114,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "refId": "A",
           "expr": "sum by (exporter, data_type) (rate(otelcol_exporter_sent_metric_points_total[5m])) or sum by (exporter, data_type) (rate(otelcol_exporter_sent_log_records_total[5m])) or sum by (exporter, data_type) (rate(otelcol_exporter_sent_spans_total[5m])) or sum by (exporter, data_type) (rate(otelcol_exporter_sent_profiles_total[5m]))",
@@ -139,7 +139,7 @@
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "gridPos": {
         "x": 12,
@@ -151,7 +151,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "refId": "A",
           "expr": "sum by (exporter, data_type) (rate(otelcol_exporter_send_failed_metric_points_total[5m])) or sum by (exporter, data_type) (rate(otelcol_exporter_send_failed_log_records_total[5m])) or sum by (exporter, data_type) (rate(otelcol_exporter_send_failed_spans_total[5m])) or sum by (exporter, data_type) (rate(otelcol_exporter_send_failed_profiles_total[5m]))",
@@ -176,7 +176,7 @@
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "gridPos": {
         "x": 0,
@@ -188,7 +188,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "refId": "A",
           "expr": "sum by (exporter, data_type) (otelcol_exporter_queue_size) / sum by (exporter, data_type) (otelcol_exporter_queue_capacity)",
@@ -213,7 +213,7 @@
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "gridPos": {
         "x": 12,
@@ -225,7 +225,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "refId": "A",
           "expr": "sum by (receiver) (rate(otelcol_scraper_errored_profile_records_total[5m]))",
@@ -250,7 +250,7 @@
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "gridPos": {
         "x": 0,
@@ -262,7 +262,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "refId": "A",
           "expr": "rate(otelcol_process_cpu_seconds_total[5m])",
@@ -271,7 +271,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "refId": "B",
           "expr": "otelcol_process_memory_rss_bytes",
@@ -296,7 +296,7 @@
       "type": "logs",
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "gridPos": {
         "x": 12,
@@ -308,7 +308,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
+            "uid": "${DS_LOKI}"
           },
           "refId": "A",
           "expr": "{docker_compose_project=\"home-monitoring\", docker_compose_service=\"otel-collector\"}",
@@ -346,7 +346,80 @@
     "pipelines"
   ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "name": "DS_PROMETHEUS",
+        "label": "Prometheus datasource",
+        "type": "datasource",
+        "query": "prometheus",
+        "current": {
+          "selected": false,
+          "text": "Prometheus",
+          "value": "PBFA97CFB590B2093"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "options": [],
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false
+      },
+      {
+        "name": "DS_LOKI",
+        "label": "Loki datasource",
+        "type": "datasource",
+        "query": "loki",
+        "current": {
+          "selected": false,
+          "text": "Loki",
+          "value": "P8E80F9AEF21F6940"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "options": [],
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false
+      },
+      {
+        "name": "DS_TEMPO",
+        "label": "Tempo datasource",
+        "type": "datasource",
+        "query": "tempo",
+        "current": {
+          "selected": false,
+          "text": "Tempo",
+          "value": "tempo"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "options": [],
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false
+      },
+      {
+        "name": "DS_PYROSCOPE",
+        "label": "Pyroscope datasource",
+        "type": "datasource",
+        "query": "grafana-pyroscope-datasource",
+        "current": {
+          "selected": false,
+          "text": "Pyroscope",
+          "value": "pyroscope"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "options": [],
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false
+      }
+    ]
   },
   "time": {
     "from": "now-1h",

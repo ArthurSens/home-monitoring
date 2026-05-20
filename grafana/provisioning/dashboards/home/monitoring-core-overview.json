@@ -28,7 +28,7 @@
       "type": "stat",
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "gridPos": {
         "x": 0,
@@ -40,7 +40,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "refId": "A",
           "expr": "up{job=~\"prometheus|grafana|alertmanager|loki|tempo|pyroscope|otelcol-contrib\"}",
@@ -79,7 +79,7 @@
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "gridPos": {
         "x": 6,
@@ -91,7 +91,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "refId": "A",
           "expr": "sum by (job) (scrape_samples_scraped{job=~\"prometheus|grafana|alertmanager|loki|tempo|pyroscope|otelcol-contrib\"})",
@@ -116,7 +116,7 @@
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "gridPos": {
         "x": 0,
@@ -128,7 +128,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "refId": "A",
           "expr": "sum by (job) (rate(process_cpu_seconds_total{job=~\"prometheus|grafana|alertmanager|loki|tempo|pyroscope|otelcol-contrib\"}[5m]))",
@@ -153,7 +153,7 @@
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "gridPos": {
         "x": 12,
@@ -165,7 +165,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "refId": "A",
           "expr": "sum by (job) (process_resident_memory_bytes{job=~\"prometheus|grafana|alertmanager|loki|tempo|pyroscope|otelcol-contrib\"})",
@@ -190,7 +190,7 @@
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "gridPos": {
         "x": 0,
@@ -202,7 +202,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "refId": "A",
           "expr": "sum by (job) (rate({__name__=~\"prometheus_http_requests_total|grafana_http_request_duration_seconds_count|loki_request_duration_seconds_count|tempo_request_duration_seconds_count|pyroscope_request_duration_seconds_count\"}[5m]))",
@@ -227,7 +227,7 @@
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "gridPos": {
         "x": 12,
@@ -239,7 +239,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "refId": "A",
           "expr": "sum by (job) (rate({__name__=~\"prometheus_http_requests_total|grafana_http_request_duration_seconds_count|loki_request_duration_seconds_count|tempo_request_duration_seconds_count|pyroscope_request_duration_seconds_count\", status_code=~\"5..|500\", code!=\"\"}[5m])) or sum by (job) (rate({__name__=~\"prometheus_http_requests_total|grafana_http_request_duration_seconds_count|loki_request_duration_seconds_count|tempo_request_duration_seconds_count|pyroscope_request_duration_seconds_count\", status=~\"5..|500\"}[5m]))",
@@ -264,7 +264,7 @@
       "type": "logs",
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "${DS_LOKI}"
       },
       "gridPos": {
         "x": 0,
@@ -276,7 +276,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
+            "uid": "${DS_LOKI}"
           },
           "refId": "A",
           "expr": "{docker_compose_project=\"home-monitoring\"}",
@@ -313,7 +313,80 @@
     "overview"
   ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "name": "DS_PROMETHEUS",
+        "label": "Prometheus datasource",
+        "type": "datasource",
+        "query": "prometheus",
+        "current": {
+          "selected": false,
+          "text": "Prometheus",
+          "value": "PBFA97CFB590B2093"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "options": [],
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false
+      },
+      {
+        "name": "DS_LOKI",
+        "label": "Loki datasource",
+        "type": "datasource",
+        "query": "loki",
+        "current": {
+          "selected": false,
+          "text": "Loki",
+          "value": "P8E80F9AEF21F6940"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "options": [],
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false
+      },
+      {
+        "name": "DS_TEMPO",
+        "label": "Tempo datasource",
+        "type": "datasource",
+        "query": "tempo",
+        "current": {
+          "selected": false,
+          "text": "Tempo",
+          "value": "tempo"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "options": [],
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false
+      },
+      {
+        "name": "DS_PYROSCOPE",
+        "label": "Pyroscope datasource",
+        "type": "datasource",
+        "query": "grafana-pyroscope-datasource",
+        "current": {
+          "selected": false,
+          "text": "Pyroscope",
+          "value": "pyroscope"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "options": [],
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false
+      }
+    ]
   },
   "time": {
     "from": "now-1h",
