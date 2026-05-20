@@ -39,6 +39,26 @@ receivers:
         - job_name: 'otel-collector'
           static_configs:
             - targets: ['localhost:8888']
+  receiver_creator:
+    watch_observers: [docker_observer]
+    receivers:
+      filelog/docker:
+        rule: type == "container" and port == 0 and labels["com.docker.compose.project"] == "home-monitoring"
+        config:
+          include:
+            - /var/lib/docker/containers/`container_id`/*-json.log
+          include_file_path: true
+          start_at: end
+          operators:
+            - type: container
+              format: docker
+              add_metadata_from_filepath: false
+        resource_attributes:
+          container.id: '`container_id`'
+          container.name: '`name`'
+          container.image.name: '`image`'
+          docker.compose.project: '`labels["com.docker.compose.project"]`'
+          docker.compose.service: '`labels["com.docker.compose.service"]`'
 
 exporters:
   debug:
@@ -49,11 +69,16 @@ exporters:
       authenticator: basicauth/grafana_cloud
   otlp_http/prometheus:
     endpoint: http://prometheus:9090/api/v1/otlp
+  otlp_http/loki:
+    endpoint: http://loki:3100/otlp
 
 processors:
   batch:
 
 extensions:
+  docker_observer:
+    endpoint: unix:///var/run/docker.sock
+    include_all_containers: true
   basicauth/grafana_cloud:
     client_auth:
       username_file: /run/secrets/grafana_cloud_instance_id
@@ -65,7 +90,7 @@ extensions:
     endpoint: :55679
 
 service:
-  extensions: [basicauth/grafana_cloud, pprof, zpages, health_check]
+  extensions: [docker_observer, basicauth/grafana_cloud, pprof, zpages, health_check]
   telemetry:
     metrics:
       readers:
@@ -79,3 +104,7 @@ service:
       receivers: [otlp, prometheus]
       processors: [batch]
       exporters: [otlp_http/grafana_cloud, otlp_http/prometheus]
+    logs:
+      receivers: [otlp, receiver_creator]
+      processors: [batch]
+      exporters: [otlp_http/loki]
