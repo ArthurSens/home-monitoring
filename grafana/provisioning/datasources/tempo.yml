@@ -38,3 +38,9 @@ datasources:
       queries:
         - name: Span rate
           query: sum(rate(traces_spanmetrics_calls_total{$$__tags}[5m]))
+    tracesToProfiles:
+      datasourceUid: pyroscope
+      profileTypeId: process_cpu:cpu:nanoseconds:cpu:nanoseconds
+      tags:
+        - key: service.name
+          value: service_name

@@ -36,9 +36,60 @@ receivers:
         - job_name: 'loki'
           static_configs:
             - targets: ['loki:3100']
+        - job_name: 'pyroscope'
+          static_configs:
+            - targets: ['pyroscope:4040']
         - job_name: 'otel-collector'
           static_configs:
             - targets: ['localhost:8888']
+  pprof/prometheus:
+    endpoint: http://prometheus:9090/debug/pprof/profile?seconds=10
+    collection_interval: 1m
+  pprof/prometheus_heap:
+    endpoint: http://prometheus:9090/debug/pprof/heap
+    collection_interval: 1m
+  pprof/prometheus_allocs:
+    endpoint: http://prometheus:9090/debug/pprof/allocs
+    collection_interval: 1m
+  pprof/prometheus_goroutine:
+    endpoint: http://prometheus:9090/debug/pprof/goroutine
+    collection_interval: 1m
+  pprof/alertmanager:
+    endpoint: http://alertmanager:9093/debug/pprof/profile?seconds=10
+    collection_interval: 1m
+  pprof/alertmanager_heap:
+    endpoint: http://alertmanager:9093/debug/pprof/heap
+    collection_interval: 1m
+  pprof/alertmanager_allocs:
+    endpoint: http://alertmanager:9093/debug/pprof/allocs
+    collection_interval: 1m
+  pprof/alertmanager_goroutine:
+    endpoint: http://alertmanager:9093/debug/pprof/goroutine
+    collection_interval: 1m
+  pprof/grafana:
+    endpoint: http://grafana:6060/debug/pprof/profile?seconds=10
+    collection_interval: 1m
+  pprof/grafana_heap:
+    endpoint: http://grafana:6060/debug/pprof/heap
+    collection_interval: 1m
+  pprof/grafana_allocs:
+    endpoint: http://grafana:6060/debug/pprof/allocs
+    collection_interval: 1m
+  pprof/grafana_goroutine:
+    endpoint: http://grafana:6060/debug/pprof/goroutine
+    collection_interval: 1m
+  pprof/otel-collector:
+    endpoint: http://localhost:1888/debug/pprof/profile?seconds=10
+    collection_interval: 1m
+  pprof/otel-collector_heap:
+    endpoint: http://localhost:1888/debug/pprof/heap
+    collection_interval: 1m
+  pprof/otel-collector_allocs:
+    endpoint: http://localhost:1888/debug/pprof/allocs
+    collection_interval: 1m
+  pprof/otel-collector_goroutine:
+    endpoint: http://localhost:1888/debug/pprof/goroutine
+    collection_interval: 1m
   receiver_creator:
     watch_observers: [docker_observer]
     receivers:
@@ -73,9 +124,43 @@ exporters:
     endpoint: http://loki:3100/otlp
   otlp_http/tempo:
     endpoint: http://tempo:4318
+  otlp_http/pyroscope:
+    endpoint: http://pyroscope:4040
 
 processors:
   batch:
+  resource/profiles_prometheus:
+    attributes:
+      - key: service.name
+        value: prometheus
+        action: upsert
+      - key: service.namespace
+        value: home-monitoring
+        action: upsert
+  resource/profiles_alertmanager:
+    attributes:
+      - key: service.name
+        value: alertmanager
+        action: upsert
+      - key: service.namespace
+        value: home-monitoring
+        action: upsert
+  resource/profiles_grafana:
+    attributes:
+      - key: service.name
+        value: grafana
+        action: upsert
+      - key: service.namespace
+        value: home-monitoring
+        action: upsert
+  resource/profiles_otel_collector:
+    attributes:
+      - key: service.name
+        value: otel-collector
+        action: upsert
+      - key: service.namespace
+        value: home-monitoring
+        action: upsert
 
 extensions:
   docker_observer:
@@ -114,3 +199,19 @@ service:
       receivers: [otlp]
       processors: [batch]
       exporters: [otlp_http/grafana_cloud, otlp_http/tempo]
+    profiles/prometheus:
+      receivers: [pprof/prometheus, pprof/prometheus_heap, pprof/prometheus_allocs, pprof/prometheus_goroutine]
+      processors: [resource/profiles_prometheus]
+      exporters: [otlp_http/pyroscope, otlp_http/grafana_cloud]
+    profiles/alertmanager:
+      receivers: [pprof/alertmanager, pprof/alertmanager_heap, pprof/alertmanager_allocs, pprof/alertmanager_goroutine]
+      processors: [resource/profiles_alertmanager]
+      exporters: [otlp_http/pyroscope, otlp_http/grafana_cloud]
+    profiles/grafana:
+      receivers: [pprof/grafana, pprof/grafana_heap, pprof/grafana_allocs, pprof/grafana_goroutine]
+      processors: [resource/profiles_grafana]
+      exporters: [otlp_http/pyroscope, otlp_http/grafana_cloud]
+    profiles/otel-collector:
+      receivers: [pprof/otel-collector, pprof/otel-collector_heap, pprof/otel-collector_allocs, pprof/otel-collector_goroutine]
+      processors: [resource/profiles_otel_collector]
+      exporters: [otlp_http/pyroscope, otlp_http/grafana_cloud]
