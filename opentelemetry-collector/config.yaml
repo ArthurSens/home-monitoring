@@ -194,7 +194,7 @@ service:
     logs:
       receivers: [otlp, receiver_creator]
       processors: [batch]
-      exporters: [otlp_http/loki]
+      exporters: [otlp_http/loki, otlp_http/grafana_cloud]
     traces:
       receivers: [otlp]
       processors: [batch]
