@@ -1,4 +1,9 @@
 global:
+tracing:
+  client_type: grpc
+  endpoint: otel-collector:4317
+  insecure: true
+  sampling_fraction: 1.0
 route:
   receiver: telegram-bot
   group_by:

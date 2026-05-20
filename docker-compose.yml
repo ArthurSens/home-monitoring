@@ -22,6 +22,8 @@ services:
       - --storage.tsdb.retention.time=2d
       - --web.enable-remote-write-receiver
       - --enable-feature=otlp-write-receiver,created-timestamp-zero-ingestion,native-histograms,promql-experimental-functions
+    depends_on:
+      - otel-collector
 
 
   grafana:
@@ -33,10 +35,13 @@ services:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
       - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_TRACING_OPENTELEMETRY_OTLP_ADDRESS=otel-collector:4317
+      - GF_TRACING_OPENTELEMETRY_OTLP_PROPAGATION=w3c
     volumes: 
       - ./grafana/provisioning:/etc/grafana/provisioning
     depends_on:
       - loki
+      - otel-collector
 
 
   alertmanager:
@@ -47,6 +52,8 @@ services:
       - --config.file=/etc/alertmanager/alertmanager.yml
     volumes: 
       - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    depends_on:
+      - otel-collector
 
 
   node_exporter:
@@ -68,6 +75,16 @@ services:
     ports:
       - "3100:3100"
 
+  tempo:
+    image: grafana/tempo:2.9.0@sha256:65a5789759435f1ef696f1953258b9bbdb18eb571d5ce711ff812d2e128288a4
+    command:
+      - --config.file=/etc/tempo/config.yaml
+    volumes:
+      - ./tempo/config.yaml:/etc/tempo/config.yaml
+      - ./tempo/storage:/var/tempo
+    ports:
+      - "3200:3200"
+
   otel-collector:
     image: otel/opentelemetry-collector-contrib:0.152.1@sha256:fa1f6ea8dabd3042fabf4411eed7fa52f253edd8940140bec89a573e62a24eb7
     user: "0:0"
@@ -82,3 +99,4 @@ services:
       - grafana_cloud_api_token
     depends_on:
       - loki
+      - tempo
