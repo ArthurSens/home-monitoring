@@ -9,22 +9,55 @@ receivers:
           allowed_origins:
             - "http://*"
             - "https://*"
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: 'prometheus'
+          static_configs:
+            - targets: ['prometheus:9090']
+        - job_name: 'node_exporter'
+          static_configs:
+            - targets: ['node_exporter:9100']
+        - job_name: 'blackbox'
+          metrics_path: /probe
+          params:
+            module: [http_2xx]
+          static_configs:
+            - targets:
+              - https://github.com/
+              - https://www.wanikani.com/
+          relabel_configs:
+            - source_labels: [__address__]
+              target_label: __param_target
+            - source_labels: [__param_target]
+              target_label: instance
+            - target_label: __address__
+              replacement: blackbox_exporter:9115
+        - job_name: 'loki'
+          static_configs:
+            - targets: ['loki:3100']
+        - job_name: 'otel-collector'
+          static_configs:
+            - targets: ['localhost:8888']
 
 exporters:
   debug:
     verbosity: detailed
-  # prometheusremotewrite:
-  #   endpoint: http://prometheus:9090/api/v1/write
-
-  otlphttp:
+  otlp_http/grafana_cloud:
+    endpoint: https://otlp-gateway-prod-sa-east-1.grafana.net/otlp
+    auth:
+      authenticator: basicauth/grafana_cloud
+  otlp_http/prometheus:
     endpoint: http://prometheus:9090/api/v1/otlp
-    tls:
-      insecure: true
 
 processors:
   batch:
 
 extensions:
+  basicauth/grafana_cloud:
+    client_auth:
+      username_file: /run/secrets/grafana_cloud_instance_id
+      password_file: /run/secrets/grafana_cloud_api_token
   health_check:
   pprof:
     endpoint: :1888
@@ -32,10 +65,17 @@ extensions:
     endpoint: :55679
 
 service:
-  extensions: [pprof, zpages, health_check]
+  extensions: [basicauth/grafana_cloud, pprof, zpages, health_check]
+  telemetry:
+    metrics:
+      readers:
+        - pull:
+            exporter:
+              prometheus:
+                host: 0.0.0.0
+                port: 8888
   pipelines:
     metrics:
-      receivers: [otlp]
+      receivers: [otlp, prometheus]
       processors: [batch]
-      # exporters: [prometheusremotewrite]
-      exporters: [otlphttp]
+      exporters: [otlp_http/grafana_cloud, otlp_http/prometheus]

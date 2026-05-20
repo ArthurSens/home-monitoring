@@ -8,6 +8,12 @@ x-default-logging: &logging
     loki-max-backoff: 800ms
     loki-timeout: 1s
 
+secrets:
+  grafana_cloud_instance_id:
+    file: ./secrets/grafana-cloud-instance-id
+  grafana_cloud_api_token:
+    file: ./secrets/grafana-cloud-api-token
+
 services:
   prometheus:
     image: prom/prometheus:v3.0.0-beta.0@sha256:064b379ac7f9d34c5b9b6cdd8c68a5706603270c0594bdefed67cd85c3b290be
@@ -92,16 +98,9 @@ services:
     command: ["--config=/etc/otel-collector-config.yaml"]
     volumes:
       - ./opentelemetry-collector/config.yaml:/etc/otel-collector-config.yaml
-    logging: *logging
-    depends_on:
-      - loki
-
-  otel-collector-hostmetrics:
-    image: otel/opentelemetry-collector-contrib:0.152.0@sha256:f41d7995565df3733b7568702073a9c490792f9c6ac60684fe6a4da21a313f8d
-    restart: always # To re-read the configuration file
-    command: ["--config=/etc/otel-collector-config.yaml"]
-    volumes:
-      - ./opentelemetry-collector/hostmetrics.yaml:/etc/otel-collector-config.yaml
+    secrets:
+      - grafana_cloud_instance_id
+      - grafana_cloud_api_token
     logging: *logging
     depends_on:
       - loki
