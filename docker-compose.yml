@@ -74,6 +74,15 @@ services:
     ports: 
       - "9100:9100"
 
+  garmin_exporter:
+    image: ghcr.io/barnes-c/garmin_exporter@sha256:61f10b7165c2b0f95a9f3a7892fdd28e4be176666a6645ec8c905fe125577911
+    restart: unless-stopped
+    env_file:
+      - ./secrets/garmin.env
+    command:
+      - --garmin.token-file=/data/garmin_token.json
+    volumes:
+      - garmin_data:/data
 
   blackbox_exporter: 
     image: prom/blackbox-exporter:v0.28.0@sha256:e753ff9f3fc458d02cca5eddab5a77e1c175eee484a8925ac7d524f04366c2fc
@@ -123,6 +132,10 @@ services:
       - grafana_cloud_instance_id
       - grafana_cloud_api_token
     depends_on:
+      - garmin_exporter
       - loki
       - tempo
       - pyroscope
+
+volumes:
+  garmin_data:

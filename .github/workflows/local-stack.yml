@@ -25,6 +25,10 @@ jobs:
           printf 'local-ci-placeholder\n' > secrets/grafana-cloud-instance-id
           printf 'local-ci-placeholder\n' > secrets/grafana-cloud-api-token
           printf 'admin\n' > secrets/grafana-admin-password
+          printf '%s\n' \
+            'GARMIN_USERNAME=local-ci-placeholder' \
+            'GARMIN_PASSWORD=local-ci-placeholder' \
+            > secrets/garmin.env
 
       - name: Prepare local storage directories
         run: |
