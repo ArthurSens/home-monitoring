@@ -18,6 +18,7 @@ PYROSCOPE_URL=${PYROSCOPE_URL:-http://localhost:4040}
 EXPECTED_PROMETHEUS_JOBS=(
   alertmanager
   blackbox
+  garmin_exporter
   grafana
   loki
   node_exporter
@@ -25,6 +26,11 @@ EXPECTED_PROMETHEUS_JOBS=(
   prometheus
   pyroscope
   tempo
+)
+
+# Services that may exit or restart when credentials are invalid (e.g. CI placeholders).
+COMPOSE_RUNNING_OPTIONAL_SERVICES=(
+  garmin_exporter
 )
 
 usage() {
@@ -127,6 +133,7 @@ prometheus_query() {
 
 prometheus_has_expected_jobs() {
   local response
+  # Includes targets with up=0 (e.g. garmin_exporter when login fails in CI).
   response=$(prometheus_query 'count by (job) (up)')
 
   RESPONSE="$response" EXPECTED_JOBS="${EXPECTED_PROMETHEUS_JOBS[*]}" python3 - <<'PY'
@@ -237,8 +244,10 @@ generate_activity() {
 }
 
 check_running_services() {
-  local expected running missing
+  local expected running missing optional
   expected=$($COMPOSE config --services | sort)
+  optional=$(printf '%s\n' "${COMPOSE_RUNNING_OPTIONAL_SERVICES[@]}" | sort)
+  expected=$(comm -23 <(printf '%s\n' "$expected") <(printf '%s\n' "$optional"))
   running=$($COMPOSE ps --status running --services | sort)
   missing=$(comm -23 <(printf '%s\n' "$expected") <(printf '%s\n' "$running"))
 

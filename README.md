@@ -25,7 +25,21 @@ It is intentionally small enough to run with Docker Compose, but complete enough
 | [Alertmanager](https://github.com/prometheus/alertmanager) | Alert routing and tracing target. |
 | [Node Exporter](https://github.com/prometheus/node_exporter) | Host metrics. |
 | [Blackbox Exporter](https://github.com/prometheus/blackbox_exporter) | External endpoint probing. |
+| [Garmin Exporter](https://github.com/barnes-c/garmin_exporter) | Garmin Connect health and training metrics (scraped every 5m). |
 | Grafana Cloud | Remote metrics, logs, traces, and profiles for cloud dogfooding. |
+
+### Garmin credentials
+
+Create `secrets/garmin.env` (gitignored) before starting the stack:
+
+```bash
+printf '%s\n' \
+  'GARMIN_USERNAME=you@example.com' \
+  'GARMIN_PASSWORD=your-password' \
+  > secrets/garmin.env
+```
+
+CI uses placeholder credentials; the exporter may fail login and restart, but the collector still scrapes the target and Prometheus records `up{job="garmin_exporter"}` (often `0`).
 
 ## Grafana Cloud Git Sync
 
