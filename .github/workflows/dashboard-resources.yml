@@ -2,15 +2,9 @@ name: Dashboard Resources
 
 on:
   pull_request:
-    paths:
-      - grafana/provisioning/dashboards/**/*.json
-      - .github/workflows/dashboard-resources.yml
   push:
     branches:
       - master
-    paths:
-      - grafana/provisioning/dashboards/**/*.json
-      - .github/workflows/dashboard-resources.yml
 
 permissions:
   contents: read
@@ -24,18 +18,50 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          fetch-depth: 0
+
+      - name: Detect dashboard changes
+        id: changes
+        run: |
+          pattern='^(\.github/workflows/dashboard-resources\.yml|grafana/provisioning/dashboards/.*\.json)$'
+
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            changed_files="$(git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}")"
+          else
+            if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
+              changed_files="$(git diff --name-only HEAD^ HEAD)"
+            else
+              changed_files="$(git diff --name-only "${{ github.event.before }}" "${{ github.event.after }}")"
+            fi
+          fi
+
+          if echo "$changed_files" | grep -Eq "$pattern"; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Dashboard-related files changed; running validation."
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No dashboard-related files changed; skipping validation."
+          fi
+
+      - name: Skip dashboard validation
+        if: steps.changes.outputs.changed != 'true'
+        run: echo "Validation not required for this change set."
 
       - name: Install gcx
+        if: steps.changes.outputs.changed == 'true'
         run: |
           curl -fL "$(curl -s https://api.github.com/repos/grafana/gcx/releases/latest | grep browser_download_url | grep linux_amd64.tar.gz | cut -d '"' -f 4)" | tar xz gcx
           chmod +x gcx
           sudo mv gcx /usr/local/bin/
 
       - name: Authenticate to Grafana
+        if: steps.changes.outputs.changed == 'true'
         run: gcx login --yes ci --server "${GRAFANA_SERVER}" --token "${GRAFANA_TOKEN}"
         env:
           GRAFANA_SERVER: ${{ secrets.GRAFANA_SERVER }}
           GRAFANA_TOKEN: ${{ secrets.GRAFANA_TOKEN }}
 
       - name: Validate dashboard resources
+        if: steps.changes.outputs.changed == 'true'
         run: gcx resources validate --context ci --on-error abort -p grafana/provisioning/dashboards/home
