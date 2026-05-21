@@ -27,8 +27,8 @@ jobs:
 
       - name: Prepare local storage directories
         run: |
-          mkdir -p prometheus/storage tempo/storage pyroscope/storage
-          chmod -R 777 prometheus/storage tempo/storage pyroscope/storage
+          mkdir -p prometheus/storage loki/storage tempo/storage pyroscope/storage
+          chmod -R 777 prometheus/storage loki/storage tempo/storage pyroscope/storage
 
       - name: Validate verification script
         run: bash -n scripts/verify-local-stack.sh

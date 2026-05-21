@@ -76,6 +76,7 @@ services:
       - --config.file=/etc/loki/config.yaml
     volumes:
       - ./loki/config.yaml:/etc/loki/config.yaml
+      - ./loki/storage:/loki
     ports:
       - "3100:3100"
 
