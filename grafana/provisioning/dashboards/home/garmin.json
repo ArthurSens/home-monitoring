@@ -1,0 +1,4829 @@
+{
+    "apiVersion": "dashboard.grafana.app/v2",
+    "kind": "Dashboard",
+    "metadata": {
+      "name": "adpnh2z",
+      "generation": 6,
+      "creationTimestamp": "2026-05-21T16:42:18Z",
+      "labels": {},
+      "annotations": {}
+    },
+    "spec": {
+      "annotations": [
+        {
+          "kind": "AnnotationQuery",
+          "spec": {
+            "query": {
+              "kind": "DataQuery",
+              "group": "grafana",
+              "version": "v0",
+              "spec": {},
+              "labels": {
+                "grafana.app/export-label": "grafana-1"
+              }
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "builtIn": true
+          }
+        }
+      ],
+      "cursorSync": "Off",
+      "description": "Personal health and fitness metrics from Garmin wearable — steps, heart rate, sleep, HRV, stress, SpO2, and activity.",
+      "editable": true,
+      "elements": {
+        "panel-22": {
+          "kind": "Panel",
+          "spec": {
+            "id": 22,
+            "title": "Heart Rate Trends",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_heartrate_resting_bpm",
+                          "instant": false,
+                          "legendFormat": "Resting BPM",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_heartrate_max_bpm",
+                          "instant": false,
+                          "legendFormat": "Max BPM",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "B",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_heartrate_min_bpm",
+                          "instant": false,
+                          "legendFormat": "Min BPM",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "C",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_heartrate_seven_day_avg_resting_bpm",
+                          "instant": false,
+                          "legendFormat": "7-day Avg Resting",
+                          "queryType": "range",
+                          "range": true
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "prometheus-1"
+                        }
+                      },
+                      "refId": "D",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "bpm",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 10,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 2,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "never",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Max BPM"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "red",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Min BPM"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "blue",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Resting BPM"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "green",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "7-day Avg Resting"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "orange",
+                            "mode": "fixed"
+                          }
+                        },
+                        {
+                          "id": "custom.lineWidth",
+                          "value": 2
+                        },
+                        {
+                          "id": "custom.lineStyle",
+                          "value": {
+                            "dash": [
+                              8,
+                              4
+                            ],
+                            "fill": "dash"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "panel-23": {
+          "kind": "Panel",
+          "spec": {
+            "id": 23,
+            "title": "HRV (Heart Rate Variability)",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_sleep_hrv_last_night_ms",
+                          "instant": false,
+                          "legendFormat": "Last Night HRV",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_sleep_hrv_weekly_avg_ms",
+                          "instant": false,
+                          "legendFormat": "7-day Avg HRV",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "B",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_training_readiness_hrv_weekly_avg_ms",
+                          "instant": false,
+                          "legendFormat": "Training HRV Baseline",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "C",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "ms",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 15,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 2,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-24": {
+          "kind": "Panel",
+          "spec": {
+            "id": 24,
+            "title": "Sleep Stages",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_sleep_deep_seconds",
+                          "instant": false,
+                          "legendFormat": "Deep Sleep",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_sleep_rem_seconds",
+                          "instant": false,
+                          "legendFormat": "REM Sleep",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "B",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_sleep_light_seconds",
+                          "instant": false,
+                          "legendFormat": "Light Sleep",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "C",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_sleep_awake_seconds",
+                          "instant": false,
+                          "legendFormat": "Awake",
+                          "queryType": "range",
+                          "range": true
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "prometheus-1"
+                        }
+                      },
+                      "refId": "D",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "s",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "bars",
+                      "fillOpacity": 80,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "normal"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Deep Sleep"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "dark-blue",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "REM Sleep"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "purple",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Light Sleep"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "light-blue",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Awake"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "orange",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "panel-25": {
+          "kind": "Panel",
+          "spec": {
+            "id": 25,
+            "title": "Stress Levels",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_stress_avg_level",
+                          "instant": false,
+                          "legendFormat": "Avg Stress",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_stress_max_level",
+                          "instant": false,
+                          "legendFormat": "Max Stress",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "B",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_sleep_avg_stress",
+                          "instant": false,
+                          "legendFormat": "Sleep Stress",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "C",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "short",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 10,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 2,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Avg Stress"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "yellow",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Max Stress"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "red",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Sleep Stress"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "blue",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "panel-26": {
+          "kind": "Panel",
+          "spec": {
+            "id": 26,
+            "title": "Activity Time (Active vs Sedentary)",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_wellness_active_seconds",
+                          "instant": false,
+                          "legendFormat": "Active",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_wellness_highly_active_seconds",
+                          "instant": false,
+                          "legendFormat": "Highly Active",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "B",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_wellness_sedentary_seconds",
+                          "instant": false,
+                          "legendFormat": "Sedentary",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "C",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "s",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 10,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 2,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-27": {
+          "kind": "Panel",
+          "spec": {
+            "id": 27,
+            "title": "Calories",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_wellness_total_kilocalories",
+                          "instant": false,
+                          "legendFormat": "Total",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_wellness_active_kilocalories",
+                          "instant": false,
+                          "legendFormat": "Active",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "B",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_wellness_bmr_kilocalories",
+                          "instant": false,
+                          "legendFormat": "BMR (Base Metabolic)",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "C",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "kcal",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 10,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 2,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-28": {
+          "kind": "Panel",
+          "spec": {
+            "id": 28,
+            "title": "Activity Duration by Type",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_activity_duration_seconds_total",
+                          "instant": false,
+                          "legendFormat": "{{type}}",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "s",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "bars",
+                      "fillOpacity": 80,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-29": {
+          "kind": "Panel",
+          "spec": {
+            "id": 29,
+            "title": "Weekly Intensity Minutes",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_intensity_vigorous_minutes_total",
+                          "instant": false,
+                          "legendFormat": "Vigorous",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_intensity_moderate_minutes_total",
+                          "instant": false,
+                          "legendFormat": "Moderate",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "B",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "m",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 10,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 2,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-30": {
+          "kind": "Panel",
+          "spec": {
+            "id": 30,
+            "title": "Activity Distance by Type",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_activity_distance_meters_total",
+                          "instant": false,
+                          "legendFormat": "{{type}}",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "lengthm",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "bars",
+                      "fillOpacity": 80,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-31": {
+          "kind": "Panel",
+          "spec": {
+            "id": 31,
+            "title": "Total Steps",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_wellness_total_steps",
+                          "instant": true,
+                          "legendFormat": "Steps",
+                          "queryType": "instant",
+                          "range": false
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "colorMode": "background",
+                  "graphMode": "area",
+                  "justifyMode": "auto",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "value_and_name",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "short",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "red"
+                        },
+                        {
+                          "value": 5000,
+                          "color": "yellow"
+                        },
+                        {
+                          "value": 10000,
+                          "color": "green"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-32": {
+          "kind": "Panel",
+          "spec": {
+            "id": 32,
+            "title": "Resting Heart Rate",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_heartrate_resting_bpm",
+                          "instant": true,
+                          "legendFormat": "Resting BPM",
+                          "queryType": "instant",
+                          "range": false
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "colorMode": "background",
+                  "graphMode": "area",
+                  "justifyMode": "auto",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "value_and_name",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "bpm",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 70,
+                          "color": "yellow"
+                        },
+                        {
+                          "value": 85,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-33": {
+          "kind": "Panel",
+          "spec": {
+            "id": 33,
+            "title": "Training Readiness",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_training_readiness_score",
+                          "instant": true,
+                          "legendFormat": "Score",
+                          "queryType": "instant",
+                          "range": false
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "colorMode": "background",
+                  "graphMode": "area",
+                  "justifyMode": "auto",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "value_and_name",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "short",
+                    "min": 0,
+                    "max": 100,
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "red"
+                        },
+                        {
+                          "value": 40,
+                          "color": "yellow"
+                        },
+                        {
+                          "value": 70,
+                          "color": "green"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-34": {
+          "kind": "Panel",
+          "spec": {
+            "id": 34,
+            "title": "Blood Oxygen (SpO₂)",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_spo2_avg_percent",
+                          "instant": true,
+                          "legendFormat": "SpO₂ %",
+                          "queryType": "instant",
+                          "range": false
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "colorMode": "background",
+                  "graphMode": "area",
+                  "justifyMode": "auto",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "value_and_name",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "percent",
+                    "min": 90,
+                    "max": 100,
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "red"
+                        },
+                        {
+                          "value": 94,
+                          "color": "yellow"
+                        },
+                        {
+                          "value": 96,
+                          "color": "green"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-35": {
+          "kind": "Panel",
+          "spec": {
+            "id": 35,
+            "title": "Avg Stress Level",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_stress_avg_level",
+                          "instant": true,
+                          "legendFormat": "Stress",
+                          "queryType": "instant",
+                          "range": false
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "colorMode": "background",
+                  "graphMode": "area",
+                  "justifyMode": "auto",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "value_and_name",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "short",
+                    "min": 0,
+                    "max": 100,
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 26,
+                          "color": "yellow"
+                        },
+                        {
+                          "value": 51,
+                          "color": "orange"
+                        },
+                        {
+                          "value": 76,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-36": {
+          "kind": "Panel",
+          "spec": {
+            "id": 36,
+            "title": "Step Goal Progress",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_wellness_total_steps / garmin_wellness_step_goal * 100",
+                          "instant": true,
+                          "legendFormat": "Goal %",
+                          "queryType": "instant",
+                          "range": false
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "colorMode": "background",
+                  "graphMode": "area",
+                  "justifyMode": "auto",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "value_and_name",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "percent",
+                    "min": 0,
+                    "max": 100,
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "red"
+                        },
+                        {
+                          "value": 50,
+                          "color": "yellow"
+                        },
+                        {
+                          "value": 100,
+                          "color": "green"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-53": {
+          "kind": "Panel",
+          "spec": {
+            "id": 53,
+            "title": "Body Battery Level Trend",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_wellness_body_battery_latest",
+                          "instant": false,
+                          "legendFormat": "Latest",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_wellness_body_battery_highest",
+                          "instant": false,
+                          "legendFormat": "Highest",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "B",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_wellness_body_battery_lowest",
+                          "instant": false,
+                          "legendFormat": "Lowest",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "C",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "short",
+                    "min": 0,
+                    "max": 100,
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 20,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 2,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Highest"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "green",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Latest"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "blue",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Lowest"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "red",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "panel-54": {
+          "kind": "Panel",
+          "spec": {
+            "id": 54,
+            "title": "Body Battery Charge & Drain",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_wellness_body_battery_charged",
+                          "instant": false,
+                          "legendFormat": "Charged",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_wellness_body_battery_drained",
+                          "instant": false,
+                          "legendFormat": "Drained",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "B",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "short",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "bars",
+                      "fillOpacity": 80,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Charged"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "green",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Drained"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "red",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "panel-55": {
+          "kind": "Panel",
+          "spec": {
+            "id": 55,
+            "title": "VO₂ Max",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_training_vo2max_generic",
+                          "instant": true,
+                          "legendFormat": "VO₂ Max",
+                          "queryType": "instant",
+                          "range": false
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "colorMode": "background",
+                  "graphMode": "area",
+                  "justifyMode": "auto",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "value_and_name",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "mLkg/min",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "red"
+                        },
+                        {
+                          "value": 35,
+                          "color": "yellow"
+                        },
+                        {
+                          "value": 45,
+                          "color": "green"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-56": {
+          "kind": "Panel",
+          "spec": {
+            "id": 56,
+            "title": "Recovery Time Needed",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_training_readiness_recovery_minutes",
+                          "instant": true,
+                          "legendFormat": "Recovery",
+                          "queryType": "instant",
+                          "range": false
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "colorMode": "background",
+                  "graphMode": "area",
+                  "justifyMode": "auto",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "value_and_name",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "m",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 60,
+                          "color": "yellow"
+                        },
+                        {
+                          "value": 120,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-57": {
+          "kind": "Panel",
+          "spec": {
+            "id": 57,
+            "title": "Readiness Sleep Score",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_training_readiness_sleep_score",
+                          "instant": true,
+                          "legendFormat": "Sleep Score",
+                          "queryType": "instant",
+                          "range": false
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "colorMode": "background",
+                  "graphMode": "area",
+                  "justifyMode": "auto",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "value_and_name",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "short",
+                    "min": 0,
+                    "max": 100,
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "red"
+                        },
+                        {
+                          "value": 50,
+                          "color": "yellow"
+                        },
+                        {
+                          "value": 70,
+                          "color": "green"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-58": {
+          "kind": "Panel",
+          "spec": {
+            "id": 58,
+            "title": "Race Predictions",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_training_race_prediction_5k_seconds",
+                          "instant": false,
+                          "legendFormat": "5K",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_training_race_prediction_10k_seconds",
+                          "instant": false,
+                          "legendFormat": "10K",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "B",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_training_race_prediction_half_marathon_seconds",
+                          "instant": false,
+                          "legendFormat": "Half Marathon",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "C",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_training_race_prediction_marathon_seconds",
+                          "instant": false,
+                          "legendFormat": "Marathon",
+                          "queryType": "range",
+                          "range": true
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "prometheus-1"
+                        }
+                      },
+                      "refId": "D",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "s",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 10,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 2,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-59": {
+          "kind": "Panel",
+          "spec": {
+            "id": 59,
+            "title": "Waking Respiration Rate",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_respiration_avg_waking_bpm",
+                          "instant": false,
+                          "legendFormat": "Avg Waking",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_respiration_highest_bpm",
+                          "instant": false,
+                          "legendFormat": "Highest",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "B",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_respiration_lowest_bpm",
+                          "instant": false,
+                          "legendFormat": "Lowest",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "C",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "breaths/min",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 10,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 2,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-60": {
+          "kind": "Panel",
+          "spec": {
+            "id": 60,
+            "title": "Sleep Respiration Rate",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_sleep_avg_respiration_bpm",
+                          "instant": false,
+                          "legendFormat": "Avg Sleep",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_sleep_highest_respiration_bpm",
+                          "instant": false,
+                          "legendFormat": "Highest Sleep",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "B",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_sleep_lowest_respiration_bpm",
+                          "instant": false,
+                          "legendFormat": "Lowest Sleep",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "C",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "breaths/min",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 10,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 2,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-61": {
+          "kind": "Panel",
+          "spec": {
+            "id": 61,
+            "title": "Nap Time",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_sleep_nap_seconds",
+                          "instant": true,
+                          "legendFormat": "Nap",
+                          "queryType": "instant",
+                          "range": false
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "colorMode": "background",
+                  "graphMode": "none",
+                  "justifyMode": "auto",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "value_and_name",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "s",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-62": {
+          "kind": "Panel",
+          "spec": {
+            "id": 62,
+            "title": "Restless Moments",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_sleep_restless_moments_total",
+                          "instant": true,
+                          "legendFormat": "Restless",
+                          "queryType": "instant",
+                          "range": false
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "colorMode": "background",
+                  "graphMode": "none",
+                  "justifyMode": "auto",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "value_and_name",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "short",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 5,
+                          "color": "yellow"
+                        },
+                        {
+                          "value": 15,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-63": {
+          "kind": "Panel",
+          "spec": {
+            "id": 63,
+            "title": "Sleep SpO₂",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_sleep_spo2_avg_percent",
+                          "instant": true,
+                          "legendFormat": "Sleep SpO₂",
+                          "queryType": "instant",
+                          "range": false
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "colorMode": "background",
+                  "graphMode": "none",
+                  "justifyMode": "auto",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "value_and_name",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "percent",
+                    "min": 90,
+                    "max": 100,
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "red"
+                        },
+                        {
+                          "value": 94,
+                          "color": "yellow"
+                        },
+                        {
+                          "value": 96,
+                          "color": "green"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-64": {
+          "kind": "Panel",
+          "spec": {
+            "id": 64,
+            "title": "HRV Baselines",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_sleep_hrv_baseline_balanced_low_ms",
+                          "instant": false,
+                          "legendFormat": "Balanced Low",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_sleep_hrv_baseline_balanced_upper_ms",
+                          "instant": false,
+                          "legendFormat": "Balanced Upper",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "B",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_sleep_hrv_baseline_low_upper_ms",
+                          "instant": false,
+                          "legendFormat": "Low Upper",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "C",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_sleep_hrv_last_night_5min_high_ms",
+                          "instant": false,
+                          "legendFormat": "5-min Peak",
+                          "queryType": "range",
+                          "range": true
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "prometheus-1"
+                        }
+                      },
+                      "refId": "D",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "ms",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 10,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 2,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Balanced Low"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "red",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Balanced Upper"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "green",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Low Upper"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "orange",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "5-min Peak"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "blue",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "panel-67": {
+          "kind": "Panel",
+          "spec": {
+            "id": 67,
+            "title": "Body Battery",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_wellness_body_battery_latest",
+                          "instant": true,
+                          "legendFormat": "Current",
+                          "queryType": "instant",
+                          "range": false
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "colorMode": "background",
+                  "graphMode": "area",
+                  "justifyMode": "auto",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "value_and_name",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "short",
+                    "min": 0,
+                    "max": 100,
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "red"
+                        },
+                        {
+                          "value": 25,
+                          "color": "orange"
+                        },
+                        {
+                          "value": 50,
+                          "color": "yellow"
+                        },
+                        {
+                          "value": 75,
+                          "color": "green"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-68": {
+          "kind": "Panel",
+          "spec": {
+            "id": 68,
+            "title": "",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "text",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "code": {
+                    "language": "plaintext",
+                    "showLineNumbers": false,
+                    "showMiniMap": false
+                  },
+                  "content": "<div style=\"display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:12px;text-align:center\">\n  <img\n    src=\"https://a-static.mlcdn.com.br/420x420/smartwatch-gps-garmin-forerunner-265-amoled-music-preto/lojaglobaltechautorizadagarmin/010-02810-10/c7b844b856e446517b048afe38a5bc44.jpeg\"\n    alt=\"Garmin Forerunner 265\"\n    style=\"max-height:200px;max-width:100%;object-fit:contain;filter:drop-shadow(0 6px 16px rgba(0,0,0,0.6))\"\n  />\n</div>",
+                  "mode": "html"
+                },
+                "fieldConfig": {
+                  "defaults": {},
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-70": {
+          "kind": "Panel",
+          "spec": {
+            "id": 70,
+            "title": "Paired Devices",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_device_count",
+                          "instant": true,
+                          "legendFormat": "Devices",
+                          "queryType": "instant",
+                          "range": false
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "colorMode": "background",
+                  "graphMode": "area",
+                  "justifyMode": "auto",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "value_and_name",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "short",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-71": {
+          "kind": "Panel",
+          "spec": {
+            "id": 71,
+            "title": "Device Type",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "garmin_device_info",
+                          "instant": true,
+                          "legendFormat": "{{type}}",
+                          "queryType": "instant",
+                          "range": false
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "prometheus-1"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "colorMode": "none",
+                  "graphMode": "none",
+                  "justifyMode": "auto",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "name",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "text"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "fixed",
+                      "fixedColor": "text"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        }
+      },
+      "layout": {
+        "kind": "RowsLayout",
+        "spec": {
+          "rows": [
+            {
+              "kind": "RowsLayoutRow",
+              "spec": {
+                "title": "Overview",
+                "collapse": false,
+                "hideHeader": true,
+                "fillScreen": false,
+                "layout": {
+                  "kind": "GridLayout",
+                  "spec": {
+                    "items": [
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 0,
+                          "width": 4,
+                          "height": 4,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-31"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 4,
+                          "y": 0,
+                          "width": 4,
+                          "height": 4,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-32"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 8,
+                          "y": 0,
+                          "width": 4,
+                          "height": 4,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-33"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 12,
+                          "y": 0,
+                          "width": 4,
+                          "height": 4,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-34"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 16,
+                          "y": 0,
+                          "width": 4,
+                          "height": 4,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-35"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 20,
+                          "y": 0,
+                          "width": 4,
+                          "height": 4,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-36"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "kind": "RowsLayoutRow",
+              "spec": {
+                "title": "❤️ Heart Rate & HRV",
+                "collapse": false,
+                "hideHeader": false,
+                "fillScreen": false,
+                "layout": {
+                  "kind": "GridLayout",
+                  "spec": {
+                    "items": [
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 0,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-22"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 12,
+                          "y": 0,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-23"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "kind": "RowsLayoutRow",
+              "spec": {
+                "title": "😴 Sleep",
+                "collapse": false,
+                "hideHeader": false,
+                "fillScreen": false,
+                "layout": {
+                  "kind": "GridLayout",
+                  "spec": {
+                    "items": [
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 0,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-24"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 12,
+                          "y": 0,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-25"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "kind": "RowsLayoutRow",
+              "spec": {
+                "title": "🏃 Activity & Wellness",
+                "collapse": false,
+                "hideHeader": false,
+                "fillScreen": false,
+                "layout": {
+                  "kind": "GridLayout",
+                  "spec": {
+                    "items": [
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 0,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-26"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 12,
+                          "y": 0,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-27"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 8,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-28"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 12,
+                          "y": 8,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-29"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 16,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-30"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "kind": "RowsLayoutRow",
+              "spec": {
+                "title": "🔋 Body Battery",
+                "collapse": false,
+                "hideHeader": false,
+                "fillScreen": false,
+                "layout": {
+                  "kind": "GridLayout",
+                  "spec": {
+                    "items": [
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 0,
+                          "width": 4,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-67"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 4,
+                          "y": 0,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-53"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 16,
+                          "y": 0,
+                          "width": 8,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-54"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "kind": "RowsLayoutRow",
+              "spec": {
+                "title": "🏋️ Training & Performance",
+                "collapse": false,
+                "hideHeader": false,
+                "fillScreen": false,
+                "layout": {
+                  "kind": "GridLayout",
+                  "spec": {
+                    "items": [
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 0,
+                          "width": 4,
+                          "height": 4,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-55"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 4,
+                          "y": 0,
+                          "width": 4,
+                          "height": 4,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-56"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 8,
+                          "y": 0,
+                          "width": 4,
+                          "height": 4,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-57"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 12,
+                          "y": 0,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-58"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "kind": "RowsLayoutRow",
+              "spec": {
+                "title": "🫁 Respiration",
+                "collapse": false,
+                "hideHeader": false,
+                "fillScreen": false,
+                "layout": {
+                  "kind": "GridLayout",
+                  "spec": {
+                    "items": [
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 0,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-59"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 12,
+                          "y": 0,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-60"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "kind": "RowsLayoutRow",
+              "spec": {
+                "title": "😴 Extra Sleep Detail",
+                "collapse": false,
+                "hideHeader": false,
+                "fillScreen": false,
+                "layout": {
+                  "kind": "GridLayout",
+                  "spec": {
+                    "items": [
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 0,
+                          "width": 4,
+                          "height": 4,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-61"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 4,
+                          "y": 0,
+                          "width": 4,
+                          "height": 4,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-62"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 8,
+                          "y": 0,
+                          "width": 4,
+                          "height": 4,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-63"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 12,
+                          "y": 0,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-64"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "kind": "RowsLayoutRow",
+              "spec": {
+                "title": "ℹ️ Device Info",
+                "collapse": false,
+                "hideHeader": false,
+                "fillScreen": false,
+                "layout": {
+                  "kind": "GridLayout",
+                  "spec": {
+                    "items": [
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 0,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-68"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 12,
+                          "y": 0,
+                          "width": 6,
+                          "height": 4,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-71"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 18,
+                          "y": 0,
+                          "width": 6,
+                          "height": 4,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-70"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "links": [],
+      "liveNow": false,
+      "preload": false,
+      "tags": [],
+      "timeSettings": {
+        "timezone": "browser",
+        "from": "now-24h",
+        "to": "now",
+        "autoRefresh": "5m",
+        "autoRefreshIntervals": [
+          "5s",
+          "10s",
+          "30s",
+          "1m",
+          "5m",
+          "15m",
+          "30m",
+          "1h",
+          "2h",
+          "1d"
+        ],
+        "hideTimepicker": false,
+        "fiscalYearStartMonth": 0
+      },
+      "title": "Garmin Health & Fitness",
+      "variables": [
+        {
+          "kind": "DatasourceVariable",
+          "spec": {
+            "name": "datasource",
+            "pluginId": "prometheus",
+            "refresh": "onDashboardLoad",
+            "regex": "",
+            "current": {
+              "text": "",
+              "value": ""
+            },
+            "options": [],
+            "multi": false,
+            "includeAll": false,
+            "label": "Datasource",
+            "hide": "hideVariable",
+            "skipUrlSync": false,
+            "allowCustomValue": true
+          }
+        }
+      ],
+      "preferences": {
+        "layout": {
+          "kind": "GridLayout",
+          "spec": {
+            "items": []
+          }
+        }
+      }
+    }
+  }
