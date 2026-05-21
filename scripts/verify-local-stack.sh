@@ -7,6 +7,8 @@ START_STACK=1
 TIMEOUT_SECONDS=${TIMEOUT_SECONDS:-180}
 
 GRAFANA_URL=${GRAFANA_URL:-http://localhost:82}
+GRAFANA_USER=${GRAFANA_USER:-admin}
+GRAFANA_PASSWORD_FILE=${GRAFANA_PASSWORD_FILE:-secrets/grafana-admin-password}
 PROMETHEUS_URL=${PROMETHEUS_URL:-http://localhost:81}
 ALERTMANAGER_URL=${ALERTMANAGER_URL:-http://localhost:83}
 LOKI_URL=${LOKI_URL:-http://localhost:3100}
@@ -78,6 +80,19 @@ need_cmd() {
 run() {
   log "$*"
   "$@"
+}
+
+load_grafana_password() {
+  if [[ -n "${GRAFANA_PASSWORD:-}" ]]; then
+    return
+  fi
+
+  if [[ ! -f "$GRAFANA_PASSWORD_FILE" ]]; then
+    fail "Missing Grafana admin password file: ${GRAFANA_PASSWORD_FILE}"
+  fi
+
+  GRAFANA_PASSWORD=$(<"$GRAFANA_PASSWORD_FILE")
+  export GRAFANA_PASSWORD
 }
 
 wait_until() {
@@ -197,7 +212,7 @@ PY
 grafana_datasource_is_healthy() {
   local uid=$1
   local response
-  response=$(curl -fsS -u admin:admin "${GRAFANA_URL}/api/datasources/uid/${uid}/health")
+  response=$(curl -fsS -u "${GRAFANA_USER}:${GRAFANA_PASSWORD}" "${GRAFANA_URL}/api/datasources/uid/${uid}/health")
 
   RESPONSE="$response" python3 - <<'PY'
 import json
@@ -233,13 +248,21 @@ check_running_services() {
   fi
 }
 
+prepare_local_storage() {
+  mkdir -p grafana/storage
+  chmod 777 grafana/storage
+}
+
 need_cmd docker
 need_cmd curl
 need_cmd python3
 
+load_grafana_password
+
 run $COMPOSE config --quiet
 
 if (( START_STACK == 1 )); then
+  prepare_local_storage
   run $COMPOSE up -d
 fi
 
