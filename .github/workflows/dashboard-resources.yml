@@ -38,18 +38,4 @@ jobs:
           GRAFANA_TOKEN: ${{ secrets.GRAFANA_TOKEN }}
 
       - name: Validate dashboard resources
-        run: |
-          mkdir -p /tmp/grafana-dashboard-resources
-
-          for dashboard in grafana/provisioning/dashboards/**/*.json; do
-            if jq -e 'has("apiVersion") or has("kind") or has("metadata") or has("spec") or (has("elements") and has("layout"))' "$dashboard" >/dev/null; then
-              cp "$dashboard" "/tmp/grafana-dashboard-resources/$(basename "$dashboard")"
-            fi
-          done
-
-          if ! compgen -G "/tmp/grafana-dashboard-resources/*.json" >/dev/null; then
-            echo "No Grafana dashboard resource JSON files found."
-            exit 0
-          fi
-
-          gcx resources validate --context ci --on-error abort -p /tmp/grafana-dashboard-resources
+        run: gcx resources validate --context ci --on-error abort -p grafana/provisioning/dashboards/home
