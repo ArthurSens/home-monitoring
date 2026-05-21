@@ -17,19 +17,19 @@ datasources:
     search:
       hide: false
     serviceMap:
-      datasourceUid: PBFA97CFB590B2093
+      datasourceUid: prometheus
     traceQuery:
       timeShiftEnabled: true
       spanStartTimeShift: -1h
       spanEndTimeShift: 1h
     tracesToLogsV2:
-      datasourceUid: P8E80F9AEF21F6940
+      datasourceUid: loki
       spanStartTimeShift: -1h
       spanEndTimeShift: 1h
       filterByTraceID: true
       filterBySpanID: false
     tracesToMetrics:
-      datasourceUid: PBFA97CFB590B2093
+      datasourceUid: prometheus
       spanStartTimeShift: -1h
       spanEndTimeShift: 1h
       tags:

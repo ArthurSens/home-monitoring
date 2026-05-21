@@ -369,7 +369,7 @@
         "current": {
           "selected": false,
           "text": "Prometheus",
-          "value": "PBFA97CFB590B2093"
+          "value": "prometheus"
         },
         "hide": 0,
         "includeAll": false,
@@ -387,7 +387,7 @@
         "current": {
           "selected": false,
           "text": "Loki",
-          "value": "P8E80F9AEF21F6940"
+          "value": "loki"
         },
         "hide": 0,
         "includeAll": false,
