@@ -1,0 +1,39 @@
+name: Renovate auto-merge
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  renovate:
+    name: Enable auto-merge for Renovate PRs
+    runs-on: ubuntu-latest
+    if: ${{ github.actor == 'renovate[bot]' || github.event.pull_request.user.login == 'renovate[bot]' || github.event.pull_request.user.login == 'renovate' || (github.event.pull_request.user.type == 'Bot' && startsWith(github.event.pull_request.head.ref, 'renovate/')) }}
+
+    steps:
+      - name: Check Renovate update type
+        id: renovate
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          if grep -qiE '\|[[:space:]]*major[[:space:]]*\|' <<<"$PR_BODY"; then
+            echo "automerge=false" >> "$GITHUB_OUTPUT"
+            echo "Renovate PR contains a major update; leaving it for manual review."
+          else
+            echo "automerge=true" >> "$GITHUB_OUTPUT"
+            echo "Renovate PR does not contain major updates; enabling auto-merge."
+          fi
+
+      - name: Enable auto-merge for Renovate PRs
+        if: ${{ steps.renovate.outputs.automerge == 'true' }}
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
