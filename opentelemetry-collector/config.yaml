@@ -208,19 +208,21 @@ service:
       receivers: [otlp]
       processors: [batch]
       exporters: [otlp_http/grafana_cloud, otlp_http/tempo]
+    # Grafana Cloud's OTLP gateway does not support OTLP profiles yet.
+    # Keep profiles local in Pyroscope until Cloud Profiles supports OTLP ingest.
     profiles/prometheus:
       receivers: [pprof/prometheus, pprof/prometheus_heap, pprof/prometheus_allocs, pprof/prometheus_goroutine]
       processors: [resource/profiles_prometheus]
-      exporters: [otlp_http/pyroscope, otlp_http/grafana_cloud]
+      exporters: [otlp_http/pyroscope]
     profiles/alertmanager:
       receivers: [pprof/alertmanager, pprof/alertmanager_heap, pprof/alertmanager_allocs, pprof/alertmanager_goroutine]
       processors: [resource/profiles_alertmanager]
-      exporters: [otlp_http/pyroscope, otlp_http/grafana_cloud]
+      exporters: [otlp_http/pyroscope]
     profiles/grafana:
       receivers: [pprof/grafana, pprof/grafana_heap, pprof/grafana_allocs, pprof/grafana_goroutine]
       processors: [resource/profiles_grafana]
-      exporters: [otlp_http/pyroscope, otlp_http/grafana_cloud]
+      exporters: [otlp_http/pyroscope]
     profiles/otel-collector:
       receivers: [pprof/otel-collector, pprof/otel-collector_heap, pprof/otel-collector_allocs, pprof/otel-collector_goroutine]
       processors: [resource/profiles_otel_collector]
-      exporters: [otlp_http/pyroscope, otlp_http/grafana_cloud]
+      exporters: [otlp_http/pyroscope]
