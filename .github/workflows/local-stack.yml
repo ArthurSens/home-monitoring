@@ -34,37 +34,8 @@ jobs:
       - name: Validate verification script
         run: bash -n scripts/verify-local-stack.sh
 
-      - name: Install gcx
-        run: |
-          curl -fL "$(curl -s https://api.github.com/repos/grafana/gcx/releases/latest | grep browser_download_url | grep linux_amd64.tar.gz | cut -d '"' -f 4)" | tar xz gcx
-          chmod +x gcx
-          sudo mv gcx /usr/local/bin/
-
       - name: Verify local stack
         run: scripts/verify-local-stack.sh --timeout 900
-
-      - name: Validate Grafana dashboard resources
-        run: |
-          grafana_password="$(cat secrets/grafana-admin-password)"
-          service_account_id="$(
-            curl -fsS \
-              -u "admin:${grafana_password}" \
-              -H "Content-Type: application/json" \
-              -X POST \
-              -d '{"name":"ci-gcx-validator","role":"Admin"}' \
-              http://localhost:82/api/serviceaccounts \
-              | jq -r '.id'
-          )"
-          token="$(
-            curl -fsS \
-              -u "admin:${grafana_password}" \
-              -H "Content-Type: application/json" \
-              -X POST \
-              -d '{"name":"ci-gcx-validator-token"}' \
-              "http://localhost:82/api/serviceaccounts/${service_account_id}/tokens" \
-              | jq -r '.key'
-          )"
-          GRAFANA_SERVER=http://localhost:82 GRAFANA_TOKEN="${token}" gcx resources validate --on-error abort -p grafana/provisioning/dashboards/home
 
       - name: Show stack diagnostics on failure
         if: failure()

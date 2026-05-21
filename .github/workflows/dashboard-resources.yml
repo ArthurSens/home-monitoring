@@ -1,0 +1,41 @@
+name: Dashboard Resources
+
+on:
+  pull_request:
+    paths:
+      - grafana/provisioning/dashboards/**/*.json
+      - .github/workflows/dashboard-resources.yml
+  push:
+    branches:
+      - master
+    paths:
+      - grafana/provisioning/dashboards/**/*.json
+      - .github/workflows/dashboard-resources.yml
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate dashboard resources
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Install gcx
+        run: |
+          curl -fL "$(curl -s https://api.github.com/repos/grafana/gcx/releases/latest | grep browser_download_url | grep linux_amd64.tar.gz | cut -d '"' -f 4)" | tar xz gcx
+          chmod +x gcx
+          sudo mv gcx /usr/local/bin/
+
+      - name: Authenticate to Grafana
+        run: gcx login --yes ci --server "${GRAFANA_SERVER}" --token "${GRAFANA_TOKEN}"
+        env:
+          GRAFANA_SERVER: ${{ secrets.GRAFANA_SERVER }}
+          GRAFANA_TOKEN: ${{ secrets.GRAFANA_TOKEN }}
+
+      - name: Validate dashboard resources
+        run: gcx resources validate --context ci --on-error abort -p grafana/provisioning/dashboards/home
