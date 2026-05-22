@@ -219,6 +219,9 @@ processors:
   batch:
   resource/home_monitoring:
     attributes:
+      - key: grafana.host.id
+        value: homelab
+        action: insert
       - key: service.namespace
         value: home-monitoring
         action: insert
