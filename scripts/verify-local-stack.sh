@@ -5,6 +5,7 @@ set -Eeuo pipefail
 COMPOSE=${COMPOSE:-"docker compose"}
 START_STACK=1
 TIMEOUT_SECONDS=${TIMEOUT_SECONDS:-180}
+FAILURE_DIAGNOSTICS_PRINTED=0
 
 GRAFANA_URL=${GRAFANA_URL:-http://localhost:82}
 GRAFANA_USER=${GRAFANA_USER:-admin}
@@ -87,6 +88,10 @@ pass() {
   printf '[pass] %s\n' "$*"
 }
 
+diag() {
+  printf '[diag] %s\n' "$*" >&2
+}
+
 fail() {
   printf '[fail] %s\n' "$*" >&2
   exit 1
@@ -156,12 +161,20 @@ import sys
 
 payload = json.loads(os.environ["RESPONSE"])
 if payload.get("status") != "success":
+    print("[diag] check=prometheus_expected_jobs status=query_failed", file=sys.stderr)
+    print(f"[diag] response={json.dumps(payload, sort_keys=True)}", file=sys.stderr)
     sys.exit("Prometheus query did not succeed")
 
 jobs = {item.get("metric", {}).get("job") for item in payload["data"]["result"]}
 expected = set(os.environ["EXPECTED_JOBS"].split())
 missing = sorted(expected - jobs)
 if missing:
+    observed = sorted(job for job in jobs if job)
+    print("[diag] check=prometheus_expected_jobs status=missing_labels", file=sys.stderr)
+    print(f"[diag] query=count by (job) (up)", file=sys.stderr)
+    print(f"[diag] expected_jobs={json.dumps(sorted(expected))}", file=sys.stderr)
+    print(f"[diag] observed_jobs={json.dumps(observed)}", file=sys.stderr)
+    print(f"[diag] missing_jobs={json.dumps(missing)}", file=sys.stderr)
     sys.exit(f"Missing Prometheus jobs: {', '.join(missing)}")
 PY
 }
@@ -171,18 +184,29 @@ prometheus_any_positive() {
   local response
   response=$(prometheus_query "$query")
 
-  RESPONSE="$response" python3 - <<'PY'
+  RESPONSE="$response" QUERY="$query" python3 - <<'PY'
 import json
 import os
 import sys
 
 payload = json.loads(os.environ["RESPONSE"])
 if payload.get("status") != "success":
+    print("[diag] check=prometheus_any_positive status=query_failed", file=sys.stderr)
+    print(f"[diag] query={os.environ['QUERY']}", file=sys.stderr)
+    print(f"[diag] response={json.dumps(payload, sort_keys=True)}", file=sys.stderr)
     sys.exit("Prometheus query did not succeed")
 
-for item in payload["data"]["result"]:
+result = payload["data"]["result"]
+for item in result:
     if float(item["value"][1]) > 0:
         sys.exit(0)
+
+print("[diag] check=prometheus_any_positive status=no_positive_series", file=sys.stderr)
+print(f"[diag] query={os.environ['QUERY']}", file=sys.stderr)
+print(f"[diag] series_count={len(result)}", file=sys.stderr)
+for index, item in enumerate(result[:10]):
+    print(f"[diag] series[{index}].labels={json.dumps(item.get('metric', {}), sort_keys=True)}", file=sys.stderr)
+    print(f"[diag] series[{index}].value={item.get('value', [None, None])[1]}", file=sys.stderr)
 
 sys.exit("No positive Prometheus series found")
 PY
@@ -199,12 +223,20 @@ import sys
 
 payload = json.loads(os.environ["RESPONSE"])
 if payload.get("status") != "success":
+    print("[diag] check=prometheus_expected_profile_receivers status=query_failed", file=sys.stderr)
+    print(f"[diag] response={json.dumps(payload, sort_keys=True)}", file=sys.stderr)
     sys.exit("Prometheus query did not succeed")
 
 receivers = {item.get("metric", {}).get("receiver") for item in payload["data"]["result"]}
 expected = set(os.environ["EXPECTED_RECEIVERS"].split())
 missing = sorted(expected - receivers)
 if missing:
+    observed = sorted(receiver for receiver in receivers if receiver)
+    print("[diag] check=prometheus_expected_profile_receivers status=missing_labels", file=sys.stderr)
+    print("[diag] query=sum by (receiver) (otelcol_scraper_scraped_profile_records_total)", file=sys.stderr)
+    print(f"[diag] expected_receivers={json.dumps(sorted(expected))}", file=sys.stderr)
+    print(f"[diag] observed_receivers={json.dumps(observed)}", file=sys.stderr)
+    print(f"[diag] missing_receivers={json.dumps(missing)}", file=sys.stderr)
     sys.exit(f"Missing profile receivers: {', '.join(missing)}")
 PY
 }
@@ -221,11 +253,21 @@ import sys
 
 payload = json.loads(os.environ["RESPONSE"])
 if payload.get("status") != "success":
+    print("[diag] check=loki_recent_logs status=query_failed", file=sys.stderr)
+    print(f"[diag] response={json.dumps(payload, sort_keys=True)}", file=sys.stderr)
     sys.exit("Loki query did not succeed")
 
-for item in payload["data"]["result"]:
+result = payload["data"]["result"]
+for item in result:
     if float(item["value"][1]) > 0:
         sys.exit(0)
+
+print("[diag] check=loki_recent_logs status=no_positive_series", file=sys.stderr)
+print('[diag] query=sum(count_over_time({container_name=~".+"}[5m]))', file=sys.stderr)
+print(f"[diag] series_count={len(result)}", file=sys.stderr)
+for index, item in enumerate(result[:10]):
+    print(f"[diag] series[{index}].labels={json.dumps(item.get('metric', {}), sort_keys=True)}", file=sys.stderr)
+    print(f"[diag] series[{index}].value={item.get('value', [None, None])[1]}", file=sys.stderr)
 
 sys.exit("No recent Loki logs found")
 PY
@@ -237,7 +279,7 @@ tempo_has_recent_traces() {
   start=$((now - 900))
   response=$(curl -fsS "${TEMPO_URL}/api/search?start=${start}&end=${now}&limit=10")
 
-  RESPONSE="$response" python3 - <<'PY'
+  RESPONSE="$response" START="$start" END="$now" python3 - <<'PY'
 import json
 import os
 import sys
@@ -245,6 +287,11 @@ import sys
 payload = json.loads(os.environ["RESPONSE"])
 if payload.get("traces"):
     sys.exit(0)
+
+print("[diag] check=tempo_recent_traces status=no_traces", file=sys.stderr)
+print(f"[diag] search_window_start={os.environ['START']}", file=sys.stderr)
+print(f"[diag] search_window_end={os.environ['END']}", file=sys.stderr)
+print(f"[diag] response={json.dumps(payload, sort_keys=True)}", file=sys.stderr)
 
 sys.exit("No recent Tempo traces found")
 PY
@@ -255,7 +302,7 @@ grafana_datasource_is_healthy() {
   local response
   response=$(curl -fsS -u "${GRAFANA_USER}:${GRAFANA_PASSWORD}" "${GRAFANA_URL}/api/datasources/uid/${uid}/health")
 
-  RESPONSE="$response" python3 - <<'PY'
+  RESPONSE="$response" DATASOURCE_UID="$uid" python3 - <<'PY'
 import json
 import os
 import sys
@@ -263,6 +310,10 @@ import sys
 payload = json.loads(os.environ["RESPONSE"])
 if payload.get("status") == "OK":
     sys.exit(0)
+
+print("[diag] check=grafana_datasource_health status=unhealthy", file=sys.stderr)
+print(f"[diag] datasource_uid={os.environ['DATASOURCE_UID']}", file=sys.stderr)
+print(f"[diag] response={json.dumps(payload, sort_keys=True)}", file=sys.stderr)
 
 sys.exit(f"Datasource health check failed: {payload}")
 PY
@@ -286,7 +337,9 @@ check_running_services() {
   missing=$(comm -23 <(printf '%s\n' "$expected") <(printf '%s\n' "$running"))
 
   if [[ -n "$missing" ]]; then
-    printf 'Services not running:\n%s\n' "$missing" >&2
+    diag "check=compose_running_services status=missing_services"
+    diag "missing_services=$(printf '%s' "$missing" | paste -sd ',' -)"
+    diag "running_services=$(printf '%s' "$running" | paste -sd ',' -)"
     return 1
   fi
 }
@@ -295,6 +348,53 @@ prepare_local_storage() {
   mkdir -p grafana/storage
   chmod 777 grafana/storage
 }
+
+print_failure_diagnostics() {
+  if (( FAILURE_DIAGNOSTICS_PRINTED == 1 )); then
+    return
+  fi
+  FAILURE_DIAGNOSTICS_PRINTED=1
+
+  set +e
+  diag "failure_diagnostics=begin"
+  diag "compose_ps=begin"
+  $COMPOSE ps >&2
+  diag "compose_ps=end"
+
+  diag "prometheus_jobs_query=begin"
+  prometheus_query 'count by (job) (up)' >&2
+  printf '\n' >&2
+  diag "prometheus_jobs_query=end"
+
+  diag "collector_exporter_metrics_query=begin"
+  prometheus_query 'sum by (exporter) (rate(otelcol_exporter_sent_metric_points_total[5m]))' >&2
+  printf '\n' >&2
+  diag "collector_exporter_metrics_query=end"
+
+  diag "collector_exporter_logs_query=begin"
+  prometheus_query 'sum by (exporter) (rate(otelcol_exporter_sent_log_records_total[5m]))' >&2
+  printf '\n' >&2
+  diag "collector_exporter_logs_query=end"
+
+  diag "collector_exporter_traces_query=begin"
+  prometheus_query 'sum by (exporter) (rate(otelcol_exporter_sent_spans_total[5m]))' >&2
+  printf '\n' >&2
+  diag "collector_exporter_traces_query=end"
+
+  diag "otel_collector_logs=begin"
+  $COMPOSE logs --no-color --tail=120 otel-collector >&2
+  diag "otel_collector_logs=end"
+  diag "failure_diagnostics=end"
+}
+
+on_exit() {
+  local status=$?
+  if (( status != 0 )); then
+    print_failure_diagnostics
+  fi
+}
+
+trap on_exit EXIT
 
 need_cmd docker
 need_cmd curl
