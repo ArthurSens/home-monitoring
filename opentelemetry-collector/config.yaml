@@ -215,6 +215,14 @@ exporters:
 
 processors:
   batch:
+  resource/home_monitoring:
+    attributes:
+      - key: service.namespace
+        value: home-monitoring
+        action: insert
+      - key: deployment.environment
+        value: homelab
+        action: insert
   resource/profiles_prometheus:
     attributes:
       - key: service.name
@@ -333,15 +341,15 @@ service:
   pipelines:
     metrics:
       receivers: [otlp, prometheus]
-      processors: [batch]
+      processors: [resource/home_monitoring, batch]
       exporters: [otlp_http/grafana_cloud, otlp_http/prometheus]
     logs:
       receivers: [otlp, receiver_creator]
-      processors: [batch]
+      processors: [resource/home_monitoring, batch]
       exporters: [otlp_http/loki, otlp_http/grafana_cloud]
     traces:
       receivers: [otlp]
-      processors: [batch]
+      processors: [resource/home_monitoring, batch]
       exporters: [otlp_http/grafana_cloud, otlp_http/tempo]
     # Grafana Cloud's OTLP gateway does not support OTLP profiles yet.
     # Keep profiles local in Pyroscope until Cloud Profiles supports OTLP ingest.

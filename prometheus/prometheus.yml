@@ -1,6 +1,17 @@
 global:
   scrape_interval: 60s 
 
+otlp:
+  promote_resource_attributes:
+  - service.instance.id
+  - service.name
+  - service.namespace
+  - service.version
+  - deployment.environment
+  - deployment.environment.name
+  - container.name
+  keep_identifying_resource_attributes: true
+
 tracing:
   client_type: grpc
   endpoint: otel-collector:4317
