@@ -313,6 +313,9 @@ extensions:
 service:
   extensions: [docker_observer, basicauth/grafana_cloud, pprof, zpages, health_check]
   telemetry:
+    resource:
+      service.name: otel-collector
+      service.namespace: home-monitoring
     metrics:
       readers:
         - pull:
@@ -320,6 +323,13 @@ service:
               prometheus:
                 host: 0.0.0.0
                 port: 8888
+    traces:
+      processors:
+        - batch:
+            exporter:
+              otlp:
+                protocol: http/protobuf
+                endpoint: http://127.0.0.1:4318
   pipelines:
     metrics:
       receivers: [otlp, prometheus]
