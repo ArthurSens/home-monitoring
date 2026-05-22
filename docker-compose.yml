@@ -8,9 +8,11 @@ secrets:
 
 services:
   prometheus:
-    image: prom/prometheus:v3.0.0-beta.0@sha256:064b379ac7f9d34c5b9b6cdd8c68a5706603270c0594bdefed67cd85c3b290be
+    image: prom/prometheus:v3.11.3@sha256:e4254400b85610324913f0dc4acf92603d9984e7519414c5a12811aa6146acc3
     restart: always # To re-read the configuration file
     user: "1000:1000"
+    environment:
+      - OTEL_SERVICE_NAME=prometheus
     ports:
       - 81:9090
     volumes: 
@@ -23,7 +25,8 @@ services:
       - --web.enable-lifecycle
       - --storage.tsdb.retention.time=2d
       - --web.enable-remote-write-receiver
-      - --enable-feature=otlp-write-receiver,created-timestamp-zero-ingestion,native-histograms,promql-experimental-functions
+      - --web.enable-otlp-receiver
+      - --enable-feature=created-timestamp-zero-ingestion,promql-experimental-functions
     depends_on:
       - otel-collector
 
@@ -40,6 +43,7 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
       - GF_PLUGINS_PREINSTALL=grafana-assistant-app
       - GF_SERVER_ROOT_URL=http://localhost:82/
+      - OTEL_SERVICE_NAME=grafana
       - GF_TRACING_OPENTELEMETRY_OTLP_ADDRESS=otel-collector:4317
       - GF_TRACING_OPENTELEMETRY_OTLP_PROPAGATION=w3c
       - GF_DIAGNOSTICS_PROFILING_ENABLED=true
@@ -58,6 +62,8 @@ services:
 
   alertmanager:
     image: prom/alertmanager:v0.32.1@sha256:51a825c2a40acc3e338fdd00d622e01ec090f72be2b3ea46be0839cd47a4d286
+    environment:
+      - OTEL_SERVICE_NAME=alertmanager
     ports: 
       - 83:9093
     command:

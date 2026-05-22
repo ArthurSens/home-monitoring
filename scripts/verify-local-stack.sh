@@ -17,16 +17,16 @@ TEMPO_URL=${TEMPO_URL:-http://localhost:3200}
 PYROSCOPE_URL=${PYROSCOPE_URL:-http://localhost:4040}
 
 EXPECTED_PROMETHEUS_JOBS=(
-  alertmanager
-  blackbox
-  garmin_exporter
-  grafana
-  loki
-  node_exporter
+  home-monitoring/alertmanager
+  home-monitoring/blackbox
+  home-monitoring/garmin_exporter
+  home-monitoring/grafana
+  home-monitoring/loki
+  home-monitoring/node_exporter
   home-monitoring/otel-collector
-  prometheus
-  pyroscope
-  tempo
+  home-monitoring/prometheus
+  home-monitoring/pyroscope
+  home-monitoring/tempo
 )
 
 EXPECTED_PROFILE_RECEIVERS=(
