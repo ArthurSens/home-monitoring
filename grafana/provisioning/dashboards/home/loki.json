@@ -1,0 +1,2217 @@
+{
+    "apiVersion": "dashboard.grafana.app/v2",
+    "kind": "Dashboard",
+    "metadata": {
+      "name": "ad5c68q",
+      "generation": 2,
+      "creationTimestamp": "2026-05-22T19:03:11Z",
+      "labels": {},
+      "annotations": {}
+    },
+    "spec": {
+      "annotations": [
+        {
+          "kind": "AnnotationQuery",
+          "spec": {
+            "query": {
+              "kind": "DataQuery",
+              "group": "grafana",
+              "version": "v0",
+              "spec": {},
+              "labels": {
+                "grafana.app/export-label": "grafana-1"
+              }
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "builtIn": true
+          }
+        }
+      ],
+      "cursorSync": "Off",
+      "description": "Loki observability dashboard — storage, ingestion, HTTP, query engine, logs, and profiling.",
+      "editable": true,
+      "elements": {
+        "panel-16": {
+          "kind": "Panel",
+          "spec": {
+            "id": 16,
+            "title": "Ingester Streams & Chunks",
+            "description": "Active in-memory log streams and chunks held by the Loki ingester",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "loki_ingester_memory_streams{job=~\"$job\"}",
+                          "instant": false,
+                          "legendFormat": "Streams",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "loki_ingester_memory_chunks{job=~\"$job\"}",
+                          "instant": false,
+                          "legendFormat": "Chunks",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "B",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "short",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 0,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-17": {
+          "kind": "Panel",
+          "spec": {
+            "id": 17,
+            "title": "Chunk Creation Rate",
+            "description": "Rate of new chunks created by the Loki ingester — Loki equivalent of Prometheus sample ingestion rate",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "rate(loki_ingester_chunks_created_total{job=~\"$job\"}[$__rate_interval])",
+                          "instant": false,
+                          "legendFormat": "Chunks/s",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "cps",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 0,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-18": {
+          "kind": "Panel",
+          "spec": {
+            "id": 18,
+            "title": "WAL Bytes In Use & Records Logged",
+            "description": "WAL bytes currently in use and rate of WAL records logged — Loki equivalent of Prometheus WAL size & segment",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "loki_ingester_wal_bytes_in_use{job=~\"$job\"}",
+                          "instant": false,
+                          "legendFormat": "WAL Bytes In Use",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "rate(loki_ingester_wal_records_logged_total{job=~\"$job\"}[$__rate_interval])",
+                          "instant": false,
+                          "legendFormat": "Records Logged/s",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "B",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "bytes",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 0,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Records Logged/s"
+                      },
+                      "properties": [
+                        {
+                          "id": "unit",
+                          "value": "cps"
+                        },
+                        {
+                          "id": "custom.axisPlacement",
+                          "value": "right"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "panel-19": {
+          "kind": "Panel",
+          "spec": {
+            "id": 19,
+            "title": "Chunk Flushes & Stores",
+            "description": "Rate of chunks flushed and stored — Loki equivalent of Prometheus TSDB compactions",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "rate(loki_ingester_chunks_flushed_total{job=~\"$job\"}[$__rate_interval])",
+                          "instant": false,
+                          "legendFormat": "Flushed/s",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "rate(loki_ingester_chunks_stored_total{job=~\"$job\"}[$__rate_interval])",
+                          "instant": false,
+                          "legendFormat": "Stored/s",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "B",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "rate(loki_ingester_chunks_created_total{job=~\"$job\"}[$__rate_interval])",
+                          "instant": false,
+                          "legendFormat": "Created/s",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "C",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "cps",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 0,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-20": {
+          "kind": "Panel",
+          "spec": {
+            "id": 20,
+            "title": "HTTP Request Rate",
+            "description": "Rate of incoming HTTP requests to Loki broken down by route and status code",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "sum by(route, status_code) (rate(loki_request_duration_seconds_count{job=~\"$job\"}[$__rate_interval]))",
+                          "instant": false,
+                          "legendFormat": "{{route}} {{status_code}}",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "desc"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "reqps",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 0,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-21": {
+          "kind": "Panel",
+          "spec": {
+            "id": 21,
+            "title": "Query Frontend In Progress & Queue",
+            "description": "Active queries in the query frontend and queue depth in the query scheduler — Loki equivalent of Prometheus query engine concurrency",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "loki_query_frontend_queries_in_progress{job=~\"$job\"}",
+                          "instant": false,
+                          "legendFormat": "In Progress",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "loki_query_scheduler_queue_length{job=~\"$job\"}",
+                          "instant": false,
+                          "legendFormat": "Queue Length",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "B",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "short",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 0,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-22": {
+          "kind": "Panel",
+          "spec": {
+            "id": 22,
+            "title": "Request Duration Percentiles",
+            "description": "P50, P90, and P99 request duration for Loki API routes — Loki equivalent of Prometheus query duration percentiles",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "histogram_quantile(0.5, sum by(le, route) (rate(loki_request_duration_seconds_bucket{job=~\"$job\"}[$__rate_interval])))",
+                          "instant": false,
+                          "legendFormat": "p50 {{route}}",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "histogram_quantile(0.9, sum by(le, route) (rate(loki_request_duration_seconds_bucket{job=~\"$job\"}[$__rate_interval])))",
+                          "instant": false,
+                          "legendFormat": "p90 {{route}}",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "B",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "histogram_quantile(0.99, sum by(le, route) (rate(loki_request_duration_seconds_bucket{job=~\"$job\"}[$__rate_interval])))",
+                          "instant": false,
+                          "legendFormat": "p99 {{route}}",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "C",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "desc"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "s",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 0,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-23": {
+          "kind": "Panel",
+          "spec": {
+            "id": 23,
+            "title": "Query Scheduler Inflight Requests",
+            "description": "p99 inflight requests in the Loki query scheduler — Loki equivalent of Prometheus query samples rate",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "loki_query_scheduler_inflight_requests{job=~\"$job\", quantile=\"0.99\"}",
+                          "instant": false,
+                          "legendFormat": "p99 Inflight",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "loki_query_scheduler_inflight_requests{job=~\"$job\", quantile=\"0.5\"}",
+                          "instant": false,
+                          "legendFormat": "p50 Inflight",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "B",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "short",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 0,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-24": {
+          "kind": "Panel",
+          "spec": {
+            "id": 24,
+            "title": "Loki Logs",
+            "description": "Live log stream from the Loki instance",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "loki",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$loki_datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "{service_name=\"loki\"}",
+                          "instant": false,
+                          "legendFormat": "",
+                          "queryType": "range",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "logs",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "dedupStrategy": "none",
+                  "enableInfiniteScrolling": false,
+                  "enableLogDetails": true,
+                  "prettifyLogMessage": false,
+                  "showCommonLabels": false,
+                  "showControls": false,
+                  "showFieldSelector": false,
+                  "showLabels": false,
+                  "showLevel": true,
+                  "showTime": true,
+                  "sortOrder": "Descending",
+                  "timestampResolution": "ms",
+                  "unwrappedColumns": false,
+                  "wrapLogMessage": false
+                },
+                "fieldConfig": {
+                  "defaults": {},
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-31": {
+          "kind": "Panel",
+          "spec": {
+            "id": 31,
+            "title": "CPU Profile Rate",
+            "description": "CPU time consumed by the Loki process over time",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "grafana-pyroscope-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$pyroscope_datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "groupBy": [],
+                          "labelSelector": "{service_name=\"loki\"}",
+                          "legendFormat": "CPU",
+                          "profileTypeId": "process_cpu:cpu:nanoseconds:cpu:nanoseconds",
+                          "queryType": "metrics",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "ns",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 0,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-32": {
+          "kind": "Panel",
+          "spec": {
+            "id": 32,
+            "title": "CPU Flamegraph",
+            "description": "CPU flamegraph for the Loki process",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "grafana-pyroscope-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$pyroscope_datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "groupBy": [],
+                          "labelSelector": "{service_name=\"loki\"}",
+                          "legendFormat": "",
+                          "profileTypeId": "process_cpu:cpu:nanoseconds:cpu:nanoseconds",
+                          "queryType": "profile",
+                          "range": false
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "flamegraph",
+              "version": "13.0.1",
+              "spec": {
+                "options": {},
+                "fieldConfig": {
+                  "defaults": {},
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-33": {
+          "kind": "Panel",
+          "spec": {
+            "id": 33,
+            "title": "Memory In-Use Profile",
+            "description": "In-use memory bytes for the Loki process from Pyroscope",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "grafana-pyroscope-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$pyroscope_datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "groupBy": [],
+                          "labelSelector": "{service_name=\"loki\"}",
+                          "legendFormat": "Memory In-Use",
+                          "profileTypeId": "space:inuse_space:bytes:space:bytes",
+                          "queryType": "metrics",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "bytes",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 0,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-34": {
+          "kind": "Panel",
+          "spec": {
+            "id": 34,
+            "title": "Memory In-Use Flamegraph",
+            "description": "In-use memory flamegraph for the Loki process",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "grafana-pyroscope-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$pyroscope_datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "groupBy": [],
+                          "labelSelector": "{service_name=\"loki\"}",
+                          "legendFormat": "",
+                          "profileTypeId": "space:inuse_space:bytes:space:bytes",
+                          "queryType": "profile",
+                          "range": false
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "flamegraph",
+              "version": "13.0.1",
+              "spec": {
+                "options": {},
+                "fieldConfig": {
+                  "defaults": {},
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-35": {
+          "kind": "Panel",
+          "spec": {
+            "id": 35,
+            "title": "Goroutine Count Profile",
+            "description": "Active goroutine count over time for the Loki process",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "grafana-pyroscope-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$pyroscope_datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "groupBy": [],
+                          "labelSelector": "{service_name=\"loki\"}",
+                          "legendFormat": "Goroutines",
+                          "profileTypeId": "goroutine:goroutine:count:goroutine:count",
+                          "queryType": "metrics",
+                          "range": true
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.1",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "short",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 0,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-36": {
+          "kind": "Panel",
+          "spec": {
+            "id": 36,
+            "title": "Goroutines Flamegraph",
+            "description": "Goroutine stack flamegraph for the Loki process",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "grafana-pyroscope-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "$pyroscope_datasource"
+                        },
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "groupBy": [],
+                          "labelSelector": "{service_name=\"loki\"}",
+                          "legendFormat": "",
+                          "profileTypeId": "goroutine:goroutine:count:goroutine:count",
+                          "queryType": "profile",
+                          "range": false
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "flamegraph",
+              "version": "13.0.1",
+              "spec": {
+                "options": {},
+                "fieldConfig": {
+                  "defaults": {},
+                  "overrides": []
+                }
+              }
+            }
+          }
+        }
+      },
+      "layout": {
+        "kind": "RowsLayout",
+        "spec": {
+          "rows": [
+            {
+              "kind": "RowsLayoutRow",
+              "spec": {
+                "title": "Storage & Ingestion",
+                "collapse": false,
+                "hideHeader": true,
+                "fillScreen": false,
+                "layout": {
+                  "kind": "GridLayout",
+                  "spec": {
+                    "items": [
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 0,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-16"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 12,
+                          "y": 0,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-17"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 8,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-18"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 12,
+                          "y": 8,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-19"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "kind": "RowsLayoutRow",
+              "spec": {
+                "title": "HTTP",
+                "collapse": false,
+                "hideHeader": false,
+                "fillScreen": false,
+                "layout": {
+                  "kind": "GridLayout",
+                  "spec": {
+                    "items": [
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 0,
+                          "width": 24,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-20"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "kind": "RowsLayoutRow",
+              "spec": {
+                "title": "Query Engine",
+                "collapse": false,
+                "hideHeader": false,
+                "fillScreen": false,
+                "layout": {
+                  "kind": "GridLayout",
+                  "spec": {
+                    "items": [
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 0,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-21"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 12,
+                          "y": 0,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-22"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 8,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-23"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "kind": "RowsLayoutRow",
+              "spec": {
+                "title": "Logs",
+                "collapse": false,
+                "hideHeader": false,
+                "fillScreen": false,
+                "layout": {
+                  "kind": "GridLayout",
+                  "spec": {
+                    "items": [
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 0,
+                          "width": 24,
+                          "height": 9,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-24"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "kind": "RowsLayoutRow",
+              "spec": {
+                "title": "Profiling",
+                "collapse": false,
+                "hideHeader": false,
+                "fillScreen": false,
+                "layout": {
+                  "kind": "GridLayout",
+                  "spec": {
+                    "items": [
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 0,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-31"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 12,
+                          "y": 0,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-32"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 8,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-33"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 12,
+                          "y": 8,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-34"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 16,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-35"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 12,
+                          "y": 16,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-36"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "links": [],
+      "liveNow": false,
+      "preload": false,
+      "tags": [],
+      "timeSettings": {
+        "timezone": "browser",
+        "from": "now-1h",
+        "to": "now",
+        "autoRefresh": "1m",
+        "autoRefreshIntervals": [
+          "5s",
+          "10s",
+          "30s",
+          "1m",
+          "5m",
+          "15m",
+          "30m",
+          "1h",
+          "2h",
+          "1d"
+        ],
+        "hideTimepicker": false,
+        "fiscalYearStartMonth": 0
+      },
+      "title": "Loki - Home",
+      "variables": [
+        {
+          "kind": "DatasourceVariable",
+          "spec": {
+            "name": "datasource",
+            "pluginId": "prometheus",
+            "refresh": "onDashboardLoad",
+            "regex": "",
+            "current": {
+              "text": "",
+              "value": ""
+            },
+            "options": [],
+            "multi": false,
+            "includeAll": false,
+            "label": "Prometheus",
+            "hide": "hideVariable",
+            "skipUrlSync": false,
+            "allowCustomValue": true
+          }
+        },
+        {
+          "kind": "DatasourceVariable",
+          "spec": {
+            "name": "loki_datasource",
+            "pluginId": "loki",
+            "refresh": "onDashboardLoad",
+            "regex": "",
+            "current": {
+              "text": "",
+              "value": ""
+            },
+            "options": [],
+            "multi": false,
+            "includeAll": false,
+            "label": "Loki",
+            "hide": "hideVariable",
+            "skipUrlSync": false,
+            "allowCustomValue": true
+          }
+        },
+        {
+          "kind": "DatasourceVariable",
+          "spec": {
+            "name": "pyroscope_datasource",
+            "pluginId": "grafana-pyroscope-datasource",
+            "refresh": "onDashboardLoad",
+            "regex": "",
+            "current": {
+              "text": "Pyroscope",
+              "value": "pyroscope"
+            },
+            "options": [],
+            "multi": false,
+            "includeAll": false,
+            "label": "Pyroscope",
+            "hide": "hideVariable",
+            "skipUrlSync": false,
+            "allowCustomValue": true
+          }
+        },
+        {
+          "kind": "QueryVariable",
+          "spec": {
+            "name": "job",
+            "current": {
+              "text": "",
+              "value": ""
+            },
+            "label": "Job",
+            "hide": "dontHide",
+            "refresh": "onDashboardLoad",
+            "skipUrlSync": false,
+            "query": {
+              "kind": "DataQuery",
+              "group": "prometheus",
+              "version": "v0",
+              "spec": {
+                "label": "job",
+                "metric": "loki_ingester_memory_streams",
+                "qryType": 1,
+                "query": "label_values(loki_ingester_memory_streams,job)",
+                "refId": "PrometheusVariableQueryEditor-VariableQuery"
+              },
+              "labels": {
+                "grafana.app/export-label": "prometheus-1"
+              }
+            },
+            "regex": "",
+            "regexApplyTo": "value",
+            "sort": "alphabeticalAsc",
+            "options": [],
+            "multi": false,
+            "includeAll": false,
+            "allowCustomValue": true
+          }
+        }
+      ],
+      "preferences": {
+        "layout": {
+          "kind": "GridLayout",
+          "spec": {
+            "items": []
+          }
+        }
+      }
+    }
+  }
