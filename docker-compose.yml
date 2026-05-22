@@ -81,7 +81,7 @@ services:
       - "9100:9100"
 
   garmin_exporter:
-    image: ghcr.io/barnes-c/garmin_exporter:0.1.2@sha256:61f10b7165c2b0f95a9f3a7892fdd28e4be176666a6645ec8c905fe125577911
+    image: garmin_exporter:login-backoff
     restart: unless-stopped
     env_file:
       - ./secrets/garmin.env
