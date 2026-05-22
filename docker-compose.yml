@@ -25,7 +25,8 @@ services:
       - --web.enable-lifecycle
       - --storage.tsdb.retention.time=2d
       - --web.enable-remote-write-receiver
-      - --enable-feature=otlp-write-receiver,created-timestamp-zero-ingestion,native-histograms,promql-experimental-functions
+      - --web.enable-otlp-receiver
+      - --enable-feature=created-timestamp-zero-ingestion,promql-experimental-functions
     depends_on:
       - otel-collector
 
