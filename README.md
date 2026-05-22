@@ -21,12 +21,23 @@ It is intentionally small enough to run with Docker Compose, but complete enough
 | [Loki](https://github.com/grafana/loki) | Local logs backend. It receives logs from the collector through OTLP. |
 | [Tempo](https://github.com/grafana/tempo) | Local traces backend. It receives traces from the collector through OTLP. |
 | [Pyroscope](https://github.com/grafana/pyroscope) | Local profiles backend. It receives profiles from the collector through OTLP. |
-| [OpenTelemetry Collector Contrib](https://github.com/open-telemetry/opentelemetry-collector-contrib) | Central telemetry pipeline for metrics, logs, traces, and profiles. |
+| [OpenTelemetry Collector](https://github.com/open-telemetry/opentelemetry-collector) | Custom local distribution for the central telemetry pipeline for metrics, logs, traces, and profiles. |
 | [Alertmanager](https://github.com/prometheus/alertmanager) | Alert routing and tracing target. |
 | [Node Exporter](https://github.com/prometheus/node_exporter) | Host metrics. |
 | [Blackbox Exporter](https://github.com/prometheus/blackbox_exporter) | External endpoint probing. |
 | [Garmin Exporter](https://github.com/barnes-c/garmin_exporter) | Garmin Connect health and training metrics (scraped every 5m). |
 | Grafana Cloud | Remote metrics, logs, traces, and profiles for cloud dogfooding. |
+
+## Custom Collector
+
+The `otel-collector` Compose service builds a minimal OpenTelemetry Collector distribution from `opentelemetry-collector/builder-config.yaml`.
+
+Useful commands:
+
+```sh
+make otelcol-check
+make otelcol-image
+```
 
 ## Grafana Cloud Git Sync
 

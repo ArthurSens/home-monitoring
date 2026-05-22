@@ -2,5 +2,38 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:best-practices"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^Makefile$/",
+        "/^opentelemetry-collector\\/Dockerfile$/"
+      ],
+      "matchStrings": [
+        "OCB_VERSION(?:\\s*\\?=|=)\\s*(?<currentValue>v?\\d+\\.\\d+\\.\\d+)"
+      ],
+      "depNameTemplate": "go.opentelemetry.io/collector/cmd/builder",
+      "datasourceTemplate": "go"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^opentelemetry-collector\\/builder-config\\.yaml$/"
+      ],
+      "matchStrings": [
+        "gomod:\\s+(?<depName>[^\\s]+)\\s+(?<currentValue>v?\\d+\\.\\d+\\.\\d+)"
+      ],
+      "datasourceTemplate": "go"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "/^go\\.opentelemetry\\.io\\/collector/",
+        "/^github\\.com\\/open-telemetry\\/opentelemetry-collector-contrib/"
+      ],
+      "groupName": "opentelemetry collector"
+    }
   ]
 }
