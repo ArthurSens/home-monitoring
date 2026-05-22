@@ -29,7 +29,7 @@ receivers:
           scrape_timeout: 2m
           static_configs:
             - targets: ['garmin_exporter:10043']
-        - job_name: 'blackbox'
+        - job_name: 'blackbox_exporter'
           metrics_path: /probe
           params:
             module: [http_2xx]
@@ -196,6 +196,8 @@ receivers:
           container.image.name: '`image`'
           docker.compose.project: '`labels["com.docker.compose.project"]`'
           docker.compose.service: '`labels["com.docker.compose.service"]`'
+          service.name: '`labels["com.docker.compose.service"]`'
+          service.instance.id: '`name`'
 
 exporters:
   debug:
@@ -223,9 +225,15 @@ processors:
       - key: deployment.environment
         value: homelab
         action: insert
+      - key: deployment.environment.name
+        value: homelab
+        action: insert
   resource/profiles_prometheus:
     attributes:
       - key: service.name
+        value: prometheus
+        action: upsert
+      - key: service.instance.id
         value: prometheus
         action: upsert
       - key: service.namespace
@@ -236,12 +244,18 @@ processors:
       - key: service.name
         value: alertmanager
         action: upsert
+      - key: service.instance.id
+        value: alertmanager
+        action: upsert
       - key: service.namespace
         value: home-monitoring
         action: upsert
   resource/profiles_grafana:
     attributes:
       - key: service.name
+        value: grafana
+        action: upsert
+      - key: service.instance.id
         value: grafana
         action: upsert
       - key: service.namespace
@@ -252,12 +266,18 @@ processors:
       - key: service.name
         value: otel-collector
         action: upsert
+      - key: service.instance.id
+        value: otel-collector
+        action: upsert
       - key: service.namespace
         value: home-monitoring
         action: upsert
   resource/profiles_node_exporter:
     attributes:
       - key: service.name
+        value: node_exporter
+        action: upsert
+      - key: service.instance.id
         value: node_exporter
         action: upsert
       - key: service.namespace
@@ -268,12 +288,18 @@ processors:
       - key: service.name
         value: blackbox_exporter
         action: upsert
+      - key: service.instance.id
+        value: blackbox_exporter
+        action: upsert
       - key: service.namespace
         value: home-monitoring
         action: upsert
   resource/profiles_garmin_exporter:
     attributes:
       - key: service.name
+        value: garmin_exporter
+        action: upsert
+      - key: service.instance.id
         value: garmin_exporter
         action: upsert
       - key: service.namespace
@@ -284,6 +310,9 @@ processors:
       - key: service.name
         value: loki
         action: upsert
+      - key: service.instance.id
+        value: loki
+        action: upsert
       - key: service.namespace
         value: home-monitoring
         action: upsert
@@ -292,12 +321,18 @@ processors:
       - key: service.name
         value: tempo
         action: upsert
+      - key: service.instance.id
+        value: tempo
+        action: upsert
       - key: service.namespace
         value: home-monitoring
         action: upsert
   resource/profiles_pyroscope:
     attributes:
       - key: service.name
+        value: pyroscope
+        action: upsert
+      - key: service.instance.id
         value: pyroscope
         action: upsert
       - key: service.namespace
@@ -355,41 +390,41 @@ service:
     # Keep profiles local in Pyroscope until Cloud Profiles supports OTLP ingest.
     profiles/prometheus:
       receivers: [pprof/prometheus, pprof/prometheus_heap, pprof/prometheus_allocs, pprof/prometheus_goroutine]
-      processors: [resource/profiles_prometheus]
+      processors: [resource/home_monitoring, resource/profiles_prometheus]
       exporters: [otlp_http/pyroscope]
     profiles/alertmanager:
       receivers: [pprof/alertmanager, pprof/alertmanager_heap, pprof/alertmanager_allocs, pprof/alertmanager_goroutine]
-      processors: [resource/profiles_alertmanager]
+      processors: [resource/home_monitoring, resource/profiles_alertmanager]
       exporters: [otlp_http/pyroscope]
     profiles/grafana:
       receivers: [pprof/grafana, pprof/grafana_heap, pprof/grafana_allocs, pprof/grafana_goroutine]
-      processors: [resource/profiles_grafana]
+      processors: [resource/home_monitoring, resource/profiles_grafana]
       exporters: [otlp_http/pyroscope]
     profiles/otel-collector:
       receivers: [pprof/otel-collector, pprof/otel-collector_heap, pprof/otel-collector_allocs, pprof/otel-collector_goroutine]
-      processors: [resource/profiles_otel_collector]
+      processors: [resource/home_monitoring, resource/profiles_otel_collector]
       exporters: [otlp_http/pyroscope]
     profiles/node_exporter:
       receivers: [pprof/node_exporter, pprof/node_exporter_heap, pprof/node_exporter_allocs, pprof/node_exporter_goroutine]
-      processors: [resource/profiles_node_exporter]
+      processors: [resource/home_monitoring, resource/profiles_node_exporter]
       exporters: [otlp_http/pyroscope]
     profiles/blackbox_exporter:
       receivers: [pprof/blackbox_exporter, pprof/blackbox_exporter_heap, pprof/blackbox_exporter_allocs, pprof/blackbox_exporter_goroutine]
-      processors: [resource/profiles_blackbox_exporter]
+      processors: [resource/home_monitoring, resource/profiles_blackbox_exporter]
       exporters: [otlp_http/pyroscope]
     profiles/garmin_exporter:
       receivers: [pprof/garmin_exporter, pprof/garmin_exporter_heap, pprof/garmin_exporter_allocs, pprof/garmin_exporter_goroutine]
-      processors: [resource/profiles_garmin_exporter]
+      processors: [resource/home_monitoring, resource/profiles_garmin_exporter]
       exporters: [otlp_http/pyroscope]
     profiles/loki:
       receivers: [pprof/loki, pprof/loki_heap, pprof/loki_allocs, pprof/loki_goroutine]
-      processors: [resource/profiles_loki]
+      processors: [resource/home_monitoring, resource/profiles_loki]
       exporters: [otlp_http/pyroscope]
     profiles/tempo:
       receivers: [pprof/tempo, pprof/tempo_heap, pprof/tempo_allocs, pprof/tempo_goroutine]
-      processors: [resource/profiles_tempo]
+      processors: [resource/home_monitoring, resource/profiles_tempo]
       exporters: [otlp_http/pyroscope]
     profiles/pyroscope:
       receivers: [pprof/pyroscope, pprof/pyroscope_heap, pprof/pyroscope_allocs, pprof/pyroscope_goroutine]
-      processors: [resource/profiles_pyroscope]
+      processors: [resource/home_monitoring, resource/profiles_pyroscope]
       exporters: [otlp_http/pyroscope]

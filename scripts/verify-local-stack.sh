@@ -18,7 +18,7 @@ PYROSCOPE_URL=${PYROSCOPE_URL:-http://localhost:4040}
 
 EXPECTED_PROMETHEUS_JOBS=(
   home-monitoring/alertmanager
-  home-monitoring/blackbox
+  home-monitoring/blackbox_exporter
   home-monitoring/garmin_exporter
   home-monitoring/grafana
   home-monitoring/loki
@@ -40,6 +40,18 @@ EXPECTED_PROFILE_RECEIVERS=(
   pprof/prometheus
   pprof/pyroscope
   pprof/tempo
+)
+
+EXPECTED_PROFILE_SERVICES=(
+  alertmanager
+  blackbox_exporter
+  grafana
+  loki
+  node_exporter
+  otel-collector
+  prometheus
+  pyroscope
+  tempo
 )
 
 # Services that may exit or restart when credentials are invalid (e.g. CI placeholders).
@@ -241,6 +253,35 @@ if missing:
 PY
 }
 
+pyroscope_has_expected_profile_services() {
+  local now start request response
+  now=$(date +%s)000
+  start=$(( $(date +%s) - 3600 ))000
+  request=$(printf '{"start":%s,"end":%s,"name":"service_name","matchers":[]}' "$start" "$now")
+  response=$(curl -fsS \
+    -H "Content-Type: application/json" \
+    -d "$request" \
+    "${PYROSCOPE_URL}/querier.v1.QuerierService/LabelValues")
+
+  RESPONSE="$response" EXPECTED_SERVICES="${EXPECTED_PROFILE_SERVICES[*]}" python3 - <<'PY'
+import json
+import os
+import sys
+
+payload = json.loads(os.environ["RESPONSE"])
+services = set(payload.get("names", []))
+expected = set(os.environ["EXPECTED_SERVICES"].split())
+missing = sorted(expected - services)
+if missing:
+    observed = sorted(service for service in services if service)
+    print("[diag] check=pyroscope_expected_profile_services status=missing_labels", file=sys.stderr)
+    print(f"[diag] expected_services={json.dumps(sorted(expected))}", file=sys.stderr)
+    print(f"[diag] observed_services={json.dumps(observed)}", file=sys.stderr)
+    print(f"[diag] missing_services={json.dumps(missing)}", file=sys.stderr)
+    sys.exit(f"Missing profile services: {', '.join(missing)}")
+PY
+}
+
 loki_has_recent_logs() {
   local response
   response=$(curl -fsS --get "${LOKI_URL}/loki/api/v1/query" \
@@ -270,6 +311,45 @@ for index, item in enumerate(result[:10]):
     print(f"[diag] series[{index}].value={item.get('value', [None, None])[1]}", file=sys.stderr)
 
 sys.exit("No recent Loki logs found")
+PY
+}
+
+loki_has_app_o11y_service_logs() {
+  local query response
+  query='sum by (service_name, service_namespace, deployment_environment) (count_over_time({service_namespace="home-monitoring", deployment_environment="homelab", service_name=~"prometheus|grafana|otel-collector|loki|tempo|pyroscope|alertmanager|node_exporter|blackbox_exporter|garmin_exporter"}[5m]))'
+  response=$(curl -fsS --get "${LOKI_URL}/loki/api/v1/query" \
+    --data-urlencode "query=${query}")
+
+  RESPONSE="$response" QUERY="$query" python3 - <<'PY'
+import json
+import os
+import sys
+
+payload = json.loads(os.environ["RESPONSE"])
+if payload.get("status") != "success":
+    print("[diag] check=loki_app_o11y_service_logs status=query_failed", file=sys.stderr)
+    print(f"[diag] response={json.dumps(payload, sort_keys=True)}", file=sys.stderr)
+    sys.exit("Loki query did not succeed")
+
+result = payload["data"]["result"]
+for item in result:
+    metric = item.get("metric", {})
+    if (
+        float(item["value"][1]) > 0
+        and metric.get("service_name")
+        and metric.get("service_namespace") == "home-monitoring"
+        and metric.get("deployment_environment") == "homelab"
+    ):
+        sys.exit(0)
+
+print("[diag] check=loki_app_o11y_service_logs status=no_positive_series", file=sys.stderr)
+print(f"[diag] query={os.environ['QUERY']}", file=sys.stderr)
+print(f"[diag] series_count={len(result)}", file=sys.stderr)
+for index, item in enumerate(result[:10]):
+    print(f"[diag] series[{index}].labels={json.dumps(item.get('metric', {}), sort_keys=True)}", file=sys.stderr)
+    print(f"[diag] series[{index}].value={item.get('value', [None, None])[1]}", file=sys.stderr)
+
+sys.exit("No recent Loki logs with App O11y service identity found")
 PY
 }
 
@@ -424,6 +504,7 @@ generate_activity
 
 wait_until "Prometheus has all expected collector-scraped jobs" "$TIMEOUT_SECONDS" prometheus_has_expected_jobs
 wait_until "Loki has recent stack logs" "$TIMEOUT_SECONDS" loki_has_recent_logs
+wait_until "Loki logs have App O11y service identity" "$TIMEOUT_SECONDS" loki_has_app_o11y_service_logs
 wait_until "Tempo has recent traces" "$TIMEOUT_SECONDS" tempo_has_recent_traces
 wait_until "Grafana can query the Prometheus datasource" "$TIMEOUT_SECONDS" grafana_datasource_is_healthy prometheus
 wait_until "Grafana can query the Loki datasource" "$TIMEOUT_SECONDS" grafana_datasource_is_healthy loki
@@ -440,5 +521,7 @@ wait_until "collector exports profiles to local Pyroscope" "$TIMEOUT_SECONDS" \
   prometheus_any_positive 'sum(rate(otelcol_exporter_sent_profile_samples_total{exporter="otlp_http/pyroscope"}[5m]))'
 wait_until "collector scrapes profiles from all expected services" "$TIMEOUT_SECONDS" \
   prometheus_has_expected_profile_receivers
+wait_until "Pyroscope has profiles from all expected services" "$TIMEOUT_SECONDS" \
+  pyroscope_has_expected_profile_services
 
 pass "local stack verification completed"

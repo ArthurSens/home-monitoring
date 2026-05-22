@@ -1316,7 +1316,7 @@
                         "app": "grafana-assistant-app",
                         "direction": "backward",
                         "editorMode": "code",
-                        "expr": "{service_name=\"home-monitoring-otel-collector-1\"}",
+                        "expr": "{service_name=\"otel-collector\"}",
                         "instant": false,
                         "queryType": "range",
                         "range": true
