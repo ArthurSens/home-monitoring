@@ -28,6 +28,19 @@ EXPECTED_PROMETHEUS_JOBS=(
   tempo
 )
 
+EXPECTED_PROFILE_RECEIVERS=(
+  pprof/alertmanager
+  pprof/blackbox_exporter
+  pprof/garmin_exporter
+  pprof/grafana
+  pprof/loki
+  pprof/node_exporter
+  pprof/otel-collector
+  pprof/prometheus
+  pprof/pyroscope
+  pprof/tempo
+)
+
 # Services that may exit or restart when credentials are invalid (e.g. CI placeholders).
 COMPOSE_RUNNING_OPTIONAL_SERVICES=(
   garmin_exporter
@@ -175,6 +188,27 @@ sys.exit("No positive Prometheus series found")
 PY
 }
 
+prometheus_has_expected_profile_receivers() {
+  local response
+  response=$(prometheus_query 'sum by (receiver) (otelcol_scraper_scraped_profile_records_total)')
+
+  RESPONSE="$response" EXPECTED_RECEIVERS="${EXPECTED_PROFILE_RECEIVERS[*]}" python3 - <<'PY'
+import json
+import os
+import sys
+
+payload = json.loads(os.environ["RESPONSE"])
+if payload.get("status") != "success":
+    sys.exit("Prometheus query did not succeed")
+
+receivers = {item.get("metric", {}).get("receiver") for item in payload["data"]["result"]}
+expected = set(os.environ["EXPECTED_RECEIVERS"].split())
+missing = sorted(expected - receivers)
+if missing:
+    sys.exit(f"Missing profile receivers: {', '.join(missing)}")
+PY
+}
+
 loki_has_recent_logs() {
   local response
   response=$(curl -fsS --get "${LOKI_URL}/loki/api/v1/query" \
@@ -304,5 +338,7 @@ wait_until "collector exports traces to local Tempo" "$TIMEOUT_SECONDS" \
   prometheus_any_positive 'sum(rate(otelcol_exporter_sent_spans_total{exporter="otlp_http/tempo"}[5m]))'
 wait_until "collector exports profiles to local Pyroscope" "$TIMEOUT_SECONDS" \
   prometheus_any_positive 'sum(rate(otelcol_exporter_sent_profile_samples_total{exporter="otlp_http/pyroscope"}[5m]))'
+wait_until "collector scrapes profiles from all expected services" "$TIMEOUT_SECONDS" \
+  prometheus_has_expected_profile_receivers
 
 pass "local stack verification completed"
