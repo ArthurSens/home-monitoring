@@ -22,7 +22,7 @@ EXPECTED_PROMETHEUS_JOBS=(
   grafana
   loki
   node_exporter
-  otelcol-contrib
+  home-monitoring/otel-collector
   prometheus
   pyroscope
   tempo
