@@ -3,21 +3,10 @@
     "kind": "Dashboard",
     "metadata": {
       "name": "adkwcmt",
-      "namespace": "default",
-      "uid": "da1b3795-d25d-4749-94fa-c06fd954b27e",
-      "resourceVersion": "1779464266027982",
       "generation": 6,
       "creationTimestamp": "2026-05-22T14:20:02Z",
-      "labels": {
-        "grafana.app/deprecatedInternalID": "4187407552884736"
-      },
-      "annotations": {
-        "grafana.app/createdBy": "user:dfmq617p0z08we",
-        "grafana.app/folder": "",
-        "grafana.app/saved-from-ui": "Grafana v13.0.1 (a100054f)",
-        "grafana.app/updatedBy": "user:dfmq617p0z08we",
-        "grafana.app/updatedTimestamp": "2026-05-22T15:37:46Z"
-      }
+      "labels": {},
+      "annotations": {}
     },
     "spec": {
       "annotations": [
