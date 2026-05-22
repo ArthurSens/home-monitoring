@@ -104,6 +104,78 @@ receivers:
   pprof/otel-collector_goroutine:
     endpoint: http://localhost:1888/debug/pprof/goroutine
     collection_interval: 1m
+  pprof/node_exporter:
+    endpoint: http://node_exporter:9100/debug/pprof/profile?seconds=10
+    collection_interval: 1m
+  pprof/node_exporter_heap:
+    endpoint: http://node_exporter:9100/debug/pprof/heap
+    collection_interval: 1m
+  pprof/node_exporter_allocs:
+    endpoint: http://node_exporter:9100/debug/pprof/allocs
+    collection_interval: 1m
+  pprof/node_exporter_goroutine:
+    endpoint: http://node_exporter:9100/debug/pprof/goroutine
+    collection_interval: 1m
+  pprof/blackbox_exporter:
+    endpoint: http://blackbox_exporter:9115/debug/pprof/profile?seconds=10
+    collection_interval: 1m
+  pprof/blackbox_exporter_heap:
+    endpoint: http://blackbox_exporter:9115/debug/pprof/heap
+    collection_interval: 1m
+  pprof/blackbox_exporter_allocs:
+    endpoint: http://blackbox_exporter:9115/debug/pprof/allocs
+    collection_interval: 1m
+  pprof/blackbox_exporter_goroutine:
+    endpoint: http://blackbox_exporter:9115/debug/pprof/goroutine
+    collection_interval: 1m
+  pprof/garmin_exporter:
+    endpoint: http://garmin_exporter:10043/debug/pprof/profile?seconds=10
+    collection_interval: 1m
+  pprof/garmin_exporter_heap:
+    endpoint: http://garmin_exporter:10043/debug/pprof/heap
+    collection_interval: 1m
+  pprof/garmin_exporter_allocs:
+    endpoint: http://garmin_exporter:10043/debug/pprof/allocs
+    collection_interval: 1m
+  pprof/garmin_exporter_goroutine:
+    endpoint: http://garmin_exporter:10043/debug/pprof/goroutine
+    collection_interval: 1m
+  pprof/loki:
+    endpoint: http://loki:3100/debug/pprof/profile?seconds=10
+    collection_interval: 1m
+  pprof/loki_heap:
+    endpoint: http://loki:3100/debug/pprof/heap
+    collection_interval: 1m
+  pprof/loki_allocs:
+    endpoint: http://loki:3100/debug/pprof/allocs
+    collection_interval: 1m
+  pprof/loki_goroutine:
+    endpoint: http://loki:3100/debug/pprof/goroutine
+    collection_interval: 1m
+  pprof/tempo:
+    endpoint: http://tempo:3200/debug/pprof/profile?seconds=10
+    collection_interval: 1m
+  pprof/tempo_heap:
+    endpoint: http://tempo:3200/debug/pprof/heap
+    collection_interval: 1m
+  pprof/tempo_allocs:
+    endpoint: http://tempo:3200/debug/pprof/allocs
+    collection_interval: 1m
+  pprof/tempo_goroutine:
+    endpoint: http://tempo:3200/debug/pprof/goroutine
+    collection_interval: 1m
+  pprof/pyroscope:
+    endpoint: http://pyroscope:4040/debug/pprof/profile?seconds=10
+    collection_interval: 1m
+  pprof/pyroscope_heap:
+    endpoint: http://pyroscope:4040/debug/pprof/heap
+    collection_interval: 1m
+  pprof/pyroscope_allocs:
+    endpoint: http://pyroscope:4040/debug/pprof/allocs
+    collection_interval: 1m
+  pprof/pyroscope_goroutine:
+    endpoint: http://pyroscope:4040/debug/pprof/goroutine
+    collection_interval: 1m
   receiver_creator:
     watch_observers: [docker_observer]
     receivers:
@@ -175,6 +247,54 @@ processors:
       - key: service.namespace
         value: home-monitoring
         action: upsert
+  resource/profiles_node_exporter:
+    attributes:
+      - key: service.name
+        value: node_exporter
+        action: upsert
+      - key: service.namespace
+        value: home-monitoring
+        action: upsert
+  resource/profiles_blackbox_exporter:
+    attributes:
+      - key: service.name
+        value: blackbox_exporter
+        action: upsert
+      - key: service.namespace
+        value: home-monitoring
+        action: upsert
+  resource/profiles_garmin_exporter:
+    attributes:
+      - key: service.name
+        value: garmin_exporter
+        action: upsert
+      - key: service.namespace
+        value: home-monitoring
+        action: upsert
+  resource/profiles_loki:
+    attributes:
+      - key: service.name
+        value: loki
+        action: upsert
+      - key: service.namespace
+        value: home-monitoring
+        action: upsert
+  resource/profiles_tempo:
+    attributes:
+      - key: service.name
+        value: tempo
+        action: upsert
+      - key: service.namespace
+        value: home-monitoring
+        action: upsert
+  resource/profiles_pyroscope:
+    attributes:
+      - key: service.name
+        value: pyroscope
+        action: upsert
+      - key: service.namespace
+        value: home-monitoring
+        action: upsert
 
 extensions:
   docker_observer:
@@ -230,4 +350,28 @@ service:
     profiles/otel-collector:
       receivers: [pprof/otel-collector, pprof/otel-collector_heap, pprof/otel-collector_allocs, pprof/otel-collector_goroutine]
       processors: [resource/profiles_otel_collector]
+      exporters: [otlp_http/pyroscope]
+    profiles/node_exporter:
+      receivers: [pprof/node_exporter, pprof/node_exporter_heap, pprof/node_exporter_allocs, pprof/node_exporter_goroutine]
+      processors: [resource/profiles_node_exporter]
+      exporters: [otlp_http/pyroscope]
+    profiles/blackbox_exporter:
+      receivers: [pprof/blackbox_exporter, pprof/blackbox_exporter_heap, pprof/blackbox_exporter_allocs, pprof/blackbox_exporter_goroutine]
+      processors: [resource/profiles_blackbox_exporter]
+      exporters: [otlp_http/pyroscope]
+    profiles/garmin_exporter:
+      receivers: [pprof/garmin_exporter, pprof/garmin_exporter_heap, pprof/garmin_exporter_allocs, pprof/garmin_exporter_goroutine]
+      processors: [resource/profiles_garmin_exporter]
+      exporters: [otlp_http/pyroscope]
+    profiles/loki:
+      receivers: [pprof/loki, pprof/loki_heap, pprof/loki_allocs, pprof/loki_goroutine]
+      processors: [resource/profiles_loki]
+      exporters: [otlp_http/pyroscope]
+    profiles/tempo:
+      receivers: [pprof/tempo, pprof/tempo_heap, pprof/tempo_allocs, pprof/tempo_goroutine]
+      processors: [resource/profiles_tempo]
+      exporters: [otlp_http/pyroscope]
+    profiles/pyroscope:
+      receivers: [pprof/pyroscope, pprof/pyroscope_heap, pprof/pyroscope_allocs, pprof/pyroscope_goroutine]
+      processors: [resource/profiles_pyroscope]
       exporters: [otlp_http/pyroscope]
