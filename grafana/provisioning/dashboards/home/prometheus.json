@@ -1481,7 +1481,7 @@
                         },
                         "spec": {
                           "app": "grafana-assistant-app",
-                          "expr": "{service_name=\"home-monitoring-prometheus-1\"}",
+                          "expr": "{service_name=\"prometheus\"}",
                           "instant": false,
                           "queryType": "range",
                           "range": true
