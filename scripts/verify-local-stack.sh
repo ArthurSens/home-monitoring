@@ -29,6 +29,19 @@ EXPECTED_PROMETHEUS_JOBS=(
   home-monitoring/tempo
 )
 
+EXPECTED_LOKI_LOG_SERVICES=(
+  alertmanager
+  blackbox_exporter
+  garmin_exporter
+  grafana
+  loki
+  node_exporter
+  otel-collector
+  prometheus
+  pyroscope
+  tempo
+)
+
 EXPECTED_PROFILE_RECEIVERS=(
   pprof/alertmanager
   pprof/blackbox_exporter
@@ -363,6 +376,41 @@ sys.exit("No recent Loki logs with App O11y service identity found")
 PY
 }
 
+loki_has_expected_service_logs() {
+  local query response
+  query='sum by (service_name) (count_over_time({service_namespace="home-monitoring", deployment_environment="homelab", service_name=~".+"}[30m]))'
+  response=$(curl -fsS --get "${LOKI_URL}/loki/api/v1/query" \
+    --data-urlencode "query=${query}")
+
+  RESPONSE="$response" QUERY="$query" EXPECTED_SERVICES="${EXPECTED_LOKI_LOG_SERVICES[*]}" python3 - <<'PY'
+import json
+import os
+import sys
+
+payload = json.loads(os.environ["RESPONSE"])
+if payload.get("status") != "success":
+    print("[diag] check=loki_expected_service_logs status=query_failed", file=sys.stderr)
+    print(f"[diag] response={json.dumps(payload, sort_keys=True)}", file=sys.stderr)
+    sys.exit("Loki query did not succeed")
+
+services = {
+    item.get("metric", {}).get("service_name")
+    for item in payload["data"]["result"]
+    if float(item.get("value", [0, "0"])[1]) > 0
+}
+expected = set(os.environ["EXPECTED_SERVICES"].split())
+missing = sorted(expected - services)
+if missing:
+    observed = sorted(service for service in services if service)
+    print("[diag] check=loki_expected_service_logs status=missing_services", file=sys.stderr)
+    print(f"[diag] query={os.environ['QUERY']}", file=sys.stderr)
+    print(f"[diag] expected_services={json.dumps(sorted(expected))}", file=sys.stderr)
+    print(f"[diag] observed_services={json.dumps(observed)}", file=sys.stderr)
+    print(f"[diag] missing_services={json.dumps(missing)}", file=sys.stderr)
+    sys.exit(f"Missing Loki logs for services: {', '.join(missing)}")
+PY
+}
+
 tempo_has_recent_traces() {
   local now start response
   now=$(date +%s)
@@ -515,6 +563,7 @@ generate_activity
 wait_until "Prometheus has all expected collector-scraped jobs up" "$TIMEOUT_SECONDS" prometheus_has_expected_jobs
 wait_until "Loki has recent stack logs" "$TIMEOUT_SECONDS" loki_has_recent_logs
 wait_until "Loki logs have App O11y service identity" "$TIMEOUT_SECONDS" loki_has_app_o11y_service_logs
+wait_until "Loki has logs from all expected services" "$TIMEOUT_SECONDS" loki_has_expected_service_logs
 wait_until "Tempo has recent traces" "$TIMEOUT_SECONDS" tempo_has_recent_traces
 wait_until "Grafana can query the Prometheus datasource" "$TIMEOUT_SECONDS" grafana_datasource_is_healthy prometheus
 wait_until "Grafana can query the Loki datasource" "$TIMEOUT_SECONDS" grafana_datasource_is_healthy loki
