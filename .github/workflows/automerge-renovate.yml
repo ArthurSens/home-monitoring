@@ -15,7 +15,7 @@ jobs:
   renovate:
     name: Enable auto-merge for Renovate PRs
     runs-on: ubuntu-latest
-    if: ${{ github.actor == 'renovate[bot]' || github.event.pull_request.user.login == 'renovate[bot]' || github.event.pull_request.user.login == 'renovate' || (github.event.pull_request.user.type == 'Bot' && startsWith(github.event.pull_request.head.ref, 'renovate/')) }}
+    if: ${{ github.event.pull_request.user.login == 'renovate[bot]' || github.event.pull_request.user.login == 'renovate' || (github.event.pull_request.user.type == 'Bot' && startsWith(github.event.pull_request.head.ref, 'renovate/')) }}
 
     steps:
       - name: Check Renovate update type
