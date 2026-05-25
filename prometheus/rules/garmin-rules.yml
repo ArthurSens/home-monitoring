@@ -1,0 +1,52 @@
+groups:
+- name: garmin
+  rules:
+
+  - record: garmin:hydration_target_ml
+    expr: garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml
+
+  - record: garmin:hydration_progress:ratio
+    expr: |
+      clamp_max(
+        garmin_hydration_intake_ml
+          / (garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml)
+          and (garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml) > 0,
+        1
+      )
+
+  # Predict at lunchtime whether today's intake trend reaches the Garmin goal plus sweat loss.
+  - alert: HydrationBehindPace
+    expr: |
+      (
+        predict_linear(
+          garmin_hydration_intake_ml[3h],
+          scalar(
+            (24 - hour(vector(time() - 3 * 3600))) * 3600
+            - minute(vector(time() - 3 * 3600)) * 60
+          )
+        )
+          < garmin:hydration_target_ml
+      )
+        and garmin:hydration_target_ml > 0
+        and on() (hour(vector(time() - 3 * 3600)) >= 12)
+        and on() (hour(vector(time() - 3 * 3600)) < 21)
+    for: 30m
+    labels:
+      severity: warning
+      service: hydration
+      team: garmin-health
+    annotations:
+      description: "Hydration intake is not on track to reach today's Garmin goal plus sweat loss."
+
+  - alert: HydrationGoalMissed
+    expr: |
+      garmin_hydration_intake_ml < garmin:hydration_target_ml
+        and garmin:hydration_target_ml > 0
+        and on() (hour(vector(time() - 3 * 3600)) >= 21)
+    for: 30m
+    labels:
+      severity: critical
+      service: hydration
+      team: garmin-health
+    annotations:
+      description: "Hydration intake is still below today's Garmin goal plus sweat loss."

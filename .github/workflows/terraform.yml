@@ -1,0 +1,67 @@
+name: Terraform
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate Terraform
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          fetch-depth: 0
+
+      - name: Detect Terraform changes
+        id: changes
+        run: |
+          pattern='^(\.github/workflows/terraform\.yml|terraform/.*)$'
+
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            changed_files="$(git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}")"
+          else
+            if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
+              changed_files="$(git diff --name-only HEAD^ HEAD)"
+            else
+              changed_files="$(git diff --name-only "${{ github.event.before }}" "${{ github.event.after }}")"
+            fi
+          fi
+
+          if echo "$changed_files" | grep -Eq "$pattern"; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Terraform-related files changed; running validation."
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No Terraform-related files changed; skipping validation."
+          fi
+
+      - name: Skip Terraform validation
+        if: steps.changes.outputs.changed != 'true'
+        run: echo "Validation not required for this change set."
+
+      - name: Set up Terraform
+        if: steps.changes.outputs.changed == 'true'
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.13.5
+
+      - name: Check Terraform formatting
+        if: steps.changes.outputs.changed == 'true'
+        run: terraform -chdir=terraform/grafana fmt -check -diff
+
+      - name: Initialize Terraform
+        if: steps.changes.outputs.changed == 'true'
+        run: terraform -chdir=terraform/grafana init -backend=false -input=false
+
+      - name: Validate Terraform
+        if: steps.changes.outputs.changed == 'true'
+        run: terraform -chdir=terraform/grafana validate
