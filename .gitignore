@@ -1,3 +1,8 @@
 */storage
 secrets/*
 opentelemetry-collector/_build/
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json

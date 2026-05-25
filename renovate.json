@@ -34,6 +34,15 @@
         "/^github\\.com\\/open-telemetry\\/opentelemetry-collector-contrib/"
       ],
       "groupName": "opentelemetry collector"
+    },
+    {
+      "matchManagers": [
+        "terraform"
+      ],
+      "groupName": "terraform"
     }
-  ]
+  ],
+  "lockFileMaintenance": {
+    "enabled": true
+  }
 }
