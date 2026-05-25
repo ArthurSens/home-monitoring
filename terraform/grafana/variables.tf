@@ -40,5 +40,4 @@ variable "oncall_user_ids" {
 variable "grafana_team_members" {
   description = "Grafana user email addresses to include in the garmin-health team."
   type        = set(string)
-  default     = ["arthur.silvasens@grafana.com"]
 }
