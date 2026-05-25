@@ -1,6 +1,6 @@
 FROM golang:1.26.3-bookworm@sha256:386d475a660466863d9f8c766fec64d7fdad3edac2c6a05020c09534d71edb4b AS builder
 
-ARG OCB_VERSION=v0.152.1
+ARG OCB_VERSION=v0.153.0
 
 WORKDIR /src
 

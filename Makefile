@@ -1,4 +1,4 @@
-OCB_VERSION ?= v0.152.1
+OCB_VERSION ?= v0.153.0
 OTELCOL_BUILDER_CONFIG := opentelemetry-collector/builder-config.yaml
 OTELCOL_BUILD_DIR := opentelemetry-collector/_build
 
