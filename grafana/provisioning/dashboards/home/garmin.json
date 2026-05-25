@@ -131,7 +131,7 @@
               "transformations": []
             }
           },
-          "description": "Time spent in each stress zone throughout the day",
+          "description": "Time spent in each stress zone throughout the day. Extended time in medium (51–75) or high (76–100) stress zones impairs HRV, sleep onset, and next-day recovery capacity.",
           "id": 100,
           "links": [],
           "title": "Stress Duration Breakdown",
@@ -271,7 +271,7 @@
               "transformations": []
             }
           },
-          "description": "Aerobic and anaerobic training load accumulated over the past month",
+          "description": "Aerobic and anaerobic training load accumulated over the past month. Chronic load (4-week average) builds fitness. Acute load spikes significantly above chronic baseline increase injury risk (ACWR concept).",
           "id": 101,
           "links": [],
           "title": "Monthly Training Load",
@@ -411,7 +411,7 @@
               "transformations": []
             }
           },
-          "description": "Current Garmin training status and Acute:Chronic Workload Ratio",
+          "description": "Current Garmin training status and Acute:Chronic Workload Ratio. Status: Peaking, Productive, Maintaining, Recovery, or Overreaching. Optimal ACWR: 0.8–1.3 balances adaptation with injury risk management.",
           "id": 102,
           "links": [],
           "title": "Training Status \u0026 ACWR",
@@ -510,7 +510,7 @@
               "transformations": []
             }
           },
-          "description": "Total sleep duration for the last night",
+          "description": "Total sleep duration for the last night. Adults need 7–9 hours. Consistently under 6 hours is associated with impaired cognition, immune function, hormonal regulation, and physical recovery.",
           "id": 103,
           "links": [],
           "title": "Total Sleep Time",
@@ -601,7 +601,7 @@
               "transformations": []
             }
           },
-          "description": "Garmin exporter version and build metadata",
+          "description": "Garmin exporter version and build metadata. Check this to verify you’re running the latest version. Include this info when reporting issues or requesting support.",
           "id": 104,
           "links": [],
           "title": "Exporter Version",
@@ -688,7 +688,7 @@
               "transformations": []
             }
           },
-          "description": "Number of successful Garmin Connect API authentications",
+          "description": "Number of successful Garmin Connect API authentications. A drop in this metric may indicate authentication failures, API rate limiting, credential expiry, or connectivity issues with the exporter.",
           "id": 105,
           "links": [],
           "title": "Login Status",
@@ -792,7 +792,7 @@
               "transformations": []
             }
           },
-          "description": "Hydration progress toward daily goal",
+          "description": "Hydration progress toward your daily goal. General guideline: ~35 mL per kg of body weight per day, increasing with activity level and ambient heat. Even 1–2% dehydration measurably impairs physical and cognitive performance.",
           "id": 106,
           "links": [],
           "title": "Hydration Goal Progress",
@@ -919,7 +919,7 @@
               "transformations": []
             }
           },
-          "description": "Daily hydration intake compared to goal",
+          "description": "Daily hydration intake compared to your Garmin-configured goal. Track whether intake scales appropriately on training days versus rest days. Sweat rate and climate significantly affect requirements.",
           "id": 107,
           "links": [],
           "title": "Hydration Intake vs Goal",
@@ -1013,7 +1013,7 @@
               "transformations": []
             }
           },
-          "description": "Estimated fluid lost through sweating",
+          "description": "Estimated fluid lost through sweating during activities, calculated from body weight change and environmental conditions. Aim to replace sweat losses within 4–6 hours post-exercise to support recovery and next-day performance.",
           "id": 108,
           "links": [],
           "title": "Sweat Loss",
@@ -1173,7 +1173,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Continuous heart rate throughout the day. Normal resting range: 60–100 bpm. Athletes may see 40–60 bpm. Peaks indicate exercise or stress; dips during sleep reflect recovery quality.",
           "id": 22,
           "links": [],
           "title": "Heart Rate Trends",
@@ -1340,7 +1340,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Millisecond variation between consecutive heartbeats. Higher HRV generally indicates better recovery and fitness. Typical range: 20–70 ms, though this varies widely by age and fitness level. Track trends rather than absolute values.",
           "id": 23,
           "links": [],
           "title": "HRV (Heart Rate Variability)",
@@ -1530,49 +1530,107 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Breakdown of sleep into Light, Deep, REM, and Awake periods. Adults need 7–9 hours total. Aim for 15–20% deep sleep and 20–25% REM for optimal recovery and cognitive function.",
           "id": 24,
           "links": [],
           "title": "Sleep Stages",
           "vizConfig": {
-            "group": "bargauge",
+            "group": "piechart",
             "kind": "VizConfig",
             "spec": {
               "fieldConfig": {
                 "defaults": {
                   "color": {
-                    "mode": "continuous-GrYlRd"
+                    "fixedColor": "#73BF69",
+                    "mode": "fixed"
                   },
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "green",
-                        "value": 0
-                      },
-                      {
-                        "color": "red",
-                        "value": 80
-                      }
-                    ]
+                  "custom": {
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    }
                   },
                   "unit": "s"
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Deep Sleep"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "#3274D9",
+                          "mode": "fixed"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "REM Sleep"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "#8F3BB8",
+                          "mode": "fixed"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Light Sleep"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "#73BF69",
+                          "mode": "fixed"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Awake"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "#FA6400",
+                          "mode": "fixed"
+                        }
+                      }
+                    ]
+                  }
+                ]
               },
               "options": {
-                "displayMode": "lcd",
+                "displayLabels": [
+                  "percent"
+                ],
                 "legend": {
                   "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
+                  "displayMode": "table",
+                  "placement": "right",
+                  "showLegend": true,
+                  "values": [
+                    "value",
+                    "percent"
+                  ]
                 },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "auto",
+                "pieType": "donut",
                 "reduceOptions": {
                   "calcs": [
                     "lastNotNull"
@@ -1580,9 +1638,12 @@
                   "fields": "",
                   "values": false
                 },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
+                "sort": "desc",
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                }
               }
             },
             "version": "13.1.0-25723336850"
@@ -1670,7 +1731,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Garmin-calculated stress score based on HRV fluctuations. Scale: 0–25 (resting), 26–50 (low), 51–75 (medium), 76–100 (high). Chronic high stress impacts HRV, sleep quality, and recovery.",
           "id": 25,
           "links": [],
           "title": "Stress Levels",
@@ -1835,7 +1896,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Daily breakdown of active, sedentary, and lightly active minutes. WHO guidelines recommend 150–300 min of moderate activity per week. Prolonged sedentary periods (\u003e30 min) increase cardiovascular risk.",
           "id": 26,
           "links": [],
           "title": "Activity Time (Active vs Sedentary)",
@@ -1913,10 +1974,9 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "editorMode": "code",
-                        "expr": "garmin_wellness_bmr_kilocalories",
+                        "expr": "garmin_wellness_active_kilocalories",
                         "instant": false,
-                        "legendFormat": "Total",
+                        "legendFormat": "Active",
                         "queryType": "range",
                         "range": true
                       },
@@ -1937,9 +1997,9 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_wellness_active_kilocalories",
+                        "expr": "garmin_wellness_bmr_kilocalories",
                         "instant": false,
-                        "legendFormat": "Active",
+                        "legendFormat": "BMR (Base Metabolic)",
                         "queryType": "range",
                         "range": true
                       },
@@ -1960,10 +2020,9 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "editorMode": "code",
                         "expr": "garmin_wellness_total_kilocalories",
                         "instant": false,
-                        "legendFormat": "BMR (Base Metabolic)",
+                        "legendFormat": "Total",
                         "queryType": "range",
                         "range": true
                       },
@@ -1977,7 +2036,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Total, active, and resting (BMR) calorie expenditure for the day. Resting calories vary by age, weight, and height. Active calories reflect physical activity intensity and duration.",
           "id": 27,
           "links": [],
           "title": "Calories",
@@ -2094,7 +2153,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Total time spent per activity type (running, cycling, swimming, etc.) within the selected time range. Useful for identifying training balance and sport-specific volume distribution.",
           "id": 28,
           "links": [],
           "title": "Activity Duration by Type",
@@ -2234,7 +2293,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Cumulative vigorous and moderate intensity exercise minutes per week. WHO recommends ≥150 min moderate or ≥75 min vigorous activity weekly. Vigorous minutes count double toward the target.",
           "id": 29,
           "links": [],
           "title": "Weekly Intensity Minutes",
@@ -2328,7 +2387,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Total steps counted for the selected period. 10,000 steps/day is a common target, though research suggests meaningful benefits begin at ~7,500 steps/day. Includes all walking, running, and movement.",
           "id": 31,
           "links": [],
           "title": "Total Steps",
@@ -2419,7 +2478,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Average heart rate during rest, typically measured during sleep. Normal adult range: 60–100 bpm. Lower values (40–60 bpm) suggest good cardiovascular fitness. A rising trend may signal illness or overtraining.",
           "id": 32,
           "links": [],
           "title": "Resting Heart Rate",
@@ -2510,7 +2569,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Garmin composite score (0–100) estimating how prepared your body is for training. Factors include sleep score, recovery time, HRV status, and training load. A score ≥70 suggests readiness for high-intensity effort.",
           "id": 33,
           "links": [],
           "title": "Training Readiness",
@@ -2649,7 +2708,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Estimated blood oxygen saturation via optical sensor. Normal range: 95–100%. Values of 90–94% may warrant attention; below 90% is clinically concerning. Useful for altitude acclimatization or screening sleep-disordered breathing.",
           "id": 34,
           "links": [],
           "title": "Blood Oxygen (SpO₂)",
@@ -2663,7 +2722,7 @@
                     "mode": "thresholds"
                   },
                   "max": 100,
-                  "min": 90,
+                  "min": 85,
                   "thresholds": {
                     "mode": "absolute",
                     "steps": [
@@ -2673,11 +2732,11 @@
                       },
                       {
                         "color": "yellow",
-                        "value": 94
+                        "value": 90
                       },
                       {
                         "color": "green",
-                        "value": 96
+                        "value": 95
                       }
                     ]
                   },
@@ -2742,7 +2801,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Average stress score for the day on a 0–100 scale, derived from HRV-based autonomic nervous system analysis. Scores consistently above 75 indicate elevated sympathetic activity and reduced recovery capacity.",
           "id": 35,
           "links": [],
           "title": "Avg Stress Level",
@@ -2839,7 +2898,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Percentage progress toward your daily step goal. Garmin auto-adjusts the goal based on recent activity history. Consistent goal achievement supports long-term cardiovascular health.",
           "id": 36,
           "links": [],
           "title": "Step Goal Progress",
@@ -2978,7 +3037,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "How your Body Battery energy reserve changes throughout the day. Starts full after good sleep and depletes with activity and stress. Consistently low end-of-day levels suggest insufficient recovery.",
           "id": 53,
           "links": [],
           "title": "Body Battery Level Trend",
@@ -3170,7 +3229,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Energy gained (sleep and rest) versus energy consumed (activity and stress) over time. Net negative drain across multiple days indicates accumulated fatigue and a need for recovery or easy days.",
           "id": 54,
           "links": [],
           "title": "Body Battery Charge \u0026 Drain",
@@ -3299,7 +3358,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Estimated maximum oxygen consumption in mL/kg/min — a key aerobic fitness indicator. Average adults: 35–45 (women), 40–50 (men). Elite endurance athletes: 55–85. Improves with consistent aerobic training.",
           "id": 55,
           "links": [],
           "title": "VO₂ Max",
@@ -3390,7 +3449,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Estimated hours until your body is ready for another high-intensity effort, based on recent training load and HRV. Respecting recovery windows reduces injury risk and supports long-term performance gains.",
           "id": 56,
           "links": [],
           "title": "Recovery Time Needed",
@@ -3481,7 +3540,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Garmin sleep score (0–100) reflecting sleep duration, stages, and quality. Scores ≥75 indicate restorative sleep. Poor sleep scores are a leading indicator of next-day performance, mood, and stress levels.",
           "id": 57,
           "links": [],
           "title": "Readiness Sleep Score",
@@ -3643,7 +3702,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Estimated finish times for 5K, 10K, half marathon, and marathon distances based on current VO₂ Max and training history. Predictions improve in accuracy with more running data over time.",
           "id": 58,
           "links": [],
           "title": "Race Predictions",
@@ -3776,7 +3835,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Average breathing rate during waking hours in breaths per minute. Normal adult range: 12–20 breaths/min. Elevated rates can indicate respiratory illness, high stress, or altitude effects.",
           "id": 59,
           "links": [],
           "title": "Waking Respiration Rate",
@@ -3909,7 +3968,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Average breaths per minute during sleep. Normal range: 12–20 breaths/min. Significant fluctuations or values consistently outside this range may indicate sleep-disordered breathing.",
           "id": 60,
           "links": [],
           "title": "Sleep Respiration Rate",
@@ -3996,7 +4055,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Duration of detected naps (short sleep periods outside the main sleep window). Short naps (10–30 min) can improve alertness and performance. Frequent long naps may indicate insufficient nighttime sleep.",
           "id": 61,
           "links": [],
           "title": "Nap Time",
@@ -4079,7 +4138,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Number of movement or wakefulness events detected during sleep. Frequent restlessness disrupts slow-wave and REM sleep cycles, reducing recovery quality and next-day cognitive performance.",
           "id": 62,
           "links": [],
           "title": "Restless Moments",
@@ -4170,7 +4229,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Blood oxygen saturation measured via optical sensor during sleep. Normal: 95–100%. Repeated dips below 90% during sleep may indicate sleep apnea and warrant medical evaluation.",
           "id": 63,
           "links": [],
           "title": "Sleep SpO₂",
@@ -4332,7 +4391,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Your personal HRV benchmark values (5-day, weekly, monthly averages). Current HRV significantly below your baseline indicates incomplete recovery or an incoming illness. Trends matter more than absolute values.",
           "id": 64,
           "links": [],
           "title": "HRV Baselines",
@@ -4419,7 +4478,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Current Body Battery energy reserve on a 0–100 scale. \u003e75: high readiness; 50–75: good; 25–50: moderate fatigue; \u003c25: rest is needed before any intense activity. Recharges primarily during sleep.",
           "id": 67,
           "links": [],
           "title": "Body Battery",
@@ -4492,7 +4551,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Section divider or informational text panel. Use to provide context, instructions, or links relevant to adjacent panels.",
           "id": 68,
           "links": [],
           "title": "",
@@ -4553,7 +4612,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Number of Garmin devices currently connected and reporting data. Multiple entries may indicate a watch paired with a bike computer, heart rate monitor, or other Garmin sensors.",
           "id": 70,
           "links": [],
           "title": "Paired Devices",
@@ -4636,7 +4695,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Model name of your paired Garmin device. Confirms which device is reporting data and helps identify sensor capabilities (e.g., SpO₂, ECG, body temperature) available on that model.",
           "id": 71,
           "links": [],
           "title": "Device Type",
@@ -4765,7 +4824,7 @@
               "transformations": []
             }
           },
-          "description": "Floors ascended and descended vs daily goal",
+          "description": "Floors ascended and descended versus daily goal. Garmin counts one floor as ~3 meters of vertical ascent. Stair climbing is an effective cardiovascular and lower-body strength exercise.",
           "id": 96,
           "links": [],
           "title": "Floors Climbed",
@@ -4882,7 +4941,7 @@
               "transformations": []
             }
           },
-          "description": "",
+          "description": "Total distance covered per activity type (running, cycling, walking, etc.). Useful for tracking training volume and identifying sport-specific load distribution across a week or month.",
           "id": 97,
           "links": [],
           "title": "Activity Distance by Type",
@@ -5003,7 +5062,7 @@
               "transformations": []
             }
           },
-          "description": "Number of activities logged per type, plus lifetime total",
+          "description": "Number of activities logged per type, plus lifetime total. Track consistency across sport disciplines and identify gaps or overemphasis in training variety over the selected period.",
           "id": 98,
           "links": [],
           "title": "Activity Count by Type",
@@ -5097,7 +5156,7 @@
               "transformations": []
             }
           },
-          "description": "Calories burned per activity type",
+          "description": "Calories burned per activity type. Helps identify which activities contribute most to total energy expenditure and informs caloric intake needs on training versus rest days.",
           "id": 99,
           "links": [],
           "title": "Activity Calories by Type",
@@ -5189,7 +5248,7 @@
                       "spec": {
                         "element": {
                           "kind": "ElementReference",
-                          "name": "panel-32"
+                          "name": "panel-36"
                         },
                         "height": 4,
                         "width": 4,
@@ -5202,7 +5261,7 @@
                       "spec": {
                         "element": {
                           "kind": "ElementReference",
-                          "name": "panel-33"
+                          "name": "panel-32"
                         },
                         "height": 4,
                         "width": 4,
@@ -5215,7 +5274,7 @@
                       "spec": {
                         "element": {
                           "kind": "ElementReference",
-                          "name": "panel-34"
+                          "name": "panel-33"
                         },
                         "height": 4,
                         "width": 4,
@@ -5228,7 +5287,7 @@
                       "spec": {
                         "element": {
                           "kind": "ElementReference",
-                          "name": "panel-35"
+                          "name": "panel-34"
                         },
                         "height": 4,
                         "width": 4,
@@ -5241,7 +5300,7 @@
                       "spec": {
                         "element": {
                           "kind": "ElementReference",
-                          "name": "panel-36"
+                          "name": "panel-35"
                         },
                         "height": 4,
                         "width": 4,
