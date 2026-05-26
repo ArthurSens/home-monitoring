@@ -94,7 +94,8 @@ resource "grafana_oncall_route" "hydration_slo_warning" {
 
   integration_id      = grafana_oncall_integration.hydration_slo.id
   escalation_chain_id = grafana_oncall_escalation_chain.hydration_warning.id
-  routing_regex       = "\"service\" *: *\"hydration\"[\\s\\S]*\"grafana_slo_severity\" *: *\"warning\""
+  routing_type        = "jinja2"
+  routing_regex       = "{{ labels.service == \"hydration\" and labels.grafana_slo_severity == \"warning\" }}"
   position            = 0
 }
 
@@ -103,6 +104,7 @@ resource "grafana_oncall_route" "hydration_slo_critical" {
 
   integration_id      = grafana_oncall_integration.hydration_slo.id
   escalation_chain_id = grafana_oncall_escalation_chain.hydration_critical.id
-  routing_regex       = "\"service\" *: *\"hydration\"[\\s\\S]*\"grafana_slo_severity\" *: *\"critical\""
+  routing_type        = "jinja2"
+  routing_regex       = "{{ labels.service == \"hydration\" and (labels.grafana_slo_severity == \"critical\" or labels.severity == \"critical\") }}"
   position            = 1
 }
