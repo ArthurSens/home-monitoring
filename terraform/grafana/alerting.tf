@@ -22,7 +22,7 @@ resource "grafana_rule_group" "hydration_pace" {
 
     labels = {
       service  = "hydration"
-      severity = "warning"
+      severity = "critical"
       team     = "garmin-health"
     }
 
