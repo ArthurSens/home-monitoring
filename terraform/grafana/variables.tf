@@ -21,9 +21,9 @@ variable "prometheus_datasource_uid" {
 }
 
 variable "hydration_slo_window" {
-  description = "Grafana SLO objective window. Grafana SLO requires at least 7d."
+  description = "Grafana SLO objective window."
   type        = string
-  default     = "7d"
+  default     = "30d"
 }
 
 variable "hydration_slo_objective" {

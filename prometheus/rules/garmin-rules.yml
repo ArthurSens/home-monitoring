@@ -37,16 +37,3 @@ groups:
       team: garmin-health
     annotations:
       description: "Hydration intake is not on track to reach today's Garmin goal plus sweat loss."
-
-  - alert: HydrationGoalMissed
-    expr: |
-      garmin_hydration_intake_ml < garmin:hydration_target_ml
-        and garmin:hydration_target_ml > 0
-        and on() (hour(vector(time() - 3 * 3600)) >= 21)
-    for: 30m
-    labels:
-      severity: critical
-      service: hydration
-      team: garmin-health
-    annotations:
-      description: "Hydration intake is still below today's Garmin goal plus sweat loss."
