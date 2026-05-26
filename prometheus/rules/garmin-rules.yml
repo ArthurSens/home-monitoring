@@ -32,7 +32,7 @@ groups:
         and on() (hour(vector(time() - 3 * 3600)) < 21)
     for: 30m
     labels:
-      severity: warning
+      severity: critical
       service: hydration
       team: garmin-health
     annotations:
