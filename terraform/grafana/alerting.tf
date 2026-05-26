@@ -31,7 +31,7 @@ resource "grafana_rule_group" "hydration_pace" {
       datasource_uid = var.prometheus_datasource_uid
 
       relative_time_range {
-        from = 10800
+        from = 21600
         to   = 0
       }
 
@@ -44,7 +44,7 @@ resource "grafana_rule_group" "hydration_pace" {
         expr          = <<-PROMQL
           (
             predict_linear(
-              garmin_hydration_intake_ml[3h],
+              garmin_hydration_intake_ml[6h],
               scalar(
                 (21 - hour(vector(time() - 3 * 3600))) * 3600
                 - minute(vector(time() - 3 * 3600)) * 60

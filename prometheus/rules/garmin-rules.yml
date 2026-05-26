@@ -19,7 +19,7 @@ groups:
     expr: |
       (
         predict_linear(
-          garmin_hydration_intake_ml[3h],
+          garmin_hydration_intake_ml[6h],
           scalar(
             (21 - hour(vector(time() - 3 * 3600))) * 3600
             - minute(vector(time() - 3 * 3600)) * 60
