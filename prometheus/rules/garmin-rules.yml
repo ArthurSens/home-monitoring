@@ -28,7 +28,7 @@ groups:
           < garmin:hydration_target_ml
       )
         and garmin:hydration_target_ml > 0
-        and on() (hour(vector(time() - 3 * 3600)) >= 8)
+        and on() (hour(vector(time() - 3 * 3600)) >= 7)
         and on() (hour(vector(time() - 3 * 3600)) < 21)
     for: 30m
     labels:
