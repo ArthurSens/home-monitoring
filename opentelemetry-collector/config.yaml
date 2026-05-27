@@ -57,125 +57,164 @@ receivers:
           static_configs:
             - targets: ['localhost:8888']
   pprof/prometheus:
-    endpoint: http://prometheus:9090/debug/pprof/profile?seconds=10
-    collection_interval: 1m
+    remote:
+      endpoint: http://prometheus:9090/debug/pprof/profile?seconds=10
+      collection_interval: 1m
   pprof/prometheus_heap:
-    endpoint: http://prometheus:9090/debug/pprof/heap
-    collection_interval: 1m
+    remote:
+      endpoint: http://prometheus:9090/debug/pprof/heap
+      collection_interval: 1m
   pprof/prometheus_allocs:
-    endpoint: http://prometheus:9090/debug/pprof/allocs
-    collection_interval: 1m
+    remote:
+      endpoint: http://prometheus:9090/debug/pprof/allocs
+      collection_interval: 1m
   pprof/prometheus_goroutine:
-    endpoint: http://prometheus:9090/debug/pprof/goroutine
-    collection_interval: 1m
+    remote:
+      endpoint: http://prometheus:9090/debug/pprof/goroutine
+      collection_interval: 1m
   pprof/alertmanager:
-    endpoint: http://alertmanager:9093/debug/pprof/profile?seconds=10
-    collection_interval: 1m
+    remote:
+      endpoint: http://alertmanager:9093/debug/pprof/profile?seconds=10
+      collection_interval: 1m
   pprof/alertmanager_heap:
-    endpoint: http://alertmanager:9093/debug/pprof/heap
-    collection_interval: 1m
+    remote:
+      endpoint: http://alertmanager:9093/debug/pprof/heap
+      collection_interval: 1m
   pprof/alertmanager_allocs:
-    endpoint: http://alertmanager:9093/debug/pprof/allocs
-    collection_interval: 1m
+    remote:
+      endpoint: http://alertmanager:9093/debug/pprof/allocs
+      collection_interval: 1m
   pprof/alertmanager_goroutine:
-    endpoint: http://alertmanager:9093/debug/pprof/goroutine
-    collection_interval: 1m
+    remote:
+      endpoint: http://alertmanager:9093/debug/pprof/goroutine
+      collection_interval: 1m
   pprof/grafana:
-    endpoint: http://grafana:6060/debug/pprof/profile?seconds=10
-    collection_interval: 1m
+    remote:
+      endpoint: http://grafana:6060/debug/pprof/profile?seconds=10
+      collection_interval: 1m
   pprof/grafana_heap:
-    endpoint: http://grafana:6060/debug/pprof/heap
-    collection_interval: 1m
+    remote:
+      endpoint: http://grafana:6060/debug/pprof/heap
+      collection_interval: 1m
   pprof/grafana_allocs:
-    endpoint: http://grafana:6060/debug/pprof/allocs
-    collection_interval: 1m
+    remote:
+      endpoint: http://grafana:6060/debug/pprof/allocs
+      collection_interval: 1m
   pprof/grafana_goroutine:
-    endpoint: http://grafana:6060/debug/pprof/goroutine
-    collection_interval: 1m
+    remote:
+      endpoint: http://grafana:6060/debug/pprof/goroutine
+      collection_interval: 1m
   pprof/otel-collector:
-    endpoint: http://localhost:1888/debug/pprof/profile?seconds=10
-    collection_interval: 1m
+    self:
+      collection_interval: 1m
   pprof/otel-collector_heap:
-    endpoint: http://localhost:1888/debug/pprof/heap
-    collection_interval: 1m
+    remote:
+      endpoint: http://localhost:1888/debug/pprof/heap
+      collection_interval: 1m
   pprof/otel-collector_allocs:
-    endpoint: http://localhost:1888/debug/pprof/allocs
-    collection_interval: 1m
+    remote:
+      endpoint: http://localhost:1888/debug/pprof/allocs
+      collection_interval: 1m
   pprof/otel-collector_goroutine:
-    endpoint: http://localhost:1888/debug/pprof/goroutine
-    collection_interval: 1m
+    remote:
+      endpoint: http://localhost:1888/debug/pprof/goroutine
+      collection_interval: 1m
   pprof/node_exporter:
-    endpoint: http://node_exporter:9100/debug/pprof/profile?seconds=10
-    collection_interval: 1m
+    remote:
+      endpoint: http://node_exporter:9100/debug/pprof/profile?seconds=10
+      collection_interval: 1m
   pprof/node_exporter_heap:
-    endpoint: http://node_exporter:9100/debug/pprof/heap
-    collection_interval: 1m
+    remote:
+      endpoint: http://node_exporter:9100/debug/pprof/heap
+      collection_interval: 1m
   pprof/node_exporter_allocs:
-    endpoint: http://node_exporter:9100/debug/pprof/allocs
-    collection_interval: 1m
+    remote:
+      endpoint: http://node_exporter:9100/debug/pprof/allocs
+      collection_interval: 1m
   pprof/node_exporter_goroutine:
-    endpoint: http://node_exporter:9100/debug/pprof/goroutine
-    collection_interval: 1m
+    remote:
+      endpoint: http://node_exporter:9100/debug/pprof/goroutine
+      collection_interval: 1m
   pprof/blackbox_exporter:
-    endpoint: http://blackbox_exporter:9115/debug/pprof/profile?seconds=10
-    collection_interval: 1m
+    remote:
+      endpoint: http://blackbox_exporter:9115/debug/pprof/profile?seconds=10
+      collection_interval: 1m
   pprof/blackbox_exporter_heap:
-    endpoint: http://blackbox_exporter:9115/debug/pprof/heap
-    collection_interval: 1m
+    remote:
+      endpoint: http://blackbox_exporter:9115/debug/pprof/heap
+      collection_interval: 1m
   pprof/blackbox_exporter_allocs:
-    endpoint: http://blackbox_exporter:9115/debug/pprof/allocs
-    collection_interval: 1m
+    remote:
+      endpoint: http://blackbox_exporter:9115/debug/pprof/allocs
+      collection_interval: 1m
   pprof/blackbox_exporter_goroutine:
-    endpoint: http://blackbox_exporter:9115/debug/pprof/goroutine
-    collection_interval: 1m
+    remote:
+      endpoint: http://blackbox_exporter:9115/debug/pprof/goroutine
+      collection_interval: 1m
   pprof/garmin_exporter:
-    endpoint: http://garmin_exporter:10043/debug/pprof/profile?seconds=10
-    collection_interval: 1m
+    remote:
+      endpoint: http://garmin_exporter:10043/debug/pprof/profile?seconds=10
+      collection_interval: 1m
   pprof/garmin_exporter_heap:
-    endpoint: http://garmin_exporter:10043/debug/pprof/heap
-    collection_interval: 1m
+    remote:
+      endpoint: http://garmin_exporter:10043/debug/pprof/heap
+      collection_interval: 1m
   pprof/garmin_exporter_allocs:
-    endpoint: http://garmin_exporter:10043/debug/pprof/allocs
-    collection_interval: 1m
+    remote:
+      endpoint: http://garmin_exporter:10043/debug/pprof/allocs
+      collection_interval: 1m
   pprof/garmin_exporter_goroutine:
-    endpoint: http://garmin_exporter:10043/debug/pprof/goroutine
-    collection_interval: 1m
+    remote:
+      endpoint: http://garmin_exporter:10043/debug/pprof/goroutine
+      collection_interval: 1m
   pprof/loki:
-    endpoint: http://loki:3100/debug/pprof/profile?seconds=10
-    collection_interval: 1m
+    remote:
+      endpoint: http://loki:3100/debug/pprof/profile?seconds=10
+      collection_interval: 1m
   pprof/loki_heap:
-    endpoint: http://loki:3100/debug/pprof/heap
-    collection_interval: 1m
+    remote:
+      endpoint: http://loki:3100/debug/pprof/heap
+      collection_interval: 1m
   pprof/loki_allocs:
-    endpoint: http://loki:3100/debug/pprof/allocs
-    collection_interval: 1m
+    remote:
+      endpoint: http://loki:3100/debug/pprof/allocs
+      collection_interval: 1m
   pprof/loki_goroutine:
-    endpoint: http://loki:3100/debug/pprof/goroutine
-    collection_interval: 1m
+    remote:
+      endpoint: http://loki:3100/debug/pprof/goroutine
+      collection_interval: 1m
   pprof/tempo:
-    endpoint: http://tempo:3200/debug/pprof/profile?seconds=10
-    collection_interval: 1m
+    remote:
+      endpoint: http://tempo:3200/debug/pprof/profile?seconds=10
+      collection_interval: 1m
   pprof/tempo_heap:
-    endpoint: http://tempo:3200/debug/pprof/heap
-    collection_interval: 1m
+    remote:
+      endpoint: http://tempo:3200/debug/pprof/heap
+      collection_interval: 1m
   pprof/tempo_allocs:
-    endpoint: http://tempo:3200/debug/pprof/allocs
-    collection_interval: 1m
+    remote:
+      endpoint: http://tempo:3200/debug/pprof/allocs
+      collection_interval: 1m
   pprof/tempo_goroutine:
-    endpoint: http://tempo:3200/debug/pprof/goroutine
-    collection_interval: 1m
+    remote:
+      endpoint: http://tempo:3200/debug/pprof/goroutine
+      collection_interval: 1m
   pprof/pyroscope:
-    endpoint: http://pyroscope:4040/debug/pprof/profile?seconds=10
-    collection_interval: 1m
+    remote:
+      endpoint: http://pyroscope:4040/debug/pprof/profile?seconds=10
+      collection_interval: 1m
   pprof/pyroscope_heap:
-    endpoint: http://pyroscope:4040/debug/pprof/heap
-    collection_interval: 1m
+    remote:
+      endpoint: http://pyroscope:4040/debug/pprof/heap
+      collection_interval: 1m
   pprof/pyroscope_allocs:
-    endpoint: http://pyroscope:4040/debug/pprof/allocs
-    collection_interval: 1m
+    remote:
+      endpoint: http://pyroscope:4040/debug/pprof/allocs
+      collection_interval: 1m
   pprof/pyroscope_goroutine:
-    endpoint: http://pyroscope:4040/debug/pprof/goroutine
-    collection_interval: 1m
+    remote:
+      endpoint: http://pyroscope:4040/debug/pprof/goroutine
+      collection_interval: 1m
   receiver_creator:
     watch_observers: [docker_observer]
     receivers:
