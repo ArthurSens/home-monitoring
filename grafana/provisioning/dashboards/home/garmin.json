@@ -776,7 +776,8 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_hydration_intake_ml / garmin_hydration_goal_ml * 100",
+                        "editorMode": "code",
+                        "expr": "garmin_hydration_intake_ml / (garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml) * 100",
                         "instant": true,
                         "legendFormat": "Hydration %",
                         "queryType": "instant",
@@ -903,6 +904,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
+                        "editorMode": "code",
                         "expr": "garmin_hydration_goal_ml",
                         "instant": true,
                         "legendFormat": "Goal",
@@ -912,6 +914,28 @@
                       "version": "v0"
                     },
                     "refId": "B"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "$datasource"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml",
+                        "instant": false,
+                        "legendFormat": "Goal + Sweat Loss",
+                        "range": true
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "C"
                   }
                 }
               ],
@@ -972,97 +996,6 @@
                 "showUnfilled": true,
                 "sizing": "auto",
                 "valueMode": "color"
-              }
-            },
-            "version": "13.1.0-25723336850"
-          }
-        }
-      },
-      "panel-108": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "$datasource"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "app": "grafana-assistant-app",
-                        "expr": "garmin_hydration_sweat_loss_ml",
-                        "instant": true,
-                        "legendFormat": "Sweat Loss",
-                        "queryType": "instant",
-                        "range": false
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": []
-            }
-          },
-          "description": "Estimated fluid lost through sweating during activities, calculated from body weight change and environmental conditions. Aim to replace sweat losses within 4–6 hours post-exercise to support recovery and next-day performance.",
-          "id": 108,
-          "links": [],
-          "title": "Sweat Loss",
-          "vizConfig": {
-            "group": "stat",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "green",
-                        "value": 0
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 500
-                      },
-                      {
-                        "color": "red",
-                        "value": 1000
-                      }
-                    ]
-                  },
-                  "unit": "mL"
-                },
-                "overrides": []
-              },
-              "options": {
-                "colorMode": "background",
-                "graphMode": "none",
-                "justifyMode": "auto",
-                "orientation": "auto",
-                "percentChangeColorMode": "standard",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showPercentChange": false,
-                "textMode": "auto",
-                "wideLayout": true
               }
             },
             "version": "13.1.0-25723336850"
@@ -5902,7 +5835,7 @@
                           "name": "panel-106"
                         },
                         "height": 8,
-                        "width": 8,
+                        "width": 12,
                         "x": 0,
                         "y": 0
                       }
@@ -5915,21 +5848,8 @@
                           "name": "panel-107"
                         },
                         "height": 8,
-                        "width": 10,
-                        "x": 8,
-                        "y": 0
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-108"
-                        },
-                        "height": 8,
-                        "width": 6,
-                        "x": 18,
+                        "width": 12,
+                        "x": 12,
                         "y": 0
                       }
                     }
