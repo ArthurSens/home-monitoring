@@ -904,7 +904,6 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "editorMode": "code",
                         "expr": "garmin_hydration_goal_ml",
                         "instant": true,
                         "legendFormat": "Goal",
@@ -927,20 +926,60 @@
                       "group": "prometheus",
                       "kind": "DataQuery",
                       "spec": {
-                        "editorMode": "code",
+                        "app": "grafana-assistant-app",
                         "expr": "garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml",
-                        "instant": false,
+                        "instant": true,
                         "legendFormat": "Goal + Sweat Loss",
-                        "range": true
+                        "queryType": "instant",
+                        "range": false
                       },
                       "version": "v0"
                     },
                     "refId": "C"
                   }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "$datasource"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "app": "grafana-assistant-app",
+                        "expr": "garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml",
+                        "instant": true,
+                        "legendFormat": "Goal + Sweat Loss",
+                        "queryType": "instant",
+                        "range": false
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "D"
+                  }
                 }
               ],
               "queryOptions": {},
-              "transformations": []
+              "transformations": [
+                {
+                  "group": "configFromData",
+                  "kind": "Transformation",
+                  "spec": {
+                    "options": {
+                      "configRefId": "C",
+                      "mappings": [
+                        {
+                          "fieldName": "Value",
+                          "handlerKey": "max"
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
             }
           },
           "description": "Daily hydration intake compared to your Garmin-configured goal. Track whether intake scales appropriately on training days versus rest days. Sweat rate and climate significantly affect requirements.",
@@ -954,8 +993,9 @@
               "fieldConfig": {
                 "defaults": {
                   "color": {
-                    "mode": "palette-classic"
+                    "mode": "continuous-GrYlRd"
                   },
+                  "min": 0,
                   "thresholds": {
                     "mode": "absolute",
                     "steps": [
@@ -974,7 +1014,7 @@
                 "overrides": []
               },
               "options": {
-                "displayMode": "gradient",
+                "displayMode": "lcd",
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
@@ -985,7 +1025,7 @@
                 "minVizHeight": 16,
                 "minVizWidth": 8,
                 "namePlacement": "auto",
-                "orientation": "horizontal",
+                "orientation": "vertical",
                 "reduceOptions": {
                   "calcs": [
                     "lastNotNull"
@@ -995,7 +1035,7 @@
                 },
                 "showUnfilled": true,
                 "sizing": "auto",
-                "valueMode": "color"
+                "valueMode": "text"
               }
             },
             "version": "13.1.0-25723336850"
