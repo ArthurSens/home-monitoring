@@ -81,7 +81,7 @@ services:
       - "9100:9100"
 
   garmin_exporter:
-    image: ghcr.io/barnes-c/garmin_exporter:0.1.7@sha256:e95e9582559372e268445affdcee038355728ea03a809498e06ddb1bb4359612
+    image: ghcr.io/barnes-c/garmin_exporter:0.2.0@sha256:831e2c971ade9527153f06a8ecbf686dc3cc8cf8e1d37fe8a345d03d41cd20b9
     restart: unless-stopped
     env_file:
       - ./secrets/garmin.env
