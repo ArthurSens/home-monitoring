@@ -10,13 +10,12 @@ resource "grafana_rule_group" "hydration_pace" {
   rule {
     name           = "Hydration behind pace"
     condition      = "C"
-    for            = "30m"
     no_data_state  = "OK"
     exec_err_state = "Error"
     is_paused      = false
 
     annotations = {
-      description = "Hydration intake is not on track to reach today's Garmin goal plus sweat loss by 9 PM."
+      description = "Hydration intake is not on track to reach today's Garmin goal plus sweat loss by 7 PM."
       summary     = "Hydration is behind pace"
     }
 
@@ -46,15 +45,15 @@ resource "grafana_rule_group" "hydration_pace" {
             predict_linear(
               garmin_hydration_intake_ml[6h],
               scalar(
-                (21 - hour(vector(time() - 3 * 3600))) * 3600
+                (19 - hour(vector(time() - 3 * 3600))) * 3600
                 - minute(vector(time() - 3 * 3600)) * 60
               )
             )
               < bool (garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml)
           )
             and (garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml) > 0
-            and on() (hour(vector(time() - 3 * 3600)) >= 8)
-            and on() (hour(vector(time() - 3 * 3600)) < 21)
+            and on() (hour(vector(time() - 3 * 3600)) >= 7)
+            and on() (hour(vector(time() - 3 * 3600)) < 19)
         PROMQL
         hide          = false
         instant       = true

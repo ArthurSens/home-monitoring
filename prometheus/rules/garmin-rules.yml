@@ -14,14 +14,14 @@ groups:
         1
       )
 
-  # Predict whether today's intake trend reaches the Garmin goal plus sweat loss by 9 PM.
+  # Predict whether today's intake trend reaches the Garmin goal plus sweat loss by 7 PM.
   - alert: HydrationBehindPace
     expr: |
       (
         predict_linear(
           garmin_hydration_intake_ml[6h],
           scalar(
-            (21 - hour(vector(time() - 3 * 3600))) * 3600
+            (19 - hour(vector(time() - 3 * 3600))) * 3600
             - minute(vector(time() - 3 * 3600)) * 60
           )
         )
@@ -29,8 +29,7 @@ groups:
       )
         and garmin:hydration_target_ml > 0
         and on() (hour(vector(time() - 3 * 3600)) >= 7)
-        and on() (hour(vector(time() - 3 * 3600)) < 21)
-    for: 30m
+        and on() (hour(vector(time() - 3 * 3600)) < 19)
     labels:
       severity: critical
       service: hydration
