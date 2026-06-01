@@ -42,6 +42,12 @@ EXPECTED_LOKI_LOG_SERVICES=(
   tempo
 )
 
+CI_QUIET_LOKI_LOG_SERVICES=(
+  blackbox_exporter
+  node_exporter
+  prometheus
+)
+
 EXPECTED_PROFILE_RECEIVERS=(
   pprof/alertmanager
   pprof/blackbox_exporter
@@ -247,6 +253,17 @@ sys.exit("No positive Prometheus series found")
 PY
 }
 
+expected_loki_log_services() {
+  if [[ "${CI:-}" != "true" ]]; then
+    printf '%s\n' "${EXPECTED_LOKI_LOG_SERVICES[@]}"
+    return
+  fi
+
+  comm -23 \
+    <(printf '%s\n' "${EXPECTED_LOKI_LOG_SERVICES[@]}" | sort) \
+    <(printf '%s\n' "${CI_QUIET_LOKI_LOG_SERVICES[@]}" | sort)
+}
+
 collector_has_single_log_receiver_per_container() {
   local query response
   query='sum by (receiver) (rate(otelcol_receiver_accepted_log_records_total{receiver=~"file_log/docker/receiver_creator.*"}[1m]))'
@@ -418,12 +435,13 @@ PY
 }
 
 loki_has_expected_service_logs() {
-  local query response
+  local expected_services query response
+  expected_services=$(expected_loki_log_services | paste -sd ' ' -)
   query='sum by (service_name) (count_over_time({service_namespace="home-monitoring", deployment_environment="homelab", service_name=~".+"}[30m]))'
   response=$(curl -fsS --get "${LOKI_URL}/loki/api/v1/query" \
     --data-urlencode "query=${query}")
 
-  RESPONSE="$response" QUERY="$query" EXPECTED_SERVICES="${EXPECTED_LOKI_LOG_SERVICES[*]}" python3 - <<'PY'
+  RESPONSE="$response" QUERY="$query" EXPECTED_SERVICES="$expected_services" python3 - <<'PY'
 import json
 import os
 import sys
