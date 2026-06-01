@@ -1,0 +1,79 @@
+groups:
+- name: telemetry-pipeline
+  rules:
+
+  - alert: LokiWalDiskUsageHigh
+    expr: max(loki_ingester_wal_disk_usage_percent) > 0.85
+    for: 5m
+    labels:
+      severity: warning
+      service: loki
+      team: homelab-operations
+    annotations:
+      description: "Loki WAL disk usage is above 85%, close to the default 90% write-throttling threshold."
+      summary: "Loki WAL disk usage is close to capacity."
+
+  - alert: LokiWalDiskFullFailures
+    expr: increase(loki_ingester_wal_disk_full_failures_total[5m]) > 0
+    for: 1m
+    labels:
+      severity: critical
+      service: loki
+      team: homelab-operations
+    annotations:
+      description: "Loki reported WAL disk-full failures. Writes may be throttled or durability guarantees may be reduced."
+      summary: "Loki WAL hit disk-full protection."
+
+  - alert: OTelCollectorExporterQueueHigh
+    expr: |
+      (
+        sum by (exporter, data_type) (otelcol_exporter_queue_size)
+        /
+        sum by (exporter, data_type) (otelcol_exporter_queue_capacity)
+      ) > 0.7
+    for: 5m
+    labels:
+      severity: warning
+      service: otel-collector
+      team: homelab-operations
+    annotations:
+      description: "OpenTelemetry Collector exporter {{ $labels.exporter }} {{ $labels.data_type }} queue is above 70% capacity."
+      summary: "Collector exporter queue is filling."
+
+  - alert: OTelCollectorExporterQueueAlmostFull
+    expr: |
+      (
+        sum by (exporter, data_type) (otelcol_exporter_queue_size)
+        /
+        sum by (exporter, data_type) (otelcol_exporter_queue_capacity)
+      ) > 0.9
+    for: 2m
+    labels:
+      severity: critical
+      service: otel-collector
+      team: homelab-operations
+    annotations:
+      description: "OpenTelemetry Collector exporter {{ $labels.exporter }} {{ $labels.data_type }} queue is above 90% capacity. Data loss is likely if the destination does not recover."
+      summary: "Collector exporter queue is almost full."
+
+  - alert: OTelCollectorLogExportFailures
+    expr: sum by (exporter) (rate(otelcol_exporter_send_failed_log_records_total[5m])) > 0
+    for: 5m
+    labels:
+      severity: warning
+      service: otel-collector
+      team: homelab-operations
+    annotations:
+      description: "OpenTelemetry Collector exporter {{ $labels.exporter }} is failing to send log records."
+      summary: "Collector log export failures detected."
+
+  - alert: OTelCollectorLogEnqueueFailures
+    expr: sum by (exporter) (rate(otelcol_exporter_enqueue_failed_log_records_total[5m])) > 0
+    for: 1m
+    labels:
+      severity: critical
+      service: otel-collector
+      team: homelab-operations
+    annotations:
+      description: "OpenTelemetry Collector exporter {{ $labels.exporter }} failed to enqueue log records. The sending queue is likely full and log records are being dropped."
+      summary: "Collector is dropping logs before export."

@@ -32,12 +32,34 @@ variable "hydration_slo_objective" {
   default     = 0.95
 }
 
+variable "collector_export_slo_window" {
+  description = "Grafana SLO objective window for collector export reliability."
+  type        = string
+  default     = "30d"
+}
+
+variable "collector_export_slo_objective" {
+  description = "Fraction of collector telemetry items exported successfully in the SLO window."
+  type        = number
+  default     = 0.995
+}
+
 variable "oncall_user_ids" {
   description = "Grafana IRM user IDs to include in the hydration on-call schedule."
   type        = list(string)
 }
 
+variable "homelab_ops_oncall_user_ids" {
+  description = "Grafana IRM user IDs to include in the homelab operations on-call schedule."
+  type        = list(string)
+}
+
 variable "grafana_team_members" {
   description = "Grafana user email addresses to include in the garmin-health team."
+  type        = set(string)
+}
+
+variable "homelab_ops_team_members" {
+  description = "Grafana user email addresses to include in the homelab-operations team."
   type        = set(string)
 }
