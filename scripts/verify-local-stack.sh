@@ -247,6 +247,47 @@ sys.exit("No positive Prometheus series found")
 PY
 }
 
+collector_has_single_log_receiver_per_container() {
+  local query response
+  query='sum by (receiver) (rate(otelcol_receiver_accepted_log_records_total{receiver=~"file_log/docker/receiver_creator.*"}[1m]))'
+  response=$(prometheus_query "$query")
+
+  RESPONSE="$response" QUERY="$query" python3 - <<'PY'
+import collections
+import json
+import os
+import re
+import sys
+
+payload = json.loads(os.environ["RESPONSE"])
+if payload.get("status") != "success":
+    print("[diag] check=collector_single_log_receiver_per_container status=query_failed", file=sys.stderr)
+    print(f"[diag] query={os.environ['QUERY']}", file=sys.stderr)
+    print(f"[diag] response={json.dumps(payload, sort_keys=True)}", file=sys.stderr)
+    sys.exit("Prometheus query did not succeed")
+
+container_receivers = collections.defaultdict(list)
+for item in payload["data"]["result"]:
+    if float(item.get("value", [0, "0"])[1]) <= 0:
+        continue
+    receiver = item.get("metric", {}).get("receiver", "")
+    match = re.search(r"/([0-9a-f]{64})(?::\d+)?$", receiver)
+    if match:
+        container_receivers[match.group(1)].append(receiver)
+
+duplicates = {
+    container_id: sorted(receivers)
+    for container_id, receivers in container_receivers.items()
+    if len(receivers) > 1
+}
+if duplicates:
+    print("[diag] check=collector_single_log_receiver_per_container status=duplicate_receivers", file=sys.stderr)
+    print(f"[diag] query={os.environ['QUERY']}", file=sys.stderr)
+    print(f"[diag] duplicate_receivers={json.dumps(duplicates, sort_keys=True)}", file=sys.stderr)
+    sys.exit("Multiple Docker log receivers are ingesting from the same container")
+PY
+}
+
 prometheus_has_expected_profile_receivers() {
   local response
   response=$(prometheus_query 'sum by (receiver) (otelcol_scraper_scraped_profile_records_total)')
@@ -574,6 +615,8 @@ wait_until "collector exports metrics to local Prometheus" "$TIMEOUT_SECONDS" \
   prometheus_any_positive 'sum(rate(otelcol_exporter_sent_metric_points_total{exporter="otlp_http/prometheus"}[5m]))'
 wait_until "collector exports logs to local Loki" "$TIMEOUT_SECONDS" \
   prometheus_any_positive 'sum(rate(otelcol_exporter_sent_log_records_total{exporter="otlp_http/loki"}[5m]))'
+wait_until "collector has at most one Docker log receiver per container" "$TIMEOUT_SECONDS" \
+  collector_has_single_log_receiver_per_container
 wait_until "collector exports traces to local Tempo" "$TIMEOUT_SECONDS" \
   prometheus_any_positive 'sum(rate(otelcol_exporter_sent_spans_total{exporter="otlp_http/tempo"}[5m]))'
 wait_until "collector exports profiles to local Pyroscope" "$TIMEOUT_SECONDS" \

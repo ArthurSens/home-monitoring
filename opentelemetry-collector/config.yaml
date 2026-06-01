@@ -219,7 +219,7 @@ receivers:
     watch_observers: [docker_observer]
     receivers:
       filelog/docker:
-        rule: type == "container" and labels["com.docker.compose.project"] == "home-monitoring"
+        rule: type == "container" and endpoint == host and labels["com.docker.compose.project"] == "home-monitoring"
         config:
           include:
             - /var/lib/docker/containers/`container_id`/*-json.log
