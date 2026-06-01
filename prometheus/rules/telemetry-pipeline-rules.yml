@@ -3,14 +3,14 @@ groups:
   rules:
 
   - alert: LokiWalDiskUsageHigh
-    expr: max(loki_ingester_wal_disk_usage_percent) > 0.85
+    expr: max(loki_ingester_wal_disk_usage_percent) > 0.95
     for: 5m
     labels:
       severity: warning
       service: loki
       team: homelab-operations
     annotations:
-      description: "Loki WAL disk usage is above 85%, close to the default 90% write-throttling threshold."
+      description: "Loki WAL disk usage is above 95%, close to the configured 98% write-throttling threshold."
       summary: "Loki WAL disk usage is close to capacity."
 
   - alert: LokiWalDiskFullFailures

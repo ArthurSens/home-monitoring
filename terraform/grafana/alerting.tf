@@ -131,7 +131,7 @@ resource "grafana_rule_group" "loki_storage" {
     is_paused      = false
 
     annotations = {
-      description = "Loki WAL disk usage is above 85%, close to the default 90% write-throttling threshold."
+      description = "Loki WAL disk usage is above 95%, close to the configured 98% write-throttling threshold."
       summary     = "Loki WAL disk usage is close to capacity"
     }
 
@@ -204,7 +204,7 @@ resource "grafana_rule_group" "loki_storage" {
           type = "__expr__"
           uid  = "__expr__"
         }
-        expression    = "$B > 0.85"
+        expression    = "$B > 0.95"
         hide          = false
         intervalMs    = 1000
         maxDataPoints = 43200
