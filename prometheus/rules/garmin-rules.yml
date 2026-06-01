@@ -3,14 +3,14 @@ groups:
   rules:
 
   - record: garmin:hydration_target_ml
-    expr: garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml
+    expr: (garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml) or garmin_hydration_goal_ml
 
   - record: garmin:hydration_progress:ratio
     expr: |
       clamp_max(
         garmin_hydration_intake_ml
-          / (garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml)
-          and (garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml) > 0,
+          / garmin:hydration_target_ml
+          and garmin:hydration_target_ml > 0,
         1
       )
 
