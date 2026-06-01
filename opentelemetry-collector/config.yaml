@@ -28,7 +28,7 @@ receivers:
           scrape_interval: 5m
           scrape_timeout: 2m
           static_configs:
-            - targets: ['garmin_exporter:10043']
+            - targets: ['garmin_exporter:10045']
         - job_name: 'blackbox_exporter'
           metrics_path: /probe
           params:
@@ -153,19 +153,19 @@ receivers:
       collection_interval: 1m
   pprof/garmin_exporter:
     remote:
-      endpoint: http://garmin_exporter:10043/debug/pprof/profile?seconds=10
+      endpoint: http://garmin_exporter:10045/debug/pprof/profile?seconds=10
       collection_interval: 1m
   pprof/garmin_exporter_heap:
     remote:
-      endpoint: http://garmin_exporter:10043/debug/pprof/heap
+      endpoint: http://garmin_exporter:10045/debug/pprof/heap
       collection_interval: 1m
   pprof/garmin_exporter_allocs:
     remote:
-      endpoint: http://garmin_exporter:10043/debug/pprof/allocs
+      endpoint: http://garmin_exporter:10045/debug/pprof/allocs
       collection_interval: 1m
   pprof/garmin_exporter_goroutine:
     remote:
-      endpoint: http://garmin_exporter:10043/debug/pprof/goroutine
+      endpoint: http://garmin_exporter:10045/debug/pprof/goroutine
       collection_interval: 1m
   pprof/loki:
     remote:

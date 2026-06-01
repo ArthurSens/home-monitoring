@@ -163,8 +163,7 @@ prometheus_query() {
 
 prometheus_has_expected_jobs() {
   local response
-  # Includes targets with up=0 (e.g. garmin_exporter when login fails in CI).
-  response=$(prometheus_query 'count by (job) (up)')
+  response=$(prometheus_query 'min by (job) (up)')
 
   RESPONSE="$response" EXPECTED_JOBS="${EXPECTED_PROMETHEUS_JOBS[*]}" python3 - <<'PY'
 import json
@@ -177,17 +176,28 @@ if payload.get("status") != "success":
     print(f"[diag] response={json.dumps(payload, sort_keys=True)}", file=sys.stderr)
     sys.exit("Prometheus query did not succeed")
 
-jobs = {item.get("metric", {}).get("job") for item in payload["data"]["result"]}
+jobs = {
+    item.get("metric", {}).get("job"): float(item.get("value", [0, "0"])[1])
+    for item in payload["data"]["result"]
+}
 expected = set(os.environ["EXPECTED_JOBS"].split())
-missing = sorted(expected - jobs)
+missing = sorted(expected - set(jobs))
 if missing:
     observed = sorted(job for job in jobs if job)
     print("[diag] check=prometheus_expected_jobs status=missing_labels", file=sys.stderr)
-    print(f"[diag] query=count by (job) (up)", file=sys.stderr)
+    print("[diag] query=min by (job) (up)", file=sys.stderr)
     print(f"[diag] expected_jobs={json.dumps(sorted(expected))}", file=sys.stderr)
     print(f"[diag] observed_jobs={json.dumps(observed)}", file=sys.stderr)
     print(f"[diag] missing_jobs={json.dumps(missing)}", file=sys.stderr)
     sys.exit(f"Missing Prometheus jobs: {', '.join(missing)}")
+
+down = sorted(job for job in expected if jobs[job] < 1)
+if down:
+    print("[diag] check=prometheus_expected_jobs status=down_targets", file=sys.stderr)
+    print("[diag] query=min by (job) (up)", file=sys.stderr)
+    print(f"[diag] down_jobs={json.dumps(down)}", file=sys.stderr)
+    print(f"[diag] observed_values={json.dumps(jobs, sort_keys=True)}", file=sys.stderr)
+    sys.exit(f"Prometheus jobs with down targets: {', '.join(down)}")
 PY
 }
 
@@ -502,7 +512,7 @@ wait_until "Pyroscope is ready" "$TIMEOUT_SECONDS" http_ready "${PYROSCOPE_URL}/
 
 generate_activity
 
-wait_until "Prometheus has all expected collector-scraped jobs" "$TIMEOUT_SECONDS" prometheus_has_expected_jobs
+wait_until "Prometheus has all expected collector-scraped jobs up" "$TIMEOUT_SECONDS" prometheus_has_expected_jobs
 wait_until "Loki has recent stack logs" "$TIMEOUT_SECONDS" loki_has_recent_logs
 wait_until "Loki logs have App O11y service identity" "$TIMEOUT_SECONDS" loki_has_app_o11y_service_logs
 wait_until "Tempo has recent traces" "$TIMEOUT_SECONDS" tempo_has_recent_traces
