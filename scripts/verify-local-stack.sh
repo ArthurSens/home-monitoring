@@ -29,6 +29,25 @@ EXPECTED_PROMETHEUS_JOBS=(
   home-monitoring/tempo
 )
 
+EXPECTED_LOKI_LOG_SERVICES=(
+  alertmanager
+  blackbox_exporter
+  garmin_exporter
+  grafana
+  loki
+  node_exporter
+  otel-collector
+  prometheus
+  pyroscope
+  tempo
+)
+
+CI_QUIET_LOKI_LOG_SERVICES=(
+  blackbox_exporter
+  node_exporter
+  prometheus
+)
+
 EXPECTED_PROFILE_RECEIVERS=(
   pprof/alertmanager
   pprof/blackbox_exporter
@@ -234,6 +253,58 @@ sys.exit("No positive Prometheus series found")
 PY
 }
 
+expected_loki_log_services() {
+  if [[ "${CI:-}" != "true" ]]; then
+    printf '%s\n' "${EXPECTED_LOKI_LOG_SERVICES[@]}"
+    return
+  fi
+
+  comm -23 \
+    <(printf '%s\n' "${EXPECTED_LOKI_LOG_SERVICES[@]}" | sort) \
+    <(printf '%s\n' "${CI_QUIET_LOKI_LOG_SERVICES[@]}" | sort)
+}
+
+collector_has_single_log_receiver_per_container() {
+  local query response
+  query='sum by (receiver) (rate(otelcol_receiver_accepted_log_records_total{receiver=~"file_log/docker/receiver_creator.*"}[1m]))'
+  response=$(prometheus_query "$query")
+
+  RESPONSE="$response" QUERY="$query" python3 - <<'PY'
+import collections
+import json
+import os
+import re
+import sys
+
+payload = json.loads(os.environ["RESPONSE"])
+if payload.get("status") != "success":
+    print("[diag] check=collector_single_log_receiver_per_container status=query_failed", file=sys.stderr)
+    print(f"[diag] query={os.environ['QUERY']}", file=sys.stderr)
+    print(f"[diag] response={json.dumps(payload, sort_keys=True)}", file=sys.stderr)
+    sys.exit("Prometheus query did not succeed")
+
+container_receivers = collections.defaultdict(list)
+for item in payload["data"]["result"]:
+    if float(item.get("value", [0, "0"])[1]) <= 0:
+        continue
+    receiver = item.get("metric", {}).get("receiver", "")
+    match = re.search(r"/([0-9a-f]{64})(?::\d+)?$", receiver)
+    if match:
+        container_receivers[match.group(1)].append(receiver)
+
+duplicates = {
+    container_id: sorted(receivers)
+    for container_id, receivers in container_receivers.items()
+    if len(receivers) > 1
+}
+if duplicates:
+    print("[diag] check=collector_single_log_receiver_per_container status=duplicate_receivers", file=sys.stderr)
+    print(f"[diag] query={os.environ['QUERY']}", file=sys.stderr)
+    print(f"[diag] duplicate_receivers={json.dumps(duplicates, sort_keys=True)}", file=sys.stderr)
+    sys.exit("Multiple Docker log receivers are ingesting from the same container")
+PY
+}
+
 prometheus_has_expected_profile_receivers() {
   local response
   response=$(prometheus_query 'sum by (receiver) (otelcol_scraper_scraped_profile_records_total)')
@@ -360,6 +431,42 @@ for index, item in enumerate(result[:10]):
     print(f"[diag] series[{index}].value={item.get('value', [None, None])[1]}", file=sys.stderr)
 
 sys.exit("No recent Loki logs with App O11y service identity found")
+PY
+}
+
+loki_has_expected_service_logs() {
+  local expected_services query response
+  expected_services=$(expected_loki_log_services | paste -sd ' ' -)
+  query='sum by (service_name) (count_over_time({service_namespace="home-monitoring", deployment_environment="homelab", service_name=~".+"}[30m]))'
+  response=$(curl -fsS --get "${LOKI_URL}/loki/api/v1/query" \
+    --data-urlencode "query=${query}")
+
+  RESPONSE="$response" QUERY="$query" EXPECTED_SERVICES="$expected_services" python3 - <<'PY'
+import json
+import os
+import sys
+
+payload = json.loads(os.environ["RESPONSE"])
+if payload.get("status") != "success":
+    print("[diag] check=loki_expected_service_logs status=query_failed", file=sys.stderr)
+    print(f"[diag] response={json.dumps(payload, sort_keys=True)}", file=sys.stderr)
+    sys.exit("Loki query did not succeed")
+
+services = {
+    item.get("metric", {}).get("service_name")
+    for item in payload["data"]["result"]
+    if float(item.get("value", [0, "0"])[1]) > 0
+}
+expected = set(os.environ["EXPECTED_SERVICES"].split())
+missing = sorted(expected - services)
+if missing:
+    observed = sorted(service for service in services if service)
+    print("[diag] check=loki_expected_service_logs status=missing_services", file=sys.stderr)
+    print(f"[diag] query={os.environ['QUERY']}", file=sys.stderr)
+    print(f"[diag] expected_services={json.dumps(sorted(expected))}", file=sys.stderr)
+    print(f"[diag] observed_services={json.dumps(observed)}", file=sys.stderr)
+    print(f"[diag] missing_services={json.dumps(missing)}", file=sys.stderr)
+    sys.exit(f"Missing Loki logs for services: {', '.join(missing)}")
 PY
 }
 
@@ -515,6 +622,7 @@ generate_activity
 wait_until "Prometheus has all expected collector-scraped jobs up" "$TIMEOUT_SECONDS" prometheus_has_expected_jobs
 wait_until "Loki has recent stack logs" "$TIMEOUT_SECONDS" loki_has_recent_logs
 wait_until "Loki logs have App O11y service identity" "$TIMEOUT_SECONDS" loki_has_app_o11y_service_logs
+wait_until "Loki has logs from all expected services" "$TIMEOUT_SECONDS" loki_has_expected_service_logs
 wait_until "Tempo has recent traces" "$TIMEOUT_SECONDS" tempo_has_recent_traces
 wait_until "Grafana can query the Prometheus datasource" "$TIMEOUT_SECONDS" grafana_datasource_is_healthy prometheus
 wait_until "Grafana can query the Loki datasource" "$TIMEOUT_SECONDS" grafana_datasource_is_healthy loki
@@ -525,6 +633,8 @@ wait_until "collector exports metrics to local Prometheus" "$TIMEOUT_SECONDS" \
   prometheus_any_positive 'sum(rate(otelcol_exporter_sent_metric_points_total{exporter="otlp_http/prometheus"}[5m]))'
 wait_until "collector exports logs to local Loki" "$TIMEOUT_SECONDS" \
   prometheus_any_positive 'sum(rate(otelcol_exporter_sent_log_records_total{exporter="otlp_http/loki"}[5m]))'
+wait_until "collector has at most one Docker log receiver per container" "$TIMEOUT_SECONDS" \
+  collector_has_single_log_receiver_per_container
 wait_until "collector exports traces to local Tempo" "$TIMEOUT_SECONDS" \
   prometheus_any_positive 'sum(rate(otelcol_exporter_sent_spans_total{exporter="otlp_http/tempo"}[5m]))'
 wait_until "collector exports profiles to local Pyroscope" "$TIMEOUT_SECONDS" \
