@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   validate:
-    name: Validate Prometheus and collector configuration
+    name: Validate service configurations
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -25,7 +25,7 @@ jobs:
       - name: Detect configuration changes
         id: changes
         run: |
-          pattern='^(\.github/workflows/config-validation\.yml|docker-compose\.yml|prometheus/prometheus\.yml|prometheus/rules/.*\.ya?ml|opentelemetry-collector/.*)$'
+          pattern='^(\.github/workflows/config-validation\.yml|docker-compose\.yml|prometheus/prometheus\.yml|prometheus/rules/.*\.ya?ml|tempo/.*\.ya?ml|opentelemetry-collector/.*)$'
 
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             changed_files="$(git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}")"
@@ -84,6 +84,10 @@ jobs:
           fi
 
           docker compose run --rm --no-deps --entrypoint promtool prometheus check rules "${rule_files[@]}"
+
+      - name: Validate Tempo configuration
+        if: steps.changes.outputs.changed == 'true'
+        run: docker compose run --rm --no-deps tempo --config.file=/etc/tempo/config.yaml --config.verify=true
 
       - name: Build collector image
         if: steps.changes.outputs.changed == 'true'
