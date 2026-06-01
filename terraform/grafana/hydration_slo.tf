@@ -7,26 +7,38 @@ locals {
         max_over_time(garmin_hydration_intake_ml[$__rate_interval])
         >= bool
         (
+          (
+            max_over_time(garmin_hydration_goal_ml[$__rate_interval])
+            +
+            max_over_time(garmin_hydration_sweat_loss_ml[$__rate_interval])
+          )
+          or
           max_over_time(garmin_hydration_goal_ml[$__rate_interval])
-          +
-          max_over_time(garmin_hydration_sweat_loss_ml[$__rate_interval])
         )
       )
       /
       sum(
         (
+          (
+            max_over_time(garmin_hydration_goal_ml[$__rate_interval])
+            +
+            max_over_time(garmin_hydration_sweat_loss_ml[$__rate_interval])
+          )
+          or
           max_over_time(garmin_hydration_goal_ml[$__rate_interval])
-          +
-          max_over_time(garmin_hydration_sweat_loss_ml[$__rate_interval])
         ) > bool 0
       )
     )
     and on()
     sum(
       (
+        (
+          max_over_time(garmin_hydration_goal_ml[$__rate_interval])
+          +
+          max_over_time(garmin_hydration_sweat_loss_ml[$__rate_interval])
+        )
+        or
         max_over_time(garmin_hydration_goal_ml[$__rate_interval])
-        +
-        max_over_time(garmin_hydration_sweat_loss_ml[$__rate_interval])
       ) > bool 0
     ) > 0
   PROMQL

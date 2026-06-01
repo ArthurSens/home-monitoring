@@ -777,7 +777,7 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "editorMode": "code",
-                        "expr": "garmin_hydration_intake_ml / (garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml) * 100",
+                        "expr": "garmin_hydration_intake_ml / ((garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml) or garmin_hydration_goal_ml) * 100",
                         "instant": true,
                         "legendFormat": "Hydration %",
                         "queryType": "instant",
@@ -927,7 +927,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml",
+                        "expr": "(garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml) or garmin_hydration_goal_ml",
                         "instant": true,
                         "legendFormat": "Goal + Sweat Loss",
                         "queryType": "instant",
@@ -950,7 +950,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml",
+                        "expr": "(garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml) or garmin_hydration_goal_ml",
                         "instant": true,
                         "legendFormat": "Goal + Sweat Loss",
                         "queryType": "instant",
