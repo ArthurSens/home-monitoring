@@ -1,45 +1,46 @@
 locals {
   hydration_slo_utc_offset_seconds = 3 * 3600
+  hydration_slo_daily_window       = "18h"
+
+  hydration_slo_daily_intake_query = <<-PROMQL
+    max without (instance, service_instance_id) (
+      max_over_time(garmin_hydration_intake_ml[${local.hydration_slo_daily_window}:$__rate_interval])
+    )
+  PROMQL
+
+  hydration_slo_daily_target_query = <<-PROMQL
+    (
+      (
+        max without (instance, service_instance_id) (
+          max_over_time(garmin_hydration_goal_ml[${local.hydration_slo_daily_window}:$__rate_interval])
+        )
+        +
+        max without (instance, service_instance_id) (
+          max_over_time(garmin_hydration_sweat_loss_ml[${local.hydration_slo_daily_window}:$__rate_interval])
+        )
+      )
+      or
+      max without (instance, service_instance_id) (
+        max_over_time(garmin_hydration_goal_ml[${local.hydration_slo_daily_window}:$__rate_interval])
+      )
+    )
+  PROMQL
 
   hydration_slo_daily_ratio_query = <<-PROMQL
     (
       sum(
-        max_over_time(garmin_hydration_intake_ml[$__rate_interval])
+        ${indent(8, local.hydration_slo_daily_intake_query)}
         >= bool
-        (
-          (
-            max_over_time(garmin_hydration_goal_ml[$__rate_interval])
-            +
-            max_over_time(garmin_hydration_sweat_loss_ml[$__rate_interval])
-          )
-          or
-          max_over_time(garmin_hydration_goal_ml[$__rate_interval])
-        )
+        ${indent(8, local.hydration_slo_daily_target_query)}
       )
       /
       sum(
-        (
-          (
-            max_over_time(garmin_hydration_goal_ml[$__rate_interval])
-            +
-            max_over_time(garmin_hydration_sweat_loss_ml[$__rate_interval])
-          )
-          or
-          max_over_time(garmin_hydration_goal_ml[$__rate_interval])
-        ) > bool 0
+        ${indent(8, local.hydration_slo_daily_target_query)} > bool 0
       )
     )
     and on()
     sum(
-      (
-        (
-          max_over_time(garmin_hydration_goal_ml[$__rate_interval])
-          +
-          max_over_time(garmin_hydration_sweat_loss_ml[$__rate_interval])
-        )
-        or
-        max_over_time(garmin_hydration_goal_ml[$__rate_interval])
-      ) > bool 0
+      ${indent(6, local.hydration_slo_daily_target_query)} > bool 0
     ) > 0
   PROMQL
 
