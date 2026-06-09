@@ -105,7 +105,7 @@ services:
       - "3100:3100"
 
   tempo:
-    image: grafana/tempo:3.0.1@sha256:0be6a4bfeef2b2c32261c4b4ec2596733bb858ccd4aa35964503f90b41bc9f8d
+    image: grafana/tempo:3.0.2@sha256:cda87c212d8c584dc0b89e337e7ed648a5100feb657e5d528480ee4fa03dbbe3
     command:
       - --config.file=/etc/tempo/config.yaml
     volumes:
