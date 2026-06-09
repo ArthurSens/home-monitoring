@@ -25,8 +25,6 @@ receivers:
           static_configs:
             - targets: ['node_exporter:9100']
         - job_name: 'garmin_exporter'
-          scrape_interval: 5m
-          scrape_timeout: 2m
           static_configs:
             - targets: ['garmin_exporter:10045']
         - job_name: 'blackbox_exporter'

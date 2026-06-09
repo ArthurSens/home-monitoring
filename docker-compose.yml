@@ -87,6 +87,7 @@ services:
       - ./secrets/garmin.env
     command:
       - --garmin.token-file=/data/garmin_token.json
+      - --cache.ttl=10m
     volumes:
       - garmin_data:/data
 
