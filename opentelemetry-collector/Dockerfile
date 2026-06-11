@@ -9,7 +9,7 @@ COPY opentelemetry-collector/builder-config.yaml opentelemetry-collector/builder
 RUN go install go.opentelemetry.io/collector/cmd/builder@${OCB_VERSION}
 RUN builder --config=opentelemetry-collector/builder-config.yaml
 
-FROM gcr.io/distroless/base-debian12:nonroot@sha256:7a75a36f4bec82a7542c64195e402907486f9a4dd2f8797a976aa0cf31cfb470
+FROM gcr.io/distroless/base-debian12:nonroot@sha256:4ae8d0163a6f04d96f36e41324d76f00744f0db7545b6d04039c9e6fa1df77f3
 
 COPY --from=builder /src/opentelemetry-collector/_build/home-monitoring-otelcol /home-monitoring-otelcol
 
