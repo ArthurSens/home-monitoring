@@ -1,4 +1,4 @@
-FROM golang:1.26.4-bookworm@sha256:d16a600dd352dd9a1bd0d262aaef18dba17b02a758cdba1069cf3ae1aad93fa5 AS builder
+FROM golang:1.26.4-bookworm@sha256:cf4571d974f111831d8f5a7c0adb08e37e1ae346dd50b5460d44e4dcc0695951 AS builder
 
 ARG OCB_VERSION=v0.155.0
 
