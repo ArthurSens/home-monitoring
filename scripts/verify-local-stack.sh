@@ -44,6 +44,7 @@ EXPECTED_LOKI_LOG_SERVICES=(
 
 CI_QUIET_LOKI_LOG_SERVICES=(
   blackbox_exporter
+  garmin_exporter
   node_exporter
   prometheus
 )
@@ -51,7 +52,6 @@ CI_QUIET_LOKI_LOG_SERVICES=(
 EXPECTED_PROFILE_RECEIVERS=(
   pprof/alertmanager
   pprof/blackbox_exporter
-  pprof/garmin_exporter
   pprof/grafana
   pprof/loki
   pprof/node_exporter
