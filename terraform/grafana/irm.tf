@@ -7,7 +7,7 @@ resource "grafana_oncall_on_call_shift" "hydration_primary" {
   duration  = 60 * 60 * 24
   frequency = "daily"
   interval  = 1
-  time_zone = "America/Sao_Paulo"
+  time_zone = "Asia/Tokyo"
   team_id   = data.grafana_oncall_team.garmin_health.id
   rolling_users = [
     var.oncall_user_ids,
@@ -19,7 +19,7 @@ resource "grafana_oncall_schedule" "hydration" {
 
   name      = "Hydration"
   type      = "calendar"
-  time_zone = "America/Sao_Paulo"
+  time_zone = "Asia/Tokyo"
   team_id   = data.grafana_oncall_team.garmin_health.id
   shifts = [
     grafana_oncall_on_call_shift.hydration_primary.id,
@@ -117,7 +117,7 @@ resource "grafana_oncall_on_call_shift" "homelab_operations_primary" {
   duration  = 60 * 60 * 24
   frequency = "daily"
   interval  = 1
-  time_zone = "America/Sao_Paulo"
+  time_zone = "Asia/Tokyo"
   team_id   = data.grafana_oncall_team.homelab_operations.id
   rolling_users = [
     var.homelab_ops_oncall_user_ids,
@@ -129,7 +129,7 @@ resource "grafana_oncall_schedule" "homelab_operations" {
 
   name      = "Homelab operations"
   type      = "calendar"
-  time_zone = "America/Sao_Paulo"
+  time_zone = "Asia/Tokyo"
   team_id   = data.grafana_oncall_team.homelab_operations.id
   shifts = [
     grafana_oncall_on_call_shift.homelab_operations_primary.id,
