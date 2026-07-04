@@ -43,21 +43,23 @@ resource "grafana_rule_group" "hydration_pace" {
           type = "prometheus"
           uid  = var.prometheus_datasource_uid
         }
-        editorMode    = "code"
+        editorMode = "code"
+        # PromQL time functions evaluate timestamps in UTC. Update this offset
+        # whenever the hydration alert should follow a different local timezone.
         expr          = <<-PROMQL
           (
             predict_linear(
               garmin_hydration_intake_ml[6h],
               scalar(
-                (19 - hour(vector(time() - 3 * 3600))) * 3600
-                - minute(vector(time() - 3 * 3600)) * 60
+                (19 - hour(vector(time() + 9 * 3600))) * 3600
+                - minute(vector(time() + 9 * 3600)) * 60
               )
             )
               < bool ((garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml) or garmin_hydration_goal_ml)
           )
             and ((garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml) or garmin_hydration_goal_ml) > 0
-            and on() (hour(vector(time() - 3 * 3600)) >= 7)
-            and on() (hour(vector(time() - 3 * 3600)) < 19)
+            and on() (hour(vector(time() + 9 * 3600)) >= 7)
+            and on() (hour(vector(time() + 9 * 3600)) < 19)
         PROMQL
         hide          = false
         instant       = true
