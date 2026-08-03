@@ -4,7 +4,7 @@ locals {
 
   hydration_slo_daily_intake_query = <<-PROMQL
     max without (instance, service_instance_id) (
-      max_over_time(garmin_hydration_intake_ml[${local.hydration_slo_daily_window}:$__rate_interval])
+      max_over_time(garmin_hydration_intake_ml_mL[${local.hydration_slo_daily_window}:$__rate_interval])
     )
   PROMQL
 
@@ -12,16 +12,16 @@ locals {
     (
       (
         max without (instance, service_instance_id) (
-          max_over_time(garmin_hydration_goal_ml[${local.hydration_slo_daily_window}:$__rate_interval])
+          max_over_time(garmin_hydration_goal_ml_mL[${local.hydration_slo_daily_window}:$__rate_interval])
         )
         +
         max without (instance, service_instance_id) (
-          max_over_time(garmin_hydration_sweat_loss_ml[${local.hydration_slo_daily_window}:$__rate_interval])
+          max_over_time(garmin_hydration_sweat_loss_ml_mL[${local.hydration_slo_daily_window}:$__rate_interval])
         )
       )
       or
       max without (instance, service_instance_id) (
-        max_over_time(garmin_hydration_goal_ml[${local.hydration_slo_daily_window}:$__rate_interval])
+        max_over_time(garmin_hydration_goal_ml_mL[${local.hydration_slo_daily_window}:$__rate_interval])
       )
     )
   PROMQL

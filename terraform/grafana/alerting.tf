@@ -49,15 +49,15 @@ resource "grafana_rule_group" "hydration_pace" {
         expr          = <<-PROMQL
           (
             predict_linear(
-              garmin_hydration_intake_ml[6h],
+              garmin_hydration_intake_ml_mL[6h],
               scalar(
                 (19 - hour(vector(time() - 3 * 3600))) * 3600
                 - minute(vector(time() - 3 * 3600)) * 60
               )
             )
-              < bool ((garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml) or garmin_hydration_goal_ml)
+              < bool ((garmin_hydration_goal_ml_mL + garmin_hydration_sweat_loss_ml_mL) or garmin_hydration_goal_ml_mL)
           )
-            and ((garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml) or garmin_hydration_goal_ml) > 0
+            and ((garmin_hydration_goal_ml_mL + garmin_hydration_sweat_loss_ml_mL) or garmin_hydration_goal_ml_mL) > 0
             and on() (hour(vector(time() - 3 * 3600)) >= 7)
             and on() (hour(vector(time() - 3 * 3600)) < 19)
         PROMQL
