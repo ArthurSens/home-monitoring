@@ -1,0 +1,26 @@
+rule_files:
+  - ../rules/garmin-rules.yml
+
+evaluation_interval: 1m
+
+tests:
+  - name: hydration rules use OTLP unit-suffixed metrics
+    interval: 1m
+    input_series:
+      - series: garmin_hydration_intake_ml_mL
+        values: 500x10
+      - series: garmin_hydration_goal_ml_mL
+        values: 2500x10
+      - series: garmin_hydration_sweat_loss_ml_mL
+        values: 300x10
+    promql_expr_test:
+      - expr: garmin:hydration_target_ml
+        eval_time: 5m
+        exp_samples:
+          - labels: garmin:hydration_target_ml
+            value: 2800
+      - expr: garmin:hydration_progress:ratio
+        eval_time: 5m
+        exp_samples:
+          - labels: garmin:hydration_progress:ratio
+            value: 0.17857142857142858

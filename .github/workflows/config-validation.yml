@@ -25,7 +25,7 @@ jobs:
       - name: Detect configuration changes
         id: changes
         run: |
-          pattern='^(\.github/workflows/config-validation\.yml|docker-compose\.yml|alertmanager/.*\.ya?ml|loki/.*\.ya?ml|prometheus/prometheus\.yml|prometheus/rules/.*\.ya?ml|tempo/.*\.ya?ml|opentelemetry-collector/.*)$'
+          pattern='^(\.github/workflows/config-validation\.yml|docker-compose\.yml|alertmanager/.*\.ya?ml|loki/.*\.ya?ml|prometheus/.*\.ya?ml|tempo/.*\.ya?ml|opentelemetry-collector/.*)$'
 
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             changed_files="$(git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}")"
@@ -84,6 +84,15 @@ jobs:
           fi
 
           docker compose run --rm --no-deps --entrypoint promtool prometheus check rules "${rule_files[@]}"
+
+      - name: Test Prometheus rules
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          docker compose run --rm --no-deps \
+            -v "$PWD/prometheus:/workspace:ro" \
+            -w /workspace/tests \
+            --entrypoint promtool \
+            prometheus test rules garmin-rules.test.yml
 
       - name: Validate Alertmanager configuration
         if: steps.changes.outputs.changed == 'true'
