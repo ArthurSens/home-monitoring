@@ -51,15 +51,15 @@ resource "grafana_rule_group" "hydration_pace" {
             predict_linear(
               garmin_hydration_intake_ml[6h],
               scalar(
-                (19 - hour(vector(time() + 9 * 3600))) * 3600
-                - minute(vector(time() + 9 * 3600)) * 60
+                (19 - hour(vector(time() - 3 * 3600))) * 3600
+                - minute(vector(time() - 3 * 3600)) * 60
               )
             )
               < bool ((garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml) or garmin_hydration_goal_ml)
           )
             and ((garmin_hydration_goal_ml + garmin_hydration_sweat_loss_ml) or garmin_hydration_goal_ml) > 0
-            and on() (hour(vector(time() + 9 * 3600)) >= 7)
-            and on() (hour(vector(time() + 9 * 3600)) < 19)
+            and on() (hour(vector(time() - 3 * 3600)) >= 7)
+            and on() (hour(vector(time() - 3 * 3600)) < 19)
         PROMQL
         hide          = false
         instant       = true
