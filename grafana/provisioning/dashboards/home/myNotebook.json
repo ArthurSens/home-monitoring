@@ -3360,7 +3360,7 @@
           "options": [],
           "query": "prometheus",
           "refresh": 1,
-          "regex": "",
+          "regex": "/(^Prometheus$|-prom$)/",
           "skipUrlSync": false,
           "type": "datasource"
         },
