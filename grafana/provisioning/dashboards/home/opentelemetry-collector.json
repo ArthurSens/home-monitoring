@@ -50,7 +50,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "sum(rate(otelcol_receiver_accepted_metric_points_total[$__rate_interval]) or rate(otelcol_receiver_accepted_log_records_total[$__rate_interval]) or rate(otelcol_receiver_accepted_spans_total[$__rate_interval]) or rate(otelcol_receiver_accepted_profiles_total[$__rate_interval]))",
+                        "expr": "sum(rate(otelcol_receiver_accepted_metric_points_total[$__rate_interval]) or rate(otelcol_receiver_accepted_log_records_total[$__rate_interval]) or rate(otelcol_receiver_accepted_spans_total[$__rate_interval]))",
                         "instant": true,
                         "legendFormat": "Received",
                         "queryType": "instant",
@@ -66,7 +66,7 @@
               "transformations": []
             }
           },
-          "description": "Total telemetry items accepted by all receivers (spans + metrics + logs + profiles/s)",
+          "description": "Total telemetry items accepted by all receivers (spans + metrics + logs/s). The Collector does not currently emit profile receiver counters.",
           "id": 13,
           "links": [],
           "title": "Data Received",
@@ -134,7 +134,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "sum(rate(otelcol_exporter_sent_metric_points_total[$__rate_interval]) or rate(otelcol_exporter_sent_log_records_total[$__rate_interval]) or rate(otelcol_exporter_sent_spans_total[$__rate_interval]) or rate(otelcol_exporter_sent_profiles_total[$__rate_interval]))",
+                        "expr": "sum(rate(otelcol_exporter_sent_metric_points_total[$__rate_interval]) or rate(otelcol_exporter_sent_log_records_total[$__rate_interval]) or rate(otelcol_exporter_sent_spans_total[$__rate_interval]) or rate(otelcol_exporter_sent_profile_samples_total[$__rate_interval]))",
                         "instant": true,
                         "legendFormat": "Sent",
                         "queryType": "instant",
@@ -398,7 +398,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "sum by (receiver, data_type) (\n  rate(otelcol_receiver_accepted_metric_points_total[$__rate_interval]) or\n  rate(otelcol_receiver_accepted_log_records_total[$__rate_interval]) or\n  rate(otelcol_receiver_accepted_spans_total[$__rate_interval]) or\n  rate(otelcol_receiver_accepted_profiles_total[$__rate_interval])\n)",
+                        "expr": "sum by (receiver, data_type) (\n  label_replace(rate(otelcol_receiver_accepted_metric_points_total[$__rate_interval]), \"data_type\", \"metrics\", \"receiver\", \".*\") or\n  label_replace(rate(otelcol_receiver_accepted_log_records_total[$__rate_interval]), \"data_type\", \"logs\", \"receiver\", \".*\") or\n  label_replace(rate(otelcol_receiver_accepted_spans_total[$__rate_interval]), \"data_type\", \"traces\", \"receiver\", \".*\")\n)",
                         "instant": false,
                         "legendFormat": "{{receiver}} · {{data_type}}",
                         "queryType": "range",
@@ -522,7 +522,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "sum by (receiver, data_type) (\n  rate(otelcol_receiver_refused_metric_points_total[$__rate_interval]) or\n  rate(otelcol_receiver_refused_log_records_total[$__rate_interval]) or\n  rate(otelcol_receiver_refused_spans_total[$__rate_interval]) or\n  rate(otelcol_receiver_refused_profiles_total[$__rate_interval])\n)",
+                        "expr": "sum by (receiver, data_type) (\n  label_replace(rate(otelcol_receiver_refused_metric_points_total[$__rate_interval]), \"data_type\", \"metrics\", \"receiver\", \".*\") or\n  label_replace(rate(otelcol_receiver_refused_log_records_total[$__rate_interval]), \"data_type\", \"logs\", \"receiver\", \".*\") or\n  label_replace(rate(otelcol_receiver_refused_spans_total[$__rate_interval]), \"data_type\", \"traces\", \"receiver\", \".*\")\n)",
                         "instant": false,
                         "legendFormat": "{{receiver}} · {{data_type}}",
                         "queryType": "range",
@@ -646,7 +646,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "sum by (exporter, data_type) (\n  rate(otelcol_exporter_sent_metric_points_total[$__rate_interval]) or\n  rate(otelcol_exporter_sent_log_records_total[$__rate_interval]) or\n  rate(otelcol_exporter_sent_spans_total[$__rate_interval]) or\n  rate(otelcol_exporter_sent_profiles_total[$__rate_interval])\n)",
+                        "expr": "sum by (exporter, data_type) (\n  label_replace(rate(otelcol_exporter_sent_metric_points_total[$__rate_interval]), \"data_type\", \"metrics\", \"exporter\", \".*\") or\n  label_replace(rate(otelcol_exporter_sent_log_records_total[$__rate_interval]), \"data_type\", \"logs\", \"exporter\", \".*\") or\n  label_replace(rate(otelcol_exporter_sent_spans_total[$__rate_interval]), \"data_type\", \"traces\", \"exporter\", \".*\") or\n  label_replace(rate(otelcol_exporter_sent_profile_samples_total[$__rate_interval]), \"data_type\", \"profiles\", \"exporter\", \".*\")\n)",
                         "instant": false,
                         "legendFormat": "{{exporter}} · {{data_type}}",
                         "queryType": "range",
@@ -770,7 +770,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "sum by (exporter, data_type) (\n  rate(otelcol_exporter_send_failed_metric_points_total[$__rate_interval]) or\n  rate(otelcol_exporter_send_failed_log_records_total[$__rate_interval]) or\n  rate(otelcol_exporter_send_failed_spans_total[$__rate_interval]) or\n  rate(otelcol_exporter_send_failed_profiles_total[$__rate_interval])\n)",
+                        "expr": "sum by (exporter, data_type) (\n  label_replace(rate(otelcol_exporter_send_failed_metric_points_total[$__rate_interval]), \"data_type\", \"metrics\", \"exporter\", \".*\") or\n  label_replace(rate(otelcol_exporter_send_failed_log_records_total[$__rate_interval]), \"data_type\", \"logs\", \"exporter\", \".*\") or\n  label_replace(rate(otelcol_exporter_send_failed_spans_total[$__rate_interval]), \"data_type\", \"traces\", \"exporter\", \".*\") or\n  label_replace(rate(otelcol_exporter_send_failed_profile_samples_total[$__rate_interval]), \"data_type\", \"profiles\", \"exporter\", \".*\")\n)",
                         "instant": false,
                         "legendFormat": "{{exporter}} · {{data_type}}",
                         "queryType": "range",
@@ -1144,7 +1144,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "sum(otelcol_process_memory_rss_bytes)",
+                        "expr": "sum(otelcol_process_memory_rss)",
                         "instant": false,
                         "legendFormat": "RSS",
                         "queryType": "range",
