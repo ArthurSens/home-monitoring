@@ -3,18 +3,26 @@ locals {
     metrics = {
       display_name = "metric"
       metric_name  = "metric_points"
+      exporter     = "otlp_http/grafana_cloud"
+      destination  = "Grafana Cloud"
     }
     traces = {
       display_name = "trace"
       metric_name  = "spans"
+      exporter     = "otlp_http/grafana_cloud"
+      destination  = "Grafana Cloud"
     }
     profiles = {
       display_name = "profile"
-      metric_name  = "profiles"
+      metric_name  = "profile_samples"
+      exporter     = "otlp_http/pyroscope"
+      destination  = "local Pyroscope"
     }
     logs = {
       display_name = "log"
       metric_name  = "log_records"
+      exporter     = "otlp_http/grafana_cloud"
+      destination  = "Grafana Cloud"
     }
   }
 }
@@ -23,7 +31,7 @@ resource "grafana_slo" "collector_export" {
   for_each = local.collector_export_slos
 
   name        = "Collector ${each.value.display_name} export reliability"
-  description = "Tracks the fraction of ${each.value.display_name} telemetry items exported successfully by the home-monitoring collector."
+  description = "Tracks the fraction of ${each.value.display_name} telemetry items exported successfully from the home-monitoring collector to ${each.value.destination}."
 
   query {
     type = "freeform"
@@ -32,20 +40,20 @@ resource "grafana_slo" "collector_export" {
       query = <<-PROMQL
         (
           (
-            sum(rate(otelcol_exporter_sent_${each.value.metric_name}_total{data_type="${each.key}"}[$__rate_interval]))
+            sum(rate(otelcol_exporter_sent_${each.value.metric_name}_total{exporter="${each.value.exporter}"}[$__rate_interval]))
             /
             (
-              sum(rate(otelcol_exporter_sent_${each.value.metric_name}_total{data_type="${each.key}"}[$__rate_interval]))
-              + (sum(rate(otelcol_exporter_send_failed_${each.value.metric_name}_total{data_type="${each.key}"}[$__rate_interval])) or vector(0))
-              + (sum(rate(otelcol_exporter_enqueue_failed_${each.value.metric_name}_total{data_type="${each.key}"}[$__rate_interval])) or vector(0))
+              sum(rate(otelcol_exporter_sent_${each.value.metric_name}_total{exporter="${each.value.exporter}"}[$__rate_interval]))
+              + (sum(rate(otelcol_exporter_send_failed_${each.value.metric_name}_total{exporter="${each.value.exporter}"}[$__rate_interval])) or vector(0))
+              + (sum(rate(otelcol_exporter_enqueue_failed_${each.value.metric_name}_total{exporter="${each.value.exporter}"}[$__rate_interval])) or vector(0))
             )
           )
           unless
           (
             (
-              sum(rate(otelcol_exporter_sent_${each.value.metric_name}_total{data_type="${each.key}"}[$__rate_interval]))
-              + (sum(rate(otelcol_exporter_send_failed_${each.value.metric_name}_total{data_type="${each.key}"}[$__rate_interval])) or vector(0))
-              + (sum(rate(otelcol_exporter_enqueue_failed_${each.value.metric_name}_total{data_type="${each.key}"}[$__rate_interval])) or vector(0))
+              sum(rate(otelcol_exporter_sent_${each.value.metric_name}_total{exporter="${each.value.exporter}"}[$__rate_interval]))
+              + (sum(rate(otelcol_exporter_send_failed_${each.value.metric_name}_total{exporter="${each.value.exporter}"}[$__rate_interval])) or vector(0))
+              + (sum(rate(otelcol_exporter_enqueue_failed_${each.value.metric_name}_total{exporter="${each.value.exporter}"}[$__rate_interval])) or vector(0))
             ) == 0
           )
         )
