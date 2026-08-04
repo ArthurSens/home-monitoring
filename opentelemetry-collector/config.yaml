@@ -60,11 +60,11 @@ receivers:
       collection_interval: 1m
   pprof/prometheus_heap:
     remote:
-      endpoint: http://prometheus:9090/debug/pprof/heap
+      endpoint: http://prometheus:9090/debug/pprof/heap?seconds=10
       collection_interval: 1m
   pprof/prometheus_allocs:
     remote:
-      endpoint: http://prometheus:9090/debug/pprof/allocs
+      endpoint: http://prometheus:9090/debug/pprof/allocs?seconds=10
       collection_interval: 1m
   pprof/prometheus_goroutine:
     remote:
@@ -76,11 +76,11 @@ receivers:
       collection_interval: 1m
   pprof/alertmanager_heap:
     remote:
-      endpoint: http://alertmanager:9093/debug/pprof/heap
+      endpoint: http://alertmanager:9093/debug/pprof/heap?seconds=10
       collection_interval: 1m
   pprof/alertmanager_allocs:
     remote:
-      endpoint: http://alertmanager:9093/debug/pprof/allocs
+      endpoint: http://alertmanager:9093/debug/pprof/allocs?seconds=10
       collection_interval: 1m
   pprof/alertmanager_goroutine:
     remote:
@@ -92,11 +92,11 @@ receivers:
       collection_interval: 1m
   pprof/grafana_heap:
     remote:
-      endpoint: http://grafana:6060/debug/pprof/heap
+      endpoint: http://grafana:6060/debug/pprof/heap?seconds=10
       collection_interval: 1m
   pprof/grafana_allocs:
     remote:
-      endpoint: http://grafana:6060/debug/pprof/allocs
+      endpoint: http://grafana:6060/debug/pprof/allocs?seconds=10
       collection_interval: 1m
   pprof/grafana_goroutine:
     remote:
@@ -107,11 +107,11 @@ receivers:
       collection_interval: 1m
   pprof/otel-collector_heap:
     remote:
-      endpoint: http://localhost:1888/debug/pprof/heap
+      endpoint: http://localhost:1888/debug/pprof/heap?seconds=10
       collection_interval: 1m
   pprof/otel-collector_allocs:
     remote:
-      endpoint: http://localhost:1888/debug/pprof/allocs
+      endpoint: http://localhost:1888/debug/pprof/allocs?seconds=10
       collection_interval: 1m
   pprof/otel-collector_goroutine:
     remote:
@@ -123,11 +123,11 @@ receivers:
       collection_interval: 1m
   pprof/node_exporter_heap:
     remote:
-      endpoint: http://node_exporter:9100/debug/pprof/heap
+      endpoint: http://node_exporter:9100/debug/pprof/heap?seconds=10
       collection_interval: 1m
   pprof/node_exporter_allocs:
     remote:
-      endpoint: http://node_exporter:9100/debug/pprof/allocs
+      endpoint: http://node_exporter:9100/debug/pprof/allocs?seconds=10
       collection_interval: 1m
   pprof/node_exporter_goroutine:
     remote:
@@ -139,11 +139,11 @@ receivers:
       collection_interval: 1m
   pprof/blackbox_exporter_heap:
     remote:
-      endpoint: http://blackbox_exporter:9115/debug/pprof/heap
+      endpoint: http://blackbox_exporter:9115/debug/pprof/heap?seconds=10
       collection_interval: 1m
   pprof/blackbox_exporter_allocs:
     remote:
-      endpoint: http://blackbox_exporter:9115/debug/pprof/allocs
+      endpoint: http://blackbox_exporter:9115/debug/pprof/allocs?seconds=10
       collection_interval: 1m
   pprof/blackbox_exporter_goroutine:
     remote:
@@ -155,11 +155,11 @@ receivers:
       collection_interval: 1m
   pprof/loki_heap:
     remote:
-      endpoint: http://loki:3100/debug/pprof/heap
+      endpoint: http://loki:3100/debug/pprof/heap?seconds=10
       collection_interval: 1m
   pprof/loki_allocs:
     remote:
-      endpoint: http://loki:3100/debug/pprof/allocs
+      endpoint: http://loki:3100/debug/pprof/allocs?seconds=10
       collection_interval: 1m
   pprof/loki_goroutine:
     remote:
@@ -171,11 +171,11 @@ receivers:
       collection_interval: 1m
   pprof/tempo_heap:
     remote:
-      endpoint: http://tempo:3200/debug/pprof/heap
+      endpoint: http://tempo:3200/debug/pprof/heap?seconds=10
       collection_interval: 1m
   pprof/tempo_allocs:
     remote:
-      endpoint: http://tempo:3200/debug/pprof/allocs
+      endpoint: http://tempo:3200/debug/pprof/allocs?seconds=10
       collection_interval: 1m
   pprof/tempo_goroutine:
     remote:
@@ -187,11 +187,11 @@ receivers:
       collection_interval: 1m
   pprof/pyroscope_heap:
     remote:
-      endpoint: http://pyroscope:4040/debug/pprof/heap
+      endpoint: http://pyroscope:4040/debug/pprof/heap?seconds=10
       collection_interval: 1m
   pprof/pyroscope_allocs:
     remote:
-      endpoint: http://pyroscope:4040/debug/pprof/allocs
+      endpoint: http://pyroscope:4040/debug/pprof/allocs?seconds=10
       collection_interval: 1m
   pprof/pyroscope_goroutine:
     remote:
