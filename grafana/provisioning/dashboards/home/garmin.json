@@ -585,9 +585,9 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_exporter_build_info",
+                        "expr": "up{service_name=\"garmin_exporter\"}",
                         "instant": true,
-                        "legendFormat": "{{version}}",
+                        "legendFormat": "Garmin exporter",
                         "queryType": "instant",
                         "range": false
                       },
@@ -601,10 +601,10 @@
               "transformations": []
             }
           },
-          "description": "Garmin exporter version and build metadata. Check this to verify you’re running the latest version. Include this info when reporting issues or requesting support.",
+          "description": "Whether Prometheus can currently scrape the Garmin exporter.",
           "id": 104,
           "links": [],
-          "title": "Exporter Version",
+          "title": "Exporter Status",
           "vizConfig": {
             "group": "stat",
             "kind": "VizConfig",
@@ -1061,7 +1061,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_heartrate_resting_bpm",
+                        "expr": "garmin_heartrate_resting_bpm_per_min",
                         "instant": false,
                         "legendFormat": "Resting BPM",
                         "queryType": "range",
@@ -1084,7 +1084,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_heartrate_max_bpm",
+                        "expr": "garmin_heartrate_max_bpm_per_min",
                         "instant": false,
                         "legendFormat": "Max BPM",
                         "queryType": "range",
@@ -1107,7 +1107,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_heartrate_min_bpm",
+                        "expr": "garmin_heartrate_min_bpm_per_min",
                         "instant": false,
                         "legendFormat": "Min BPM",
                         "queryType": "range",
@@ -1130,7 +1130,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_heartrate_seven_day_avg_resting_bpm",
+                        "expr": "garmin_heartrate_seven_day_avg_resting_bpm_per_min",
                         "instant": false,
                         "legendFormat": "7-day Avg Resting",
                         "queryType": "range",
@@ -1252,7 +1252,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_sleep_hrv_last_night_ms",
+                        "expr": "garmin_sleep_hrv_last_night_ms_milliseconds",
                         "instant": false,
                         "legendFormat": "Last Night HRV",
                         "queryType": "range",
@@ -1275,7 +1275,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_sleep_hrv_weekly_avg_ms",
+                        "expr": "garmin_sleep_hrv_weekly_avg_ms_milliseconds",
                         "instant": false,
                         "legendFormat": "7-day Avg HRV",
                         "queryType": "range",
@@ -1298,7 +1298,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_training_readiness_hrv_weekly_avg_ms",
+                        "expr": "garmin_training_readiness_hrv_weekly_avg_ms_milliseconds",
                         "instant": false,
                         "legendFormat": "Training HRV Baseline",
                         "queryType": "range",
@@ -1952,7 +1952,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_wellness_active_kilocalories",
+                        "expr": "garmin_wellness_active_kilocalories_kcal",
                         "instant": false,
                         "legendFormat": "Active",
                         "queryType": "range",
@@ -1975,7 +1975,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_wellness_bmr_kilocalories",
+                        "expr": "garmin_wellness_bmr_kilocalories_kcal",
                         "instant": false,
                         "legendFormat": "BMR (Base Metabolic)",
                         "queryType": "range",
@@ -1998,7 +1998,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_wellness_total_kilocalories",
+                        "expr": "garmin_wellness_total_kilocalories_kcal",
                         "instant": false,
                         "legendFormat": "Total",
                         "queryType": "range",
@@ -2440,7 +2440,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_heartrate_resting_bpm",
+                        "expr": "garmin_heartrate_resting_bpm_per_min",
                         "instant": true,
                         "legendFormat": "Resting BPM",
                         "queryType": "instant",
@@ -3321,7 +3321,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_training_vo2max_generic",
+                        "expr": "garmin_training_vo2max_generic_mL_per_min_kg",
                         "instant": true,
                         "legendFormat": "VO₂ Max",
                         "queryType": "instant",
@@ -3752,7 +3752,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_respiration_avg_waking_bpm",
+                        "expr": "garmin_respiration_avg_waking_bpm_per_min",
                         "instant": false,
                         "legendFormat": "Avg Waking",
                         "queryType": "range",
@@ -3775,7 +3775,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_respiration_highest_bpm",
+                        "expr": "garmin_respiration_highest_bpm_per_min",
                         "instant": false,
                         "legendFormat": "Highest",
                         "queryType": "range",
@@ -3798,7 +3798,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_respiration_lowest_bpm",
+                        "expr": "garmin_respiration_lowest_bpm_per_min",
                         "instant": false,
                         "legendFormat": "Lowest",
                         "queryType": "range",
@@ -3885,7 +3885,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_sleep_avg_respiration_bpm",
+                        "expr": "garmin_sleep_avg_respiration_bpm_per_min",
                         "instant": false,
                         "legendFormat": "Avg Sleep",
                         "queryType": "range",
@@ -3908,7 +3908,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_sleep_highest_respiration_bpm",
+                        "expr": "garmin_sleep_highest_respiration_bpm_per_min",
                         "instant": false,
                         "legendFormat": "Highest Sleep",
                         "queryType": "range",
@@ -3931,7 +3931,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_sleep_lowest_respiration_bpm",
+                        "expr": "garmin_sleep_lowest_respiration_bpm_per_min",
                         "instant": false,
                         "legendFormat": "Lowest Sleep",
                         "queryType": "range",
@@ -4285,7 +4285,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_sleep_hrv_baseline_balanced_low_ms",
+                        "expr": "garmin_sleep_hrv_baseline_balanced_low_ms_milliseconds",
                         "instant": true,
                         "legendFormat": "Balanced Low",
                         "queryType": "instant",
@@ -4308,7 +4308,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_sleep_hrv_baseline_balanced_upper_ms",
+                        "expr": "garmin_sleep_hrv_baseline_balanced_upper_ms_milliseconds",
                         "instant": true,
                         "legendFormat": "Balanced Upper",
                         "queryType": "instant",
@@ -4331,7 +4331,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_sleep_hrv_baseline_low_upper_ms",
+                        "expr": "garmin_sleep_hrv_baseline_low_upper_ms_milliseconds",
                         "instant": true,
                         "legendFormat": "Low Upper",
                         "queryType": "instant",
@@ -4354,7 +4354,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_sleep_hrv_last_night_5min_high_ms",
+                        "expr": "garmin_sleep_hrv_last_night_5min_high_ms_milliseconds",
                         "instant": true,
                         "legendFormat": "Last Night 5min High",
                         "queryType": "instant",
@@ -5119,7 +5119,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "app": "grafana-assistant-app",
-                        "expr": "garmin_activity_calories_total",
+                        "expr": "garmin_activity_calories_total_kcal",
                         "instant": true,
                         "legendFormat": "{{type}}",
                         "queryType": "instant",
