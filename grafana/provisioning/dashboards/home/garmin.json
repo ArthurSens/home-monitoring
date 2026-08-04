@@ -5971,7 +5971,7 @@
           "options": [],
           "pluginId": "prometheus",
           "refresh": "onDashboardLoad",
-          "regex": "",
+          "regex": "/(^Prometheus$|-prom$)/",
           "skipUrlSync": false
         }
       }

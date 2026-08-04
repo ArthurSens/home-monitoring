@@ -827,7 +827,7 @@
           "multi": false,
           "options": [],
           "refresh": 1,
-          "regex": "",
+          "regex": "/(^Prometheus$|-prom$)/",
           "skipUrlSync": false
         },
         {
@@ -845,7 +845,7 @@
           "multi": false,
           "options": [],
           "refresh": 1,
-          "regex": "",
+          "regex": "/(^Loki$|-logs$)/",
           "skipUrlSync": false
         },
         {

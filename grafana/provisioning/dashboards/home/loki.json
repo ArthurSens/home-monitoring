@@ -2114,7 +2114,7 @@
             "name": "datasource",
             "pluginId": "prometheus",
             "refresh": "onDashboardLoad",
-            "regex": "",
+            "regex": "/(^Prometheus$|-prom$)/",
             "current": {
               "text": "",
               "value": ""
@@ -2134,7 +2134,7 @@
             "name": "loki_datasource",
             "pluginId": "loki",
             "refresh": "onDashboardLoad",
-            "regex": "",
+            "regex": "/(^Loki$|-logs$)/",
             "current": {
               "text": "",
               "value": ""

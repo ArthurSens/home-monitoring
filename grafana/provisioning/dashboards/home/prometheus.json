@@ -2420,7 +2420,7 @@
             "name": "datasource",
             "pluginId": "prometheus",
             "refresh": "onDashboardLoad",
-            "regex": "",
+            "regex": "/(^Prometheus$|-prom$)/",
             "current": {
               "text": "Prometheus",
               "value": "prometheus"
