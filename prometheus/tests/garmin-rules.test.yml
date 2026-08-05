@@ -4,23 +4,45 @@ rule_files:
 evaluation_interval: 1m
 
 tests:
-  - name: hydration rules use OTLP unit-suffixed metrics
+  - name: hydration rules keep Garmin accounts separate
     interval: 1m
     input_series:
-      - series: garmin_hydration_intake_ml_mL
-        values: 500x10
-      - series: garmin_hydration_goal_ml_mL
-        values: 2500x10
-      - series: garmin_hydration_sweat_loss_ml_mL
-        values: 300x10
+      - series: garmin_hydration_intake_ml_mL{garmin_account="arthur"}
+        values: 500x800
+      - series: garmin_hydration_goal_ml_mL{garmin_account="arthur"}
+        values: 2500x800
+      - series: garmin_hydration_sweat_loss_ml_mL{garmin_account="arthur"}
+        values: 300x800
+      - series: garmin_hydration_intake_ml_mL{garmin_account="julia"}
+        values: 3000x800
+      - series: garmin_hydration_goal_ml_mL{garmin_account="julia"}
+        values: 2000x800
+      - series: garmin_hydration_sweat_loss_ml_mL{garmin_account="julia"}
+        values: 100x800
     promql_expr_test:
       - expr: garmin:hydration_target_ml
         eval_time: 5m
         exp_samples:
-          - labels: garmin:hydration_target_ml
+          - labels: garmin:hydration_target_ml{garmin_account="arthur"}
             value: 2800
+          - labels: garmin:hydration_target_ml{garmin_account="julia"}
+            value: 2100
       - expr: garmin:hydration_progress:ratio
         eval_time: 5m
         exp_samples:
-          - labels: garmin:hydration_progress:ratio
+          - labels: garmin:hydration_progress:ratio{garmin_account="arthur"}
             value: 0.17857142857142858
+          - labels: garmin:hydration_progress:ratio{garmin_account="julia"}
+            value: 1
+    alert_rule_test:
+      - eval_time: 12h
+        alertname: HydrationBehindPace
+        exp_alerts:
+          - exp_labels:
+              alertname: HydrationBehindPace
+              garmin_account: arthur
+              severity: critical
+              service: hydration
+              team: garmin-health
+            exp_annotations:
+              description: "Hydration intake is not on track to reach today's Garmin goal plus sweat loss."

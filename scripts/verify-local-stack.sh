@@ -19,7 +19,8 @@ PYROSCOPE_URL=${PYROSCOPE_URL:-http://localhost:4040}
 EXPECTED_PROMETHEUS_JOBS=(
   home-monitoring/alertmanager
   home-monitoring/blackbox_exporter
-  home-monitoring/garmin_exporter
+  home-monitoring/garmin_exporter_arthur
+  home-monitoring/garmin_exporter_julia
   home-monitoring/grafana
   home-monitoring/loki
   home-monitoring/node_exporter
@@ -32,7 +33,8 @@ EXPECTED_PROMETHEUS_JOBS=(
 EXPECTED_LOKI_LOG_SERVICES=(
   alertmanager
   blackbox_exporter
-  garmin_exporter
+  garmin_exporter_arthur
+  garmin_exporter_julia
   grafana
   loki
   node_exporter
@@ -44,7 +46,8 @@ EXPECTED_LOKI_LOG_SERVICES=(
 
 CI_QUIET_LOKI_LOG_SERVICES=(
   blackbox_exporter
-  garmin_exporter
+  garmin_exporter_arthur
+  garmin_exporter_julia
   node_exporter
   prometheus
 )
@@ -75,7 +78,8 @@ EXPECTED_PROFILE_SERVICES=(
 
 # Services that may exit or restart when credentials are invalid (e.g. CI placeholders).
 COMPOSE_RUNNING_OPTIONAL_SERVICES=(
-  garmin_exporter
+  garmin_exporter_arthur
+  garmin_exporter_julia
 )
 
 usage() {
@@ -397,7 +401,7 @@ PY
 
 loki_has_app_o11y_service_logs() {
   local query response
-  query='sum by (service_name, service_namespace, deployment_environment) (count_over_time({service_namespace="home-monitoring", deployment_environment="homelab", service_name=~"prometheus|grafana|otel-collector|loki|tempo|pyroscope|alertmanager|node_exporter|blackbox_exporter|garmin_exporter"}[5m]))'
+  query='sum by (service_name, service_namespace, deployment_environment) (count_over_time({service_namespace="home-monitoring", deployment_environment="homelab", service_name=~"prometheus|grafana|otel-collector|loki|tempo|pyroscope|alertmanager|node_exporter|blackbox_exporter|garmin_exporter_arthur|garmin_exporter_julia"}[5m]))'
   response=$(curl -fsS --get "${LOKI_URL}/loki/api/v1/query" \
     --data-urlencode "query=${query}")
 

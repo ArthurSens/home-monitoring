@@ -3,12 +3,19 @@ groups:
   rules:
 
   - record: garmin:hydration_target_ml
-    expr: (garmin_hydration_goal_ml_mL + garmin_hydration_sweat_loss_ml_mL) or garmin_hydration_goal_ml_mL
+    expr: |
+      (
+        max by (garmin_account) (garmin_hydration_goal_ml_mL)
+        +
+        max by (garmin_account) (garmin_hydration_sweat_loss_ml_mL)
+      )
+      or
+      max by (garmin_account) (garmin_hydration_goal_ml_mL)
 
   - record: garmin:hydration_progress:ratio
     expr: |
       clamp_max(
-        garmin_hydration_intake_ml_mL
+        max by (garmin_account) (garmin_hydration_intake_ml_mL)
           / garmin:hydration_target_ml
           and garmin:hydration_target_ml > 0,
         1
@@ -18,11 +25,13 @@ groups:
   - alert: HydrationBehindPace
     expr: |
       (
-        predict_linear(
-          garmin_hydration_intake_ml_mL[6h],
-          scalar(
-            (19 - hour(vector(time() - 3 * 3600))) * 3600
-            - minute(vector(time() - 3 * 3600)) * 60
+        max by (garmin_account) (
+          predict_linear(
+            garmin_hydration_intake_ml_mL[6h],
+            scalar(
+              (19 - hour(vector(time() - 3 * 3600))) * 3600
+              - minute(vector(time() - 3 * 3600)) * 60
+            )
           )
         )
           < garmin:hydration_target_ml

@@ -11,110 +11,115 @@ resource "grafana_rule_group" "hydration_pace" {
   folder_uid       = grafana_folder.hydration_alerts.uid
   interval_seconds = 60
 
-  rule {
-    name           = "Hydration behind pace"
-    condition      = "C"
-    no_data_state  = "OK"
-    exec_err_state = "Error"
-    is_paused      = false
+  dynamic "rule" {
+    for_each = local.garmin_accounts
 
-    annotations = {
-      description = "Hydration intake is not on track to reach today's Garmin goal plus sweat loss by 7 PM."
-      summary     = "Hydration is behind pace"
-    }
+    content {
+      name           = "Hydration behind pace (${rule.value})"
+      condition      = "C"
+      no_data_state  = "OK"
+      exec_err_state = "Error"
+      is_paused      = false
 
-    labels = {
-      service  = "hydration"
-      severity = "critical"
-      team     = "garmin-health"
-    }
-
-    data {
-      ref_id         = "A"
-      datasource_uid = var.prometheus_datasource_uid
-
-      relative_time_range {
-        from = 21600
-        to   = 0
+      annotations = {
+        description = "Hydration intake is not on track to reach today's Garmin goal plus sweat loss by 7 PM."
+        summary     = "Hydration is behind pace"
       }
 
-      model = jsonencode({
-        datasource = {
-          type = "prometheus"
-          uid  = var.prometheus_datasource_uid
+      labels = {
+        garmin_account = rule.value
+        service        = "hydration"
+        severity       = "critical"
+        team           = "garmin-health"
+      }
+
+      data {
+        ref_id         = "A"
+        datasource_uid = var.prometheus_datasource_uid
+
+        relative_time_range {
+          from = 21600
+          to   = 0
         }
-        editorMode = "code"
-        # PromQL time functions evaluate timestamps in UTC. Update this offset
-        # whenever the hydration alert should follow a different local timezone.
-        expr          = <<-PROMQL
-          (
-            predict_linear(
-              garmin_hydration_intake_ml_mL[6h],
-              scalar(
-                (19 - hour(vector(time() - 3 * 3600))) * 3600
-                - minute(vector(time() - 3 * 3600)) * 60
+
+        model = jsonencode({
+          datasource = {
+            type = "prometheus"
+            uid  = var.prometheus_datasource_uid
+          }
+          editorMode = "code"
+          # PromQL time functions evaluate timestamps in UTC. Update this offset
+          # whenever the hydration alert should follow a different local timezone.
+          expr          = <<-PROMQL
+            (
+              predict_linear(
+                garmin_hydration_intake_ml_mL{garmin_account="${rule.value}"}[6h],
+                scalar(
+                  (19 - hour(vector(time() - 3 * 3600))) * 3600
+                  - minute(vector(time() - 3 * 3600)) * 60
+                )
               )
+                < bool ((garmin_hydration_goal_ml_mL{garmin_account="${rule.value}"} + garmin_hydration_sweat_loss_ml_mL{garmin_account="${rule.value}"}) or garmin_hydration_goal_ml_mL{garmin_account="${rule.value}"})
             )
-              < bool ((garmin_hydration_goal_ml_mL + garmin_hydration_sweat_loss_ml_mL) or garmin_hydration_goal_ml_mL)
-          )
-            and ((garmin_hydration_goal_ml_mL + garmin_hydration_sweat_loss_ml_mL) or garmin_hydration_goal_ml_mL) > 0
-            and on() (hour(vector(time() - 3 * 3600)) >= 7)
-            and on() (hour(vector(time() - 3 * 3600)) < 19)
-        PROMQL
-        hide          = false
-        instant       = true
-        intervalMs    = 1000
-        maxDataPoints = 43200
-        range         = false
-        refId         = "A"
-      })
-    }
-
-    data {
-      ref_id         = "B"
-      datasource_uid = "__expr__"
-
-      relative_time_range {
-        from = 0
-        to   = 0
+              and ((garmin_hydration_goal_ml_mL{garmin_account="${rule.value}"} + garmin_hydration_sweat_loss_ml_mL{garmin_account="${rule.value}"}) or garmin_hydration_goal_ml_mL{garmin_account="${rule.value}"}) > 0
+              and on() (hour(vector(time() - 3 * 3600)) >= 7)
+              and on() (hour(vector(time() - 3 * 3600)) < 19)
+          PROMQL
+          hide          = false
+          instant       = true
+          intervalMs    = 1000
+          maxDataPoints = 43200
+          range         = false
+          refId         = "A"
+        })
       }
 
-      model = jsonencode({
-        datasource = {
-          type = "__expr__"
-          uid  = "__expr__"
+      data {
+        ref_id         = "B"
+        datasource_uid = "__expr__"
+
+        relative_time_range {
+          from = 0
+          to   = 0
         }
-        expression    = "A"
-        hide          = false
-        intervalMs    = 1000
-        maxDataPoints = 43200
-        reducer       = "last"
-        refId         = "B"
-        type          = "reduce"
-      })
-    }
 
-    data {
-      ref_id         = "C"
-      datasource_uid = "__expr__"
-
-      relative_time_range {
-        from = 0
-        to   = 0
+        model = jsonencode({
+          datasource = {
+            type = "__expr__"
+            uid  = "__expr__"
+          }
+          expression    = "A"
+          hide          = false
+          intervalMs    = 1000
+          maxDataPoints = 43200
+          reducer       = "last"
+          refId         = "B"
+          type          = "reduce"
+        })
       }
 
-      model = jsonencode({
-        datasource = {
-          type = "__expr__"
-          uid  = "__expr__"
+      data {
+        ref_id         = "C"
+        datasource_uid = "__expr__"
+
+        relative_time_range {
+          from = 0
+          to   = 0
         }
-        expression    = "$B > 0"
-        hide          = false
-        intervalMs    = 1000
-        maxDataPoints = 43200
-        refId         = "C"
-        type          = "math"
-      })
+
+        model = jsonencode({
+          datasource = {
+            type = "__expr__"
+            uid  = "__expr__"
+          }
+          expression    = "$B > 0"
+          hide          = false
+          intervalMs    = 1000
+          maxDataPoints = 43200
+          refId         = "C"
+          type          = "math"
+        })
+      }
     }
   }
 }
@@ -251,7 +256,7 @@ resource "grafana_notification_policy" "default" {
     }
 
     contact_point = grafana_contact_point.hydration_slo_irm.name
-    group_by      = ["grafana_folder", "alertname"]
+    group_by      = ["grafana_folder", "alertname", "garmin_account"]
   }
 
   policy {
