@@ -59,7 +59,11 @@ jobs:
           printf '%s\n' \
             'GARMIN_USERNAME=local-ci-placeholder' \
             'GARMIN_PASSWORD=local-ci-placeholder' \
-            > secrets/garmin.env
+            > secrets/garmin-arthur.env
+          printf '%s\n' \
+            'GARMIN_USERNAME=local-ci-placeholder' \
+            'GARMIN_PASSWORD=local-ci-placeholder' \
+            > secrets/garmin-julia.env
 
       - name: Validate Compose configuration
         if: steps.changes.outputs.changed == 'true'

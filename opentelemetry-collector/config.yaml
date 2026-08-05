@@ -24,9 +24,16 @@ receivers:
         - job_name: 'node_exporter'
           static_configs:
             - targets: ['node_exporter:9100']
-        - job_name: 'garmin_exporter'
+        - job_name: 'garmin_exporter_arthur'
           static_configs:
-            - targets: ['garmin_exporter:10045']
+            - targets: ['garmin_exporter_arthur:10045']
+              labels:
+                garmin_account: arthur
+        - job_name: 'garmin_exporter_julia'
+          static_configs:
+            - targets: ['garmin_exporter_julia:10045']
+              labels:
+                garmin_account: julia
         - job_name: 'blackbox_exporter'
           metrics_path: /probe
           params:
