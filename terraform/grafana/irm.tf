@@ -86,6 +86,13 @@ resource "grafana_oncall_integration" "hydration_slo" {
   default_route {
     escalation_chain_id = grafana_oncall_escalation_chain.hydration_warning.id
   }
+
+  templates {
+    mobile_app {
+      title   = "{% set alert = payload.alerts[0] %}{% if payload.status == 'resolved' %}✅ Resolved{% else %}🔥 Alert{% endif %}: {{ alert.annotations.summary | default(alert.labels.alertname) }}{% if alert.labels.garmin_account is defined %} — {{ alert.labels.garmin_account | title }}{% endif %}"
+      message = "{{ payload.alerts[0].annotations.description | default('Open Grafana IRM for details.') }}"
+    }
+  }
 }
 
 resource "grafana_oncall_route" "hydration_slo_warning" {
