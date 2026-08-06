@@ -5262,7 +5262,7 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "editorMode": "code",
-                        "expr": "max by (garmin_account) (\n  predict_linear(\n    garmin_hydration_intake_ml_mL{garmin_account=\"$garmin_account\"}[6h],\n    scalar(\n      (19 - hour(vector(time() - 3 * 3600))) * 3600\n      - minute(vector(time() - 3 * 3600)) * 60\n    )\n  )\n)\nand on() (hour(vector(time() - 3 * 3600)) >= 7)\nand on() (hour(vector(time() - 3 * 3600)) < 19)",
+                        "expr": "max by (garmin_account) (\n  predict_linear(\n    garmin_hydration_intake_ml_mL{garmin_account=\"$garmin_account\"}[6h],\n    scalar(\n      (19 - hour(vector(time() - 3 * 3600))) * 3600\n      - minute(vector(time() - 3 * 3600)) * 60\n    )\n  )\n)",
                         "instant": false,
                         "legendFormat": "Predicted @ 7 PM",
                         "queryType": "range",
@@ -5278,7 +5278,7 @@
               "transformations": []
             }
           },
-          "description": "Same pace model as the HydrationBehindPace alert: linear regression over the last 6h, projected to 7 PM BRT. When Predicted @ 7 PM is below Goal + Sweat during 7 AM\u20137 PM, intake is behind pace.",
+          "description": "Same pace model as the HydrationBehindPace alert: linear regression over the last 6h, projected to 7 PM BRT. Shown for the full day on this panel; the alert itself only evaluates 7 AM\u20137 PM. When Predicted @ 7 PM is below Goal + Sweat, intake is behind pace.",
           "id": 108,
           "links": [],
           "title": "Hydration Pace to 7 PM",
