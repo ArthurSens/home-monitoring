@@ -13,7 +13,7 @@
           "enable": true,
           "hide": true,
           "iconColor": "rgba(0, 211, 255, 1)",
-          "name": "Annotations & Alerts",
+          "name": "Annotations \u0026 Alerts",
           "query": {
             "group": "grafana",
             "kind": "DataQuery",
@@ -24,7 +24,7 @@
       }
     ],
     "cursorSync": "Off",
-    "description": "Personal health and fitness metrics from Garmin wearable \u2014 steps, heart rate, sleep, HRV, stress, SpO2, and activity.",
+    "description": "Personal health and fitness metrics from Garmin wearable — steps, heart rate, sleep, HRV, stress, SpO2, and activity.",
     "editable": true,
     "elements": {
       "panel-100": {
@@ -47,10 +47,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_wellness_high_stress_duration_seconds{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "High Stress",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -70,10 +70,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_wellness_avg_stress_duration_seconds{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Avg Stress",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -93,10 +93,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_wellness_low_stress_duration_seconds{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Low Stress",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -116,10 +116,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_wellness_rest_stress_duration_seconds{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Rest",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -131,7 +131,7 @@
               "transformations": []
             }
           },
-          "description": "Time spent in each stress zone throughout the day. Extended time in medium (51\u201375) or high (76\u2013100) stress zones impairs HRV, sleep onset, and next-day recovery capacity.",
+          "description": "Time spent in each stress zone throughout the day. Extended time in medium (51–75) or high (76–100) stress zones impairs HRV, sleep onset, and next-day recovery capacity.",
           "id": 100,
           "links": [],
           "title": "Stress Duration Breakdown",
@@ -186,7 +186,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -210,10 +210,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_trainingstatus_aerobic_low_monthly_load{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Aerobic Low",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -233,10 +233,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_trainingstatus_aerobic_high_monthly_load{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Aerobic High",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -256,10 +256,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_trainingstatus_anaerobic_monthly_load{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Anaerobic",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -326,7 +326,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -350,10 +350,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_trainingstatus_status{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Training Status",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -373,10 +373,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_trainingstatus_acwr_ratio{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "ACWR Ratio",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -396,10 +396,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_trainingstatus_acwr_percent{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "ACWR %",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -411,10 +411,10 @@
               "transformations": []
             }
           },
-          "description": "Current Garmin training status and Acute:Chronic Workload Ratio. Status: Peaking, Productive, Maintaining, Recovery, or Overreaching. Optimal ACWR: 0.8\u20131.3 balances adaptation with injury risk management.",
+          "description": "Current Garmin training status and Acute:Chronic Workload Ratio. Status: Peaking, Productive, Maintaining, Recovery, or Overreaching. Optimal ACWR: 0.8–1.3 balances adaptation with injury risk management.",
           "id": 102,
           "links": [],
-          "title": "Training Status & ACWR",
+          "title": "Training Status \u0026 ACWR",
           "vizConfig": {
             "group": "stat",
             "kind": "VizConfig",
@@ -471,7 +471,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -495,10 +495,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_sleep_total_seconds{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Total Sleep",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -510,7 +510,7 @@
               "transformations": []
             }
           },
-          "description": "Total sleep duration for the last night. Adults need 7\u20139 hours. Consistently under 6 hours is associated with impaired cognition, immune function, hormonal regulation, and physical recovery.",
+          "description": "Total sleep duration for the last night. Adults need 7–9 hours. Consistently under 6 hours is associated with impaired cognition, immune function, hormonal regulation, and physical recovery.",
           "id": 103,
           "links": [],
           "title": "Total Sleep Time",
@@ -562,7 +562,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -586,10 +586,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "up{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Garmin exporter",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -649,7 +649,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -673,10 +673,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_auth_login_success{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Successful Logins",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -753,7 +753,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -778,10 +778,10 @@
                         "app": "grafana-assistant-app",
                         "editorMode": "code",
                         "expr": "garmin_hydration_intake_ml_mL{garmin_account=\"$garmin_account\"} / ((garmin_hydration_goal_ml_mL{garmin_account=\"$garmin_account\"} + garmin_hydration_sweat_loss_ml_mL{garmin_account=\"$garmin_account\"}) or garmin_hydration_goal_ml_mL{garmin_account=\"$garmin_account\"}) * 100",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Hydration %",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -793,7 +793,7 @@
               "transformations": []
             }
           },
-          "description": "Hydration progress toward your daily goal. General guideline: ~35 mL per kg of body weight per day, increasing with activity level and ambient heat. Even 1\u20132% dehydration measurably impairs physical and cognitive performance.",
+          "description": "Hydration progress toward your daily goal. General guideline: ~35 mL per kg of body weight per day, increasing with activity level and ambient heat. Even 1–2% dehydration measurably impairs physical and cognitive performance.",
           "id": 106,
           "links": [],
           "title": "Hydration Goal Progress",
@@ -858,7 +858,7 @@
                 "textMode": "auto"
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -882,10 +882,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_hydration_intake_ml_mL{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Intake",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -905,10 +905,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_hydration_goal_ml_mL{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Goal",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -928,10 +928,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "(garmin_hydration_goal_ml_mL{garmin_account=\"$garmin_account\"} + garmin_hydration_sweat_loss_ml_mL{garmin_account=\"$garmin_account\"}) or garmin_hydration_goal_ml_mL{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Goal + Sweat Loss",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -951,10 +951,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "(garmin_hydration_goal_ml_mL{garmin_account=\"$garmin_account\"} + garmin_hydration_sweat_loss_ml_mL{garmin_account=\"$garmin_account\"}) or garmin_hydration_goal_ml_mL{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Goal + Sweat Loss",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -1038,7 +1038,7 @@
                 "valueMode": "text"
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -1146,7 +1146,7 @@
               "transformations": []
             }
           },
-          "description": "Continuous heart rate throughout the day. Normal resting range: 60\u2013100 bpm. Athletes may see 40\u201360 bpm. Peaks indicate exercise or stress; dips during sleep reflect recovery quality.",
+          "description": "Continuous heart rate throughout the day. Normal resting range: 60–100 bpm. Athletes may see 40–60 bpm. Peaks indicate exercise or stress; dips during sleep reflect recovery quality.",
           "id": 22,
           "links": [],
           "title": "Heart Rate Trends",
@@ -1229,7 +1229,7 @@
                 }
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -1314,7 +1314,7 @@
               "transformations": []
             }
           },
-          "description": "Millisecond variation between consecutive heartbeats. Higher HRV generally indicates better recovery and fitness. Typical range: 20\u201370 ms, though this varies widely by age and fitness level. Track trends rather than absolute values.",
+          "description": "Millisecond variation between consecutive heartbeats. Higher HRV generally indicates better recovery and fitness. Typical range: 20–70 ms, though this varies widely by age and fitness level. Track trends rather than absolute values.",
           "id": 23,
           "links": [],
           "title": "HRV (Heart Rate Variability)",
@@ -1400,7 +1400,7 @@
                 }
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -1424,10 +1424,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_sleep_deep_seconds{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Deep Sleep",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -1447,10 +1447,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_sleep_rem_seconds{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "REM Sleep",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -1470,10 +1470,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_sleep_light_seconds{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Light Sleep",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -1493,10 +1493,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_sleep_awake_seconds{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Awake",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -1508,7 +1508,7 @@
               "transformations": []
             }
           },
-          "description": "Breakdown of sleep into Light, Deep, REM, and Awake periods. Adults need 7\u20139 hours total. Aim for 15\u201320% deep sleep and 20\u201325% REM for optimal recovery and cognitive function.",
+          "description": "Breakdown of sleep into Light, Deep, REM, and Awake periods. Adults need 7–9 hours total. Aim for 15–20% deep sleep and 20–25% REM for optimal recovery and cognitive function.",
           "id": 24,
           "links": [],
           "title": "Sleep Stages",
@@ -1624,7 +1624,7 @@
                 }
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -1709,7 +1709,7 @@
               "transformations": []
             }
           },
-          "description": "Garmin-calculated stress score based on HRV fluctuations. Scale: 0\u201325 (resting), 26\u201350 (low), 51\u201375 (medium), 76\u2013100 (high). Chronic high stress impacts HRV, sleep quality, and recovery.",
+          "description": "Garmin-calculated stress score based on HRV fluctuations. Scale: 0–25 (resting), 26–50 (low), 51–75 (medium), 76–100 (high). Chronic high stress impacts HRV, sleep quality, and recovery.",
           "id": 25,
           "links": [],
           "title": "Stress Levels",
@@ -1764,7 +1764,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -1874,7 +1874,7 @@
               "transformations": []
             }
           },
-          "description": "Daily breakdown of active, sedentary, and lightly active minutes. WHO guidelines recommend 150\u2013300 min of moderate activity per week. Prolonged sedentary periods (>30 min) increase cardiovascular risk.",
+          "description": "Daily breakdown of active, sedentary, and lightly active minutes. WHO guidelines recommend 150–300 min of moderate activity per week. Prolonged sedentary periods (\u003e30 min) increase cardiovascular risk.",
           "id": 26,
           "links": [],
           "title": "Activity Time (Active vs Sedentary)",
@@ -1929,7 +1929,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -2069,7 +2069,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -2186,7 +2186,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -2210,10 +2210,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_intensity_vigorous_minutes_total{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Vigorous",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -2233,10 +2233,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_intensity_moderate_minutes_total{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Moderate",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -2256,10 +2256,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_intensity_weekly_goal_minutes{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Weekly Goal",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -2271,7 +2271,7 @@
               "transformations": []
             }
           },
-          "description": "Cumulative vigorous and moderate intensity exercise minutes per week. WHO recommends \u2265150 min moderate or \u226575 min vigorous activity weekly. Vigorous minutes count double toward the target.",
+          "description": "Cumulative vigorous and moderate intensity exercise minutes per week. WHO recommends ≥150 min moderate or ≥75 min vigorous activity weekly. Vigorous minutes count double toward the target.",
           "id": 29,
           "links": [],
           "title": "Weekly Intensity Minutes",
@@ -2326,7 +2326,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -2350,10 +2350,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_wellness_total_steps{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Steps",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -2417,7 +2417,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -2441,10 +2441,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_heartrate_resting_bpm_per_min{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Resting BPM",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -2456,7 +2456,7 @@
               "transformations": []
             }
           },
-          "description": "Average heart rate during rest, typically measured during sleep. Normal adult range: 60\u2013100 bpm. Lower values (40\u201360 bpm) suggest good cardiovascular fitness. A rising trend may signal illness or overtraining.",
+          "description": "Average heart rate during rest, typically measured during sleep. Normal adult range: 60–100 bpm. Lower values (40–60 bpm) suggest good cardiovascular fitness. A rising trend may signal illness or overtraining.",
           "id": 32,
           "links": [],
           "title": "Resting Heart Rate",
@@ -2508,7 +2508,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -2532,10 +2532,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_training_readiness_score{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Score",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -2547,7 +2547,7 @@
               "transformations": []
             }
           },
-          "description": "Garmin composite score (0\u2013100) estimating how prepared your body is for training. Factors include sleep score, recovery time, HRV status, and training load. A score \u226570 suggests readiness for high-intensity effort.",
+          "description": "Garmin composite score (0–100) estimating how prepared your body is for training. Factors include sleep score, recovery time, HRV status, and training load. A score ≥70 suggests readiness for high-intensity effort.",
           "id": 33,
           "links": [],
           "title": "Training Readiness",
@@ -2601,7 +2601,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -2625,10 +2625,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_spo2_avg_percent{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
-                        "legendFormat": "Avg SpO\u2082",
-                        "queryType": "instant",
-                        "range": false
+                        "instant": false,
+                        "legendFormat": "Avg SpO₂",
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -2648,10 +2648,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_spo2_lowest_percent{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
-                        "legendFormat": "Lowest SpO\u2082",
-                        "queryType": "instant",
-                        "range": false
+                        "instant": false,
+                        "legendFormat": "Lowest SpO₂",
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -2671,10 +2671,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_spo2_seven_day_avg_percent{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
-                        "legendFormat": "7-Day Avg SpO\u2082",
-                        "queryType": "instant",
-                        "range": false
+                        "instant": false,
+                        "legendFormat": "7-Day Avg SpO₂",
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -2686,10 +2686,10 @@
               "transformations": []
             }
           },
-          "description": "Estimated blood oxygen saturation via optical sensor. Normal range: 95\u2013100%. Values of 90\u201394% may warrant attention; below 90% is clinically concerning. Useful for altitude acclimatization or screening sleep-disordered breathing.",
+          "description": "Estimated blood oxygen saturation via optical sensor. Normal range: 95–100%. Values of 90–94% may warrant attention; below 90% is clinically concerning. Useful for altitude acclimatization or screening sleep-disordered breathing.",
           "id": 34,
           "links": [],
-          "title": "Blood Oxygen (SpO\u2082)",
+          "title": "Blood Oxygen (SpO₂)",
           "vizConfig": {
             "group": "stat",
             "kind": "VizConfig",
@@ -2740,7 +2740,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -2764,10 +2764,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_stress_avg_level{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Stress",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -2779,7 +2779,7 @@
               "transformations": []
             }
           },
-          "description": "Average stress score for the day on a 0\u2013100 scale, derived from HRV-based autonomic nervous system analysis. Scores consistently above 75 indicate elevated sympathetic activity and reduced recovery capacity.",
+          "description": "Average stress score for the day on a 0–100 scale, derived from HRV-based autonomic nervous system analysis. Scores consistently above 75 indicate elevated sympathetic activity and reduced recovery capacity.",
           "id": 35,
           "links": [],
           "title": "Avg Stress Level",
@@ -2837,7 +2837,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -2861,10 +2861,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_wellness_total_steps{garmin_account=\"$garmin_account\"} / garmin_wellness_step_goal{garmin_account=\"$garmin_account\"} * 100",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Goal %",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -2930,7 +2930,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -3146,7 +3146,7 @@
                 }
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -3211,7 +3211,7 @@
           "description": "Energy gained (sleep and rest) versus energy consumed (activity and stress) over time. Net negative drain across multiple days indicates accumulated fatigue and a need for recovery or easy days.",
           "id": 54,
           "links": [],
-          "title": "Body Battery Charge & Drain",
+          "title": "Body Battery Charge \u0026 Drain",
           "vizConfig": {
             "group": "gauge",
             "kind": "VizConfig",
@@ -3298,7 +3298,7 @@
                 "textMode": "auto"
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -3322,10 +3322,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_training_vo2max_generic_mL_per_min_kg{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
-                        "legendFormat": "VO\u2082 Max",
-                        "queryType": "instant",
-                        "range": false
+                        "instant": false,
+                        "legendFormat": "VO₂ Max",
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -3337,10 +3337,10 @@
               "transformations": []
             }
           },
-          "description": "Estimated maximum oxygen consumption in mL/kg/min \u2014 a key aerobic fitness indicator. Average adults: 35\u201345 (women), 40\u201350 (men). Elite endurance athletes: 55\u201385. Improves with consistent aerobic training.",
+          "description": "Estimated maximum oxygen consumption in mL/kg/min — a key aerobic fitness indicator. Average adults: 35–45 (women), 40–50 (men). Elite endurance athletes: 55–85. Improves with consistent aerobic training.",
           "id": 55,
           "links": [],
-          "title": "VO\u2082 Max",
+          "title": "VO₂ Max",
           "vizConfig": {
             "group": "stat",
             "kind": "VizConfig",
@@ -3389,7 +3389,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -3413,10 +3413,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_training_readiness_recovery_minutes{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Recovery",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -3480,7 +3480,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -3504,10 +3504,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_training_readiness_sleep_score{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Sleep Score",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -3519,7 +3519,7 @@
               "transformations": []
             }
           },
-          "description": "Garmin sleep score (0\u2013100) reflecting sleep duration, stages, and quality. Scores \u226575 indicate restorative sleep. Poor sleep scores are a leading indicator of next-day performance, mood, and stress levels.",
+          "description": "Garmin sleep score (0–100) reflecting sleep duration, stages, and quality. Scores ≥75 indicate restorative sleep. Poor sleep scores are a leading indicator of next-day performance, mood, and stress levels.",
           "id": 57,
           "links": [],
           "title": "Readiness Sleep Score",
@@ -3573,7 +3573,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -3681,7 +3681,7 @@
               "transformations": []
             }
           },
-          "description": "Estimated finish times for 5K, 10K, half marathon, and marathon distances based on current VO\u2082 Max and training history. Predictions improve in accuracy with more running data over time.",
+          "description": "Estimated finish times for 5K, 10K, half marathon, and marathon distances based on current VO₂ Max and training history. Predictions improve in accuracy with more running data over time.",
           "id": 58,
           "links": [],
           "title": "Race Predictions",
@@ -3729,7 +3729,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -3814,7 +3814,7 @@
               "transformations": []
             }
           },
-          "description": "Average breathing rate during waking hours in breaths per minute. Normal adult range: 12\u201320 breaths/min. Elevated rates can indicate respiratory illness, high stress, or altitude effects.",
+          "description": "Average breathing rate during waking hours in breaths per minute. Normal adult range: 12–20 breaths/min. Elevated rates can indicate respiratory illness, high stress, or altitude effects.",
           "id": 59,
           "links": [],
           "title": "Waking Respiration Rate",
@@ -3862,7 +3862,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -3947,7 +3947,7 @@
               "transformations": []
             }
           },
-          "description": "Average breaths per minute during sleep. Normal range: 12\u201320 breaths/min. Significant fluctuations or values consistently outside this range may indicate sleep-disordered breathing.",
+          "description": "Average breaths per minute during sleep. Normal range: 12–20 breaths/min. Significant fluctuations or values consistently outside this range may indicate sleep-disordered breathing.",
           "id": 60,
           "links": [],
           "title": "Sleep Respiration Rate",
@@ -3995,7 +3995,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -4019,10 +4019,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_sleep_nap_seconds{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Nap",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -4034,7 +4034,7 @@
               "transformations": []
             }
           },
-          "description": "Duration of detected naps (short sleep periods outside the main sleep window). Short naps (10\u201330 min) can improve alertness and performance. Frequent long naps may indicate insufficient nighttime sleep.",
+          "description": "Duration of detected naps (short sleep periods outside the main sleep window). Short naps (10–30 min) can improve alertness and performance. Frequent long naps may indicate insufficient nighttime sleep.",
           "id": 61,
           "links": [],
           "title": "Nap Time",
@@ -4078,7 +4078,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -4102,10 +4102,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_sleep_restless_moments_total{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Restless",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -4169,7 +4169,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -4193,10 +4193,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_sleep_spo2_avg_percent{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
-                        "legendFormat": "Sleep SpO\u2082",
-                        "queryType": "instant",
-                        "range": false
+                        "instant": false,
+                        "legendFormat": "Sleep SpO₂",
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -4208,10 +4208,10 @@
               "transformations": []
             }
           },
-          "description": "Blood oxygen saturation measured via optical sensor during sleep. Normal: 95\u2013100%. Repeated dips below 90% during sleep may indicate sleep apnea and warrant medical evaluation.",
+          "description": "Blood oxygen saturation measured via optical sensor during sleep. Normal: 95–100%. Repeated dips below 90% during sleep may indicate sleep apnea and warrant medical evaluation.",
           "id": 63,
           "links": [],
-          "title": "Sleep SpO\u2082",
+          "title": "Sleep SpO₂",
           "vizConfig": {
             "group": "stat",
             "kind": "VizConfig",
@@ -4262,7 +4262,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -4286,10 +4286,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_sleep_hrv_baseline_balanced_low_ms_milliseconds{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Balanced Low",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -4309,10 +4309,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_sleep_hrv_baseline_balanced_upper_ms_milliseconds{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Balanced Upper",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -4332,10 +4332,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_sleep_hrv_baseline_low_upper_ms_milliseconds{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Low Upper",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -4355,10 +4355,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_sleep_hrv_last_night_5min_high_ms_milliseconds{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Last Night 5min High",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -4418,7 +4418,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -4442,10 +4442,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_wellness_body_battery_latest{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Current",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -4457,7 +4457,7 @@
               "transformations": []
             }
           },
-          "description": "Current Body Battery energy reserve on a 0\u2013100 scale. >75: high readiness; 50\u201375: good; 25\u201350: moderate fatigue; <25: rest is needed before any intense activity. Recharges primarily during sleep.",
+          "description": "Current Body Battery energy reserve on a 0–100 scale. \u003e75: high readiness; 50–75: good; 25–50: moderate fatigue; \u003c25: rest is needed before any intense activity. Recharges primarily during sleep.",
           "id": 67,
           "links": [],
           "title": "Body Battery",
@@ -4515,7 +4515,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -4548,11 +4548,11 @@
                   "showLineNumbers": false,
                   "showMiniMap": false
                 },
-                "content": "<div style=\"display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:12px;text-align:center\">\n  <img\n    src=\"https://a-static.mlcdn.com.br/420x420/smartwatch-gps-garmin-forerunner-265-amoled-music-preto/lojaglobaltechautorizadagarmin/010-02810-10/c7b844b856e446517b048afe38a5bc44.jpeg\"\n    alt=\"Garmin Forerunner 265\"\n    style=\"max-height:200px;max-width:100%;object-fit:contain;filter:drop-shadow(0 6px 16px rgba(0,0,0,0.6))\"\n  />\n</div>",
+                "content": "\u003cdiv style=\"display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:12px;text-align:center\"\u003e\n  \u003cimg\n    src=\"https://a-static.mlcdn.com.br/420x420/smartwatch-gps-garmin-forerunner-265-amoled-music-preto/lojaglobaltechautorizadagarmin/010-02810-10/c7b844b856e446517b048afe38a5bc44.jpeg\"\n    alt=\"Garmin Forerunner 265\"\n    style=\"max-height:200px;max-width:100%;object-fit:contain;filter:drop-shadow(0 6px 16px rgba(0,0,0,0.6))\"\n  /\u003e\n\u003c/div\u003e",
                 "mode": "html"
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -4576,10 +4576,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_device_count{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Devices",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -4635,7 +4635,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -4659,10 +4659,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_device_info{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "{{type}}",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -4674,7 +4674,7 @@
               "transformations": []
             }
           },
-          "description": "Model name of your paired Garmin device. Confirms which device is reporting data and helps identify sensor capabilities (e.g., SpO\u2082, ECG, body temperature) available on that model.",
+          "description": "Model name of your paired Garmin device. Confirms which device is reporting data and helps identify sensor capabilities (e.g., SpO₂, ECG, body temperature) available on that model.",
           "id": 71,
           "links": [],
           "title": "Device Type",
@@ -4718,7 +4718,7 @@
                 "wideLayout": true
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -4742,10 +4742,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_wellness_floors_ascended{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Floors Ascended",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -4765,10 +4765,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_wellness_floors_descended{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Floors Descended",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -4788,10 +4788,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_wellness_floors_ascended_goal{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Ascended Goal",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -4858,7 +4858,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -4979,7 +4979,7 @@
                 "valueMode": "text"
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -5003,10 +5003,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_activity_count{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "{{type}}",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -5026,10 +5026,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_activity_lifetime_count{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "Lifetime Total",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -5096,7 +5096,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       },
@@ -5120,10 +5120,10 @@
                       "spec": {
                         "app": "grafana-assistant-app",
                         "expr": "garmin_activity_calories_total_kcal{garmin_account=\"$garmin_account\"}",
-                        "instant": true,
+                        "instant": false,
                         "legendFormat": "{{type}}",
-                        "queryType": "instant",
-                        "range": false
+                        "queryType": "range",
+                        "range": true
                       },
                       "version": "v0"
                     },
@@ -5190,7 +5190,7 @@
                 "valueMode": "color"
               }
             },
-            "version": "13.1.0-27127308516"
+            "version": "13.2.0-30616302309"
           }
         }
       }
@@ -5332,7 +5332,7 @@
                   ]
                 }
               },
-              "title": "\u2764\ufe0f Heart Rate & HRV"
+              "title": "❤️ Heart Rate \u0026 HRV"
             }
           },
           {
@@ -5387,7 +5387,7 @@
                   ]
                 }
               },
-              "title": "\ud83d\ude34 Sleep"
+              "title": "😴 Sleep"
             }
           },
           {
@@ -5507,7 +5507,7 @@
                   ]
                 }
               },
-              "title": "\ud83c\udfc3 Activity & Wellness"
+              "title": "🏃 Activity \u0026 Wellness"
             }
           },
           {
@@ -5562,7 +5562,7 @@
                   ]
                 }
               },
-              "title": "\ud83d\udd0b Body Battery"
+              "title": "🔋 Body Battery"
             }
           },
           {
@@ -5656,7 +5656,7 @@
                   ]
                 }
               },
-              "title": "\ud83c\udfcb\ufe0f Training & Performance"
+              "title": "🏋️ Training \u0026 Performance"
             }
           },
           {
@@ -5698,7 +5698,7 @@
                   ]
                 }
               },
-              "title": "\ud83e\udec1 Respiration"
+              "title": "🫁 Respiration"
             }
           },
           {
@@ -5779,7 +5779,7 @@
                   ]
                 }
               },
-              "title": "\ud83d\ude34 Extra Sleep Detail"
+              "title": "😴 Extra Sleep Detail"
             }
           },
           {
@@ -5860,7 +5860,7 @@
                   ]
                 }
               },
-              "title": "\u2139\ufe0f Device Info"
+              "title": "ℹ️ Device Info"
             }
           },
           {
@@ -5902,26 +5902,13 @@
                   ]
                 }
               },
-              "title": "\ud83d\udca7 Hydration"
+              "title": "💧 Hydration"
             }
           }
         ]
       }
     },
-    "links": [
-      {
-        "asDropdown": false,
-        "icon": "external link",
-        "includeVars": false,
-        "keepTime": false,
-        "tags": [],
-        "targetBlank": true,
-        "title": "Source (GitHub)",
-        "tooltip": "View source file in repository",
-        "type": "link",
-        "url": "https://github.com/ArthurSens/home-monitoring/blob/master/grafana/provisioning/dashboards/home/garmin.json"
-      }
-    ],
+    "links": [],
     "liveNow": false,
     "preferences": {
       "layout": {
@@ -5948,12 +5935,12 @@
         "1d"
       ],
       "fiscalYearStartMonth": 0,
-      "from": "now-24h",
+      "from": "now/d",
       "hideTimepicker": false,
       "timezone": "browser",
-      "to": "now"
+      "to": "now/d"
     },
-    "title": "Garmin Health & Fitness",
+    "title": "Garmin Health \u0026 Fitness",
     "variables": [
       {
         "kind": "DatasourceVariable",
@@ -5978,19 +5965,20 @@
       {
         "kind": "QueryVariable",
         "spec": {
-          "name": "garmin_account",
+          "allowCustomValue": false,
           "current": {
             "text": "arthur",
             "value": "arthur"
           },
-          "label": "Garmin Account",
           "hide": "dontHide",
-          "refresh": "onDashboardLoad",
-          "skipUrlSync": false,
+          "includeAll": false,
+          "label": "Garmin Account",
+          "multi": false,
+          "name": "garmin_account",
+          "options": [],
           "query": {
-            "kind": "DataQuery",
             "group": "prometheus",
-            "version": "v0",
+            "kind": "DataQuery",
             "spec": {
               "label": "garmin_account",
               "metric": "garmin_auth_login_success",
@@ -5998,17 +5986,13 @@
               "query": "label_values(garmin_auth_login_success,garmin_account)",
               "refId": "PrometheusVariableQueryEditor-VariableQuery"
             },
-            "labels": {
-              "grafana.app/export-label": "prometheus-1"
-            }
+            "version": "v0"
           },
+          "refresh": "onDashboardLoad",
           "regex": "",
           "regexApplyTo": "value",
-          "sort": "alphabeticalAsc",
-          "options": [],
-          "multi": false,
-          "includeAll": false,
-          "allowCustomValue": false
+          "skipUrlSync": false,
+          "sort": "alphabeticalAsc"
         }
       }
     ]
