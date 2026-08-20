@@ -130,7 +130,7 @@ services:
       - "3200:3200"
 
   pyroscope:
-    image: grafana/pyroscope:2.2.0@sha256:7f019d866e474609c7f112d2632d75bdf8ad418c08461fcb5193444bb6dc476d
+    image: grafana/pyroscope:2.2.1@sha256:70cf34fcb09d286080df909c33a95432df2a78ed4f6613b5e998ac17f90e4c3d
     command:
       - --distributor.ingestion-rate-limit-mb=32
       - --distributor.ingestion-burst-size-mb=16
