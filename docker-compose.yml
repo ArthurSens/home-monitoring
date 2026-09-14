@@ -179,7 +179,7 @@ services:
       - --self-profiling.disable-push=true
       - server
     volumes:
-      - ./pyroscope/storage:/var/lib/pyroscope
+      - ./pyroscope/storage:/data
     ports:
       - "4040:4040"
 
