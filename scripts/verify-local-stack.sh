@@ -58,6 +58,7 @@ EXPECTED_PROFILE_RECEIVERS=(
   pprof/blackbox_exporter
   pprof/grafana
   pprof/loki
+  pprof/maintainer-cockpit
   pprof/node_exporter
   pprof/otel-collector
   pprof/prometheus
@@ -70,6 +71,7 @@ EXPECTED_PROFILE_SERVICES=(
   blackbox_exporter
   grafana
   loki
+  maintainer-cockpit
   node_exporter
   otel-collector
   prometheus
