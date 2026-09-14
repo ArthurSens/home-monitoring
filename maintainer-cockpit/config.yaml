@@ -69,30 +69,30 @@ collections:
     description: Open pull requests across selected Prometheus exporters repositories.
     repositories:
       - prometheus/mysqld_exporter
-      # - prometheus/blackbox_exporter
-      # - prometheus/memcached_exporter
-      # - prometheus/exporter-toolkit
-      # - prometheus/snmp_exporter
-      # - prometheus/node_exporter
-      # - prometheus/statsd_exporter
-      # - prometheus/graphite_exporter
-      # - prometheus/collectd_exporter
-      # - prometheus/influxdb_exporter
-      # - prometheus/consul_exporter
-      # - prometheus-community/windows_exporter
-      # - prometheus-community/postgres_exporter
-      # - prometheus-community/pgbouncer_exporter
-      # - prometheus-community/smartctl_exporter
-      # - prometheus-community/json_exporter
-      # - prometheus-community/elasticsearch_exporter
-      # - prometheus-community/fortigate_exporter
-      # - prometheus-community/yet-another-cloudwatch-exporter
-      # - prometheus-community/systemd_exporter
-      # - prometheus-community/bind_exporter
-      # - prometheus-community/ipmi_exporter
-      # - prometheus-community/stackdriver_exporter
-      # - prometheus-community/ecs_exporter
-      # - prometheus-community/rsyslog_exporter
+      - prometheus/blackbox_exporter
+      - prometheus/memcached_exporter
+      - prometheus/exporter-toolkit
+      - prometheus/snmp_exporter
+      - prometheus/node_exporter
+      - prometheus/statsd_exporter
+      - prometheus/graphite_exporter
+      - prometheus/collectd_exporter
+      - prometheus/influxdb_exporter
+      - prometheus/consul_exporter
+      - prometheus-community/windows_exporter
+      - prometheus-community/postgres_exporter
+      - prometheus-community/pgbouncer_exporter
+      - prometheus-community/smartctl_exporter
+      - prometheus-community/json_exporter
+      - prometheus-community/elasticsearch_exporter
+      - prometheus-community/fortigate_exporter
+      - prometheus-community/yet-another-cloudwatch-exporter
+      - prometheus-community/systemd_exporter
+      - prometheus-community/bind_exporter
+      - prometheus-community/ipmi_exporter
+      - prometheus-community/stackdriver_exporter
+      - prometheus-community/ecs_exporter
+      - prometheus-community/rsyslog_exporter
     model_provider: openai
     contribution:
       schedule: "0 3 * * 1"
