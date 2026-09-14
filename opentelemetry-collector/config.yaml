@@ -156,6 +156,22 @@ receivers:
     remote:
       endpoint: http://blackbox_exporter:9115/debug/pprof/goroutine
       collection_interval: 1m
+  pprof/maintainer-cockpit:
+    remote:
+      endpoint: http://maintainer-cockpit:8765/debug/pprof/profile?seconds=10
+      collection_interval: 1m
+  pprof/maintainer-cockpit_heap:
+    remote:
+      endpoint: http://maintainer-cockpit:8765/debug/pprof/heap?seconds=10
+      collection_interval: 1m
+  pprof/maintainer-cockpit_allocs:
+    remote:
+      endpoint: http://maintainer-cockpit:8765/debug/pprof/allocs?seconds=10
+      collection_interval: 1m
+  pprof/maintainer-cockpit_goroutine:
+    remote:
+      endpoint: http://maintainer-cockpit:8765/debug/pprof/goroutine
+      collection_interval: 1m
   pprof/loki:
     remote:
       endpoint: http://loki:3100/debug/pprof/profile?seconds=10
@@ -325,6 +341,17 @@ processors:
       - key: service.namespace
         value: home-monitoring
         action: upsert
+  resource/profiles_maintainer_cockpit:
+    attributes:
+      - key: service.name
+        value: maintainer-cockpit
+        action: upsert
+      - key: service.instance.id
+        value: maintainer-cockpit
+        action: upsert
+      - key: service.namespace
+        value: home-monitoring
+        action: upsert
   resource/profiles_loki:
     attributes:
       - key: service.name
@@ -431,6 +458,10 @@ service:
     profiles/blackbox_exporter:
       receivers: [pprof/blackbox_exporter, pprof/blackbox_exporter_heap, pprof/blackbox_exporter_allocs, pprof/blackbox_exporter_goroutine]
       processors: [resource/home_monitoring, resource/profiles_blackbox_exporter]
+      exporters: [otlp_http/pyroscope]
+    profiles/maintainer-cockpit:
+      receivers: [pprof/maintainer-cockpit, pprof/maintainer-cockpit_heap, pprof/maintainer-cockpit_allocs, pprof/maintainer-cockpit_goroutine]
+      processors: [resource/home_monitoring, resource/profiles_maintainer_cockpit]
       exporters: [otlp_http/pyroscope]
     profiles/loki:
       receivers: [pprof/loki, pprof/loki_heap, pprof/loki_allocs, pprof/loki_goroutine]

@@ -5,6 +5,8 @@ secrets:
     file: ./secrets/grafana-cloud-api-token
   grafana_admin_password:
     file: ./secrets/grafana-admin-password
+  maintainer_cockpit_github_app_private_key:
+    file: ./secrets/maintainer-cockpit-github-app.pem
 
 services:
   prometheus:
@@ -109,6 +111,46 @@ services:
   blackbox_exporter: 
     image: prom/blackbox-exporter:v0.28.0@sha256:e753ff9f3fc458d02cca5eddab5a77e1c175eee484a8925ac7d524f04366c2fc
 
+  maintainer-cockpit:
+    build:
+      context: ../maintainer-cockpit
+    image: maintainer-cockpit:dev
+    command:
+      - serve
+      - --config
+      - /etc/maintainer-cockpit/config.yaml
+      - --database
+      - /var/lib/maintainer-cockpit/maintainer-cockpit.db
+      - --listen
+      - 0.0.0.0:8765
+    env_file:
+      - path: ./secrets/maintainer-cockpit.env
+        required: false
+    environment:
+      OTEL_CONFIG_FILE: /etc/maintainer-cockpit/otel-sdk.yaml
+    volumes:
+      - ./maintainer-cockpit/config.yaml:/etc/maintainer-cockpit/config.yaml:ro
+      - ./maintainer-cockpit/otel-sdk.yaml:/etc/maintainer-cockpit/otel-sdk.yaml:ro
+      - maintainer_cockpit_data:/var/lib/maintainer-cockpit
+    secrets:
+      - source: maintainer_cockpit_github_app_private_key
+        target: maintainer-cockpit-github-app.pem
+    depends_on:
+      - otel-collector
+    restart: unless-stopped
+
+  maintainer-cockpit-caddy:
+    image: caddy:2-alpine@sha256:5f5c8640aae01df9654968d946d8f1a56c497f1dd5c5cda4cf95ab7c14d58648
+    ports:
+      - "127.0.0.1:8443:8443"
+    volumes:
+      - ./maintainer-cockpit/Caddyfile:/etc/caddy/Caddyfile:ro
+      - maintainer_cockpit_caddy_data:/data
+      - maintainer_cockpit_caddy_config:/config
+    depends_on:
+      - maintainer-cockpit
+    restart: unless-stopped
+
   loki:
     image: grafana/loki:3.7.7@sha256:d70e4659623f3e109af669cae76fe2a5dd5be54e2298fe8aed380d982fbc2500
     command: 
@@ -166,3 +208,6 @@ services:
 volumes:
   garmin_data:
   garmin_data_julia:
+  maintainer_cockpit_data:
+  maintainer_cockpit_caddy_data:
+  maintainer_cockpit_caddy_config:

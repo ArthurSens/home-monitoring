@@ -15,6 +15,7 @@ ALERTMANAGER_URL=${ALERTMANAGER_URL:-http://localhost:83}
 LOKI_URL=${LOKI_URL:-http://localhost:3100}
 TEMPO_URL=${TEMPO_URL:-http://localhost:3200}
 PYROSCOPE_URL=${PYROSCOPE_URL:-http://localhost:4040}
+MAINTAINER_COCKPIT_URL=${MAINTAINER_COCKPIT_URL:-https://localhost:8443}
 
 EXPECTED_PROMETHEUS_JOBS=(
   home-monitoring/alertmanager
@@ -57,6 +58,7 @@ EXPECTED_PROFILE_RECEIVERS=(
   pprof/blackbox_exporter
   pprof/grafana
   pprof/loki
+  pprof/maintainer-cockpit
   pprof/node_exporter
   pprof/otel-collector
   pprof/prometheus
@@ -69,6 +71,7 @@ EXPECTED_PROFILE_SERVICES=(
   blackbox_exporter
   grafana
   loki
+  maintainer-cockpit
   node_exporter
   otel-collector
   prometheus
@@ -527,6 +530,7 @@ generate_activity() {
   curl -fsS -o /dev/null "${LOKI_URL}/ready" || true
   curl -fsS -o /dev/null "${TEMPO_URL}/ready" || true
   curl -fsS -o /dev/null "${PYROSCOPE_URL}/ready" || true
+  curl -kfsS -o /dev/null "${MAINTAINER_COCKPIT_URL}/-/healthy" || true
 }
 
 check_running_services() {
@@ -620,6 +624,10 @@ wait_until "Alertmanager is ready" "$TIMEOUT_SECONDS" http_ready "${ALERTMANAGER
 wait_until "Loki is ready" "$TIMEOUT_SECONDS" http_ready "${LOKI_URL}/ready"
 wait_until "Tempo is ready" "$TIMEOUT_SECONDS" http_ready "${TEMPO_URL}/ready"
 wait_until "Pyroscope is ready" "$TIMEOUT_SECONDS" http_ready "${PYROSCOPE_URL}/ready"
+wait_until "Maintainer Cockpit is healthy" "$TIMEOUT_SECONDS" \
+  curl -kfsS -o /dev/null "${MAINTAINER_COCKPIT_URL}/-/healthy"
+wait_until "Maintainer Cockpit is ready" "$TIMEOUT_SECONDS" \
+  curl -kfsS -o /dev/null "${MAINTAINER_COCKPIT_URL}/-/ready"
 
 generate_activity
 
