@@ -1,0 +1,103 @@
+external_base_url: https://localhost:8443
+
+github:
+  schedule: "0 5-19/3 * * 1-5"
+  authentication:
+    profiles:
+      arthursens-app:
+        type: github_app
+        app_id: 4890214
+        installation_id: 160435891
+        private_key:
+          file: /run/secrets/maintainer-cockpit-github-app.pem
+      prometheus-pat:
+        type: fine_grained_pat
+        token:
+          environment: MAINTAINER_COCKPIT_PROMETHEUS_PAT
+      prometheus-community-pat:
+        type: fine_grained_pat
+        token:
+          environment: MAINTAINER_COCKPIT_PROMETHEUS_COMMUNITY_PAT
+    owners:
+      ArthurSens:
+        profiles:
+          - arthursens-app
+      prometheus:
+        profiles:
+          - prometheus-pat
+      prometheus-community:
+        profiles:
+          - prometheus-community-pat
+  user_auth:
+    client_id: Iv23liyITVX8MKvCT57k
+    client_secret:
+      environment: MAINTAINER_COCKPIT_GITHUB_CLIENT_SECRET
+
+deployment_admins:
+  - 24193764
+
+operations:
+  reload_secret:
+    environment: MAINTAINER_COCKPIT_RELOAD_SECRET
+
+model_providers:
+  openai:
+    type: openai
+    base_url: https://api.openai.com/v1
+    model: gpt-5-mini
+    api_key:
+      environment: MAINTAINER_COCKPIT_OPENAI_API_KEY_HOME_MONITORING
+
+collections:
+  - id: arthursens
+    name: ArthurSens
+    description: Open pull requests across selected ArthurSens repositories.
+    repositories:
+      - ArthurSens/home-monitoring
+      - ArthurSens/blog
+      - ArthurSens/prometheus-operator
+    model_provider: openai
+    contribution:
+      schedule: "0 3 * * 1"
+    feature_correlation:
+      schedule: "0 4 * * 1-5"
+    authorization:
+      users:
+        - 24193764
+  - id: prometheus-exporters
+    name: Prometheus Exporters
+    description: Open pull requests across selected Prometheus exporters repositories.
+    repositories:
+      - prometheus/mysqld_exporter
+      # - prometheus/blackbox_exporter
+      # - prometheus/memcached_exporter
+      # - prometheus/exporter-toolkit
+      # - prometheus/snmp_exporter
+      # - prometheus/node_exporter
+      # - prometheus/statsd_exporter
+      # - prometheus/graphite_exporter
+      # - prometheus/collectd_exporter
+      # - prometheus/influxdb_exporter
+      # - prometheus/consul_exporter
+      # - prometheus-community/windows_exporter
+      # - prometheus-community/postgres_exporter
+      # - prometheus-community/pgbouncer_exporter
+      # - prometheus-community/smartctl_exporter
+      # - prometheus-community/json_exporter
+      # - prometheus-community/elasticsearch_exporter
+      # - prometheus-community/fortigate_exporter
+      # - prometheus-community/yet-another-cloudwatch-exporter
+      # - prometheus-community/systemd_exporter
+      # - prometheus-community/bind_exporter
+      # - prometheus-community/ipmi_exporter
+      # - prometheus-community/stackdriver_exporter
+      # - prometheus-community/ecs_exporter
+      # - prometheus-community/rsyslog_exporter
+    model_provider: openai
+    contribution:
+      schedule: "0 3 * * 1"
+    feature_correlation:
+      schedule: "0 4 * * 1-5"
+    authorization:
+      users:
+        - 24193764
