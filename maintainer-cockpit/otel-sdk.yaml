@@ -5,6 +5,15 @@ resource:
     - name: service.name
       value: maintainer-cockpit
 
+logger_provider:
+  processors:
+    - batch:
+        schedule_delay: 1000
+        exporter:
+          otlp_http:
+            endpoint: http://otel-collector:4318/v1/logs
+            timeout: 5000
+
 tracer_provider:
   processors:
     - batch:
