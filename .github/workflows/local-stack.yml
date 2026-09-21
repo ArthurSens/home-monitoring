@@ -1,10 +1,13 @@
 name: Local Stack
 
 on:
-  pull_request:
-  push:
-    branches:
-      - master
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: local-stack
+  cancel-in-progress: false
 
 permissions:
   contents: read
@@ -16,6 +19,12 @@ jobs:
     timeout-minutes: 30
 
     steps:
+      - name: Require master
+        if: github.ref != 'refs/heads/master'
+        run: |
+          echo "::error::Local Stack runs are only supported against master. Selected ref: ${GITHUB_REF}"
+          exit 1
+
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -47,12 +56,92 @@ jobs:
       - name: Verify local stack
         run: scripts/verify-local-stack.sh --timeout 900
 
-      - name: Show stack diagnostics on failure
+      - name: Collect stack diagnostics on failure
         if: failure()
         run: |
-          docker compose ps
-          docker compose logs --no-color --tail=300
+          mkdir -p diagnostics
+          docker compose ps --all > diagnostics/compose-ps.txt 2>&1 || true
+          docker compose logs --no-color --tail=300 > diagnostics/compose-logs.txt 2>&1 || true
+
+      - name: Upload stack diagnostics
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: local-stack-diagnostics-${{ github.run_id }}
+          path: diagnostics/
+          if-no-files-found: warn
+          retention-days: 7
 
       - name: Stop stack
         if: always()
         run: docker compose down --volumes --remove-orphans
+
+  report:
+    name: Update failure issue
+    needs: verify
+    if: ${{ always() && github.ref == 'refs/heads/master' }}
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      issues: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ISSUE_TITLE: Nightly local stack verification failures
+      VERIFY_RESULT: ${{ needs.verify.result }}
+
+    steps:
+      - name: Synchronize failure issue
+        env:
+          RUN_MARKER: <!-- local-stack-run:${{ github.run_id }} -->
+        run: |
+          set -Eeuo pipefail
+
+          run_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          short_sha="${GITHUB_SHA:0:12}"
+          issues_json="$(gh issue list --repo "${GITHUB_REPOSITORY}" --state all --search "\"${ISSUE_TITLE}\" in:title" --limit 100 --json number,title,state)"
+          issue_number="$(jq -r --arg title "${ISSUE_TITLE}" '[.[] | select(.title == $title)][0].number // empty' <<<"${issues_json}")"
+          issue_state="$(jq -r --arg title "${ISSUE_TITLE}" '[.[] | select(.title == $title)][0].state // empty' <<<"${issues_json}")"
+
+          if [[ "${VERIFY_RESULT}" != "success" ]]; then
+            jobs_json="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/jobs?per_page=100")"
+            failed_steps="$(jq -r '[.jobs[].steps[]? | select(.conclusion == "failure") | .name] | unique | if length == 0 then "Unknown; inspect the workflow run" else join(", ") end' <<<"${jobs_json}")"
+
+            if [[ -z "${issue_number}" ]]; then
+              issue_url="$(gh issue create \
+                --repo "${GITHUB_REPOSITORY}" \
+                --title "${ISSUE_TITLE}" \
+                --label ci \
+                --body "Tracks failures from scheduled and manually dispatched Local Stack verification runs. The workflow closes this issue after recovery.")"
+              issue_number="${issue_url##*/}"
+              issue_state="OPEN"
+            elif [[ "${issue_state}" == "CLOSED" ]]; then
+              gh issue reopen "${issue_number}" --repo "${GITHUB_REPOSITORY}"
+            fi
+
+            if ! gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${issue_number}/comments" --jq '.[].body' | grep -Fq "${RUN_MARKER}"; then
+              comment_body="$(printf '%s\n' \
+                "${RUN_MARKER}" \
+                "Local Stack verification failed." \
+                "" \
+                "- Event: ${GITHUB_EVENT_NAME}" \
+                "- Branch: ${GITHUB_REF_NAME}" \
+                "- Commit: ${short_sha}" \
+                "- Failed step(s): ${failed_steps}" \
+                "- Run: ${run_url}")"
+              gh issue comment "${issue_number}" --repo "${GITHUB_REPOSITORY}" --body "${comment_body}"
+            fi
+          elif [[ -n "${issue_number}" && "${issue_state}" == "OPEN" ]]; then
+            if ! gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${issue_number}/comments" --jq '.[].body' | grep -Fq "${RUN_MARKER}"; then
+              comment_body="$(printf '%s\n' \
+                "${RUN_MARKER}" \
+                "Local Stack verification recovered." \
+                "" \
+                "- Event: ${GITHUB_EVENT_NAME}" \
+                "- Branch: ${GITHUB_REF_NAME}" \
+                "- Commit: ${short_sha}" \
+                "- Run: ${run_url}")"
+              gh issue comment "${issue_number}" --repo "${GITHUB_REPOSITORY}" --body "${comment_body}"
+            fi
+            gh issue close "${issue_number}" --repo "${GITHUB_REPOSITORY}"
+          fi
