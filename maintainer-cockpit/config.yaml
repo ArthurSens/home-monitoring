@@ -18,6 +18,10 @@ github:
         type: fine_grained_pat
         token:
           environment: MAINTAINER_COCKPIT_PROMETHEUS_COMMUNITY_PAT
+      open-telemetry-pat:
+        type: fine_grained_pat
+        token:
+          environment: MAINTAINER_COCKPIT_OPEN_TELEMETRY_PAT
     owners:
       ArthurSens:
         profiles:
@@ -28,6 +32,9 @@ github:
       prometheus-community:
         profiles:
           - prometheus-community-pat
+      open-telemetry:
+        profiles:
+          - open-telemetry-pat
   user_auth:
     client_id: Iv23liyITVX8MKvCT57k
     client_secret:
@@ -49,14 +56,72 @@ model_providers:
       environment: MAINTAINER_COCKPIT_OPENAI_API_KEY_HOME_MONITORING
 
 collections:
-  - id: arthursens
-    name: ArthurSens
-    description: Open pull requests across selected ArthurSens repositories.
+  - id: prom-otel-interop
+    name: Prometheus<->OpenTelemetry Interoperability
+    description: Open pull requests related to Prometheus and OpenTelemetry interoperability.
     repositories:
-      - ArthurSens/home-monitoring
-      - ArthurSens/blog
-      - ArthurSens/prometheus-operator
+      - open-telemetry/opentelemetry-collector-contrib
+      - open-telemetry/opentelemetry-collector-releases
+      - open-telemetry/opentelemetry-collector
+      - open-telemetry/opentelemetry-python
+      - open-telemetry/opentelemetry-java
+      - open-telemetry/opentelemetry-cpp
+      - open-telemetry/opentelemetry-erlang
+      - open-telemetry/opentelemetry-ruby
+      - open-telemetry/opentelemetry-php
+      - open-telemetry/opentelemetry-dotnet
+      - open-telemetry/opentelemetry-go
+      - open-telemetry/opentelemetry-rust
+      - open-telemetry/opentelemetry-js
+      - open-telemetry/opentelemetry-kotlin
+      - open-telemetry/opentelemetry-swift
     model_provider: openai
+    discovery:
+      open-telemetry/opentelemetry-collector-contrib:
+        mode: search
+        query: 'is:pr is:open label:pkg/translator/prometheusremotewrite,receiver/prometheus,pkg/translator/prometheus,exporter/prometheusremotewrite,exporter/prometheus,receiver/prometheusremotewrite'
+      open-telemetry/opentelemetry-collector-releases:
+        mode: search
+        query: 'prometheus'
+      open-telemetry/opentelemetry-collector:
+        mode: search
+        query: 'prometheus'
+      open-telemetry/opentelemetry-python:
+        mode: search
+        query: 'prometheus'
+      open-telemetry/opentelemetry-java:
+        mode: search
+        query: 'prometheus'
+      open-telemetry/opentelemetry-cpp:
+        mode: search
+        query: 'prometheus'
+      open-telemetry/opentelemetry-erlang:
+        mode: search
+        query: 'prometheus'
+      open-telemetry/opentelemetry-ruby:
+        mode: search
+        query: 'prometheus'
+      open-telemetry/opentelemetry-php:
+        mode: search
+        query: 'prometheus'
+      open-telemetry/opentelemetry-dotnet:
+        mode: search
+        query: 'prometheus'
+      open-telemetry/opentelemetry-go:
+        mode: search
+        query: 'prometheus'
+      open-telemetry/opentelemetry-rust:
+        mode: search
+        query: 'prometheus'
+      open-telemetry/opentelemetry-js:
+        mode: search
+        query: 'prometheus'
+      open-telemetry/opentelemetry-kotlin:
+        mode: search
+        query: 'prometheus'
+      open-telemetry/opentelemetry-swift:
+        mode: search
+        query: 'prometheus'
     contribution:
       schedule: "0 3 * * 1"
     feature_correlation:
