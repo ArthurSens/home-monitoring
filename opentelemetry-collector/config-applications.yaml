@@ -1,0 +1,52 @@
+receivers:
+  prometheus/applications:
+    config:
+      scrape_configs:
+        - job_name: garmin_exporter_arthur
+          static_configs:
+            - targets: [garmin_exporter_arthur:10045]
+              labels:
+                garmin_account: arthur
+        - job_name: garmin_exporter_julia
+          static_configs:
+            - targets: [garmin_exporter_julia:10045]
+              labels:
+                garmin_account: julia
+  pprof/maintainer-cockpit:
+    remote:
+      endpoint: http://maintainer-cockpit:8765/debug/pprof/profile?seconds=10
+      collection_interval: 1m
+  pprof/maintainer-cockpit_heap:
+    remote:
+      endpoint: http://maintainer-cockpit:8765/debug/pprof/heap?seconds=10
+      collection_interval: 1m
+  pprof/maintainer-cockpit_allocs:
+    remote:
+      endpoint: http://maintainer-cockpit:8765/debug/pprof/allocs?seconds=10
+      collection_interval: 1m
+  pprof/maintainer-cockpit_goroutine:
+    remote:
+      endpoint: http://maintainer-cockpit:8765/debug/pprof/goroutine
+      collection_interval: 1m
+
+processors:
+  resource/profiles_maintainer_cockpit:
+    attributes:
+      - key: service.name
+        value: maintainer-cockpit
+        action: upsert
+      - key: service.instance.id
+        value: maintainer-cockpit
+        action: upsert
+      - key: service.namespace
+        value: home-monitoring
+        action: upsert
+
+service:
+  pipelines:
+    metrics:
+      receivers: [otlp, prometheus, prometheus/applications]
+    profiles/maintainer-cockpit:
+      receivers: [pprof/maintainer-cockpit, pprof/maintainer-cockpit_heap, pprof/maintainer-cockpit_allocs, pprof/maintainer-cockpit_goroutine]
+      processors: [resource/home_monitoring, resource/profiles_maintainer_cockpit]
+      exporters: [otlp_http/pyroscope]

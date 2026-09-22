@@ -11,6 +11,27 @@ distributor:
           endpoint: 0.0.0.0:4318
 
 metrics_generator:
+  processor:
+    service_graphs:
+      dimensions:
+        - service.namespace
+        - deployment.environment
+        - deployment.environment.name
+        - grafana.host.id
+      enable_client_server_prefix: true
+    span_metrics:
+      dimensions:
+        - service.namespace
+        - deployment.environment
+        - deployment.environment.name
+        - grafana.host.id
+      enable_target_info: true
+      enable_instance_label: true
+    host_info:
+      host_identifiers:
+        - k8s.node.name
+        - host.id
+        - grafana.host.id
   storage:
     path: /var/tempo/generator/wal
     remote_write_add_org_id_header: false
@@ -37,3 +58,4 @@ overrides:
       processors:
         - service-graphs
         - span-metrics
+        - host-info

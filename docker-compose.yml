@@ -15,6 +15,7 @@ services:
     user: "1000:1000"
     environment:
       - OTEL_SERVICE_NAME=prometheus
+      - OTEL_RESOURCE_ATTRIBUTES=service.instance.id=prometheus
     ports:
       - 81:9090
     volumes: 
@@ -46,6 +47,7 @@ services:
       - GF_PLUGINS_PREINSTALL=grafana-assistant-app
       - GF_SERVER_ROOT_URL=http://localhost:82/
       - OTEL_SERVICE_NAME=grafana
+      - OTEL_RESOURCE_ATTRIBUTES=service.instance.id=grafana
       - GF_TRACING_OPENTELEMETRY_OTLP_ADDRESS=otel-collector:4317
       - GF_TRACING_OPENTELEMETRY_OTLP_PROPAGATION=w3c
       - GF_DIAGNOSTICS_PROFILING_ENABLED=true
@@ -66,6 +68,7 @@ services:
     image: prom/alertmanager:v0.34.1@sha256:e9733bafb1bdef9b00e25a21f8f99dc26a22224bf16641ad754d1649f4c3357a
     environment:
       - OTEL_SERVICE_NAME=alertmanager
+      - OTEL_RESOURCE_ATTRIBUTES=service.instance.id=alertmanager
     ports: 
       - 83:9093
     command:
@@ -190,17 +193,21 @@ services:
       dockerfile: opentelemetry-collector/Dockerfile
     user: "0:0"
     restart: always # To re-read the configuration file
-    command: ["--config=/etc/otel-collector-config.yaml", "--feature-gates=service.profilesSupport"]
+    command:
+      - --config=/etc/otel-collector/config.yaml
+      - --config=/etc/otel-collector/config-applications.yaml
+      - --config=/etc/otel-collector/config-grafana-cloud.yaml
+      - --feature-gates=service.profilesSupport
     volumes:
-      - ./opentelemetry-collector/config.yaml:/etc/otel-collector-config.yaml
+      - ./opentelemetry-collector/config.yaml:/etc/otel-collector/config.yaml:ro
+      - ./opentelemetry-collector/config-applications.yaml:/etc/otel-collector/config-applications.yaml:ro
+      - ./opentelemetry-collector/config-grafana-cloud.yaml:/etc/otel-collector/config-grafana-cloud.yaml:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
     secrets:
       - grafana_cloud_instance_id
       - grafana_cloud_api_token
     depends_on:
-      - garmin_exporter_arthur
-      - garmin_exporter_julia
       - loki
       - tempo
       - pyroscope

@@ -9,6 +9,7 @@ otlp:
   - service.version
   - deployment.environment
   - deployment.environment.name
+  - grafana.host.id
   - container.name
   keep_identifying_resource_attributes: true
 

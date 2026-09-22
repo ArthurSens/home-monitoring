@@ -1,0 +1,5 @@
+services:
+  otel-collector:
+    command:
+      - --config=/etc/otel-collector/config.yaml
+      - --feature-gates=service.profilesSupport

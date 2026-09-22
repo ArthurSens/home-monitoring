@@ -24,16 +24,6 @@ receivers:
         - job_name: 'node_exporter'
           static_configs:
             - targets: ['node_exporter:9100']
-        - job_name: 'garmin_exporter_arthur'
-          static_configs:
-            - targets: ['garmin_exporter_arthur:10045']
-              labels:
-                garmin_account: arthur
-        - job_name: 'garmin_exporter_julia'
-          static_configs:
-            - targets: ['garmin_exporter_julia:10045']
-              labels:
-                garmin_account: julia
         - job_name: 'blackbox_exporter'
           metrics_path: /probe
           params:
@@ -156,22 +146,6 @@ receivers:
     remote:
       endpoint: http://blackbox_exporter:9115/debug/pprof/goroutine
       collection_interval: 1m
-  pprof/maintainer-cockpit:
-    remote:
-      endpoint: http://maintainer-cockpit:8765/debug/pprof/profile?seconds=10
-      collection_interval: 1m
-  pprof/maintainer-cockpit_heap:
-    remote:
-      endpoint: http://maintainer-cockpit:8765/debug/pprof/heap?seconds=10
-      collection_interval: 1m
-  pprof/maintainer-cockpit_allocs:
-    remote:
-      endpoint: http://maintainer-cockpit:8765/debug/pprof/allocs?seconds=10
-      collection_interval: 1m
-  pprof/maintainer-cockpit_goroutine:
-    remote:
-      endpoint: http://maintainer-cockpit:8765/debug/pprof/goroutine
-      collection_interval: 1m
   pprof/loki:
     remote:
       endpoint: http://loki:3100/debug/pprof/profile?seconds=10
@@ -246,10 +220,6 @@ receivers:
 exporters:
   debug:
     verbosity: detailed
-  otlp_http/grafana_cloud:
-    endpoint: https://otlp-gateway-prod-sa-east-1.grafana.net/otlp
-    auth:
-      authenticator: basicauth/grafana_cloud
   otlp_http/prometheus:
     endpoint: http://prometheus:9090/api/v1/otlp
   otlp_http/loki:
@@ -341,17 +311,6 @@ processors:
       - key: service.namespace
         value: home-monitoring
         action: upsert
-  resource/profiles_maintainer_cockpit:
-    attributes:
-      - key: service.name
-        value: maintainer-cockpit
-        action: upsert
-      - key: service.instance.id
-        value: maintainer-cockpit
-        action: upsert
-      - key: service.namespace
-        value: home-monitoring
-        action: upsert
   resource/profiles_loki:
     attributes:
       - key: service.name
@@ -390,10 +349,6 @@ extensions:
   docker_observer:
     endpoint: unix:///var/run/docker.sock
     include_all_containers: true
-  basicauth/grafana_cloud:
-    client_auth:
-      username_file: /run/secrets/grafana_cloud_instance_id
-      password_file: /run/secrets/grafana_cloud_api_token
   health_check:
   pprof:
     endpoint: :1888
@@ -401,11 +356,12 @@ extensions:
     endpoint: :55679
 
 service:
-  extensions: [docker_observer, basicauth/grafana_cloud, pprof, zpages, health_check]
+  extensions: [docker_observer, pprof, zpages, health_check]
   telemetry:
     resource:
       service.name: otel-collector
       service.namespace: home-monitoring
+      service.instance.id: otel-collector
     metrics:
       readers:
         - pull:
@@ -424,15 +380,15 @@ service:
     metrics:
       receivers: [otlp, prometheus]
       processors: [resource/home_monitoring, batch]
-      exporters: [otlp_http/grafana_cloud, otlp_http/prometheus]
+      exporters: [otlp_http/prometheus]
     logs:
       receivers: [otlp, receiver_creator]
       processors: [resource/home_monitoring, batch]
-      exporters: [otlp_http/loki, otlp_http/grafana_cloud]
+      exporters: [otlp_http/loki]
     traces:
       receivers: [otlp]
       processors: [resource/home_monitoring, batch]
-      exporters: [otlp_http/grafana_cloud, otlp_http/tempo]
+      exporters: [otlp_http/tempo]
     # Grafana Cloud's OTLP gateway does not support OTLP profiles yet.
     # Keep profiles local in Pyroscope until Cloud Profiles supports OTLP ingest.
     profiles/prometheus:
@@ -458,10 +414,6 @@ service:
     profiles/blackbox_exporter:
       receivers: [pprof/blackbox_exporter, pprof/blackbox_exporter_heap, pprof/blackbox_exporter_allocs, pprof/blackbox_exporter_goroutine]
       processors: [resource/home_monitoring, resource/profiles_blackbox_exporter]
-      exporters: [otlp_http/pyroscope]
-    profiles/maintainer-cockpit:
-      receivers: [pprof/maintainer-cockpit, pprof/maintainer-cockpit_heap, pprof/maintainer-cockpit_allocs, pprof/maintainer-cockpit_goroutine]
-      processors: [resource/home_monitoring, resource/profiles_maintainer_cockpit]
       exporters: [otlp_http/pyroscope]
     profiles/loki:
       receivers: [pprof/loki, pprof/loki_heap, pprof/loki_allocs, pprof/loki_goroutine]

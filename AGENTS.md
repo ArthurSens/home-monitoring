@@ -64,7 +64,7 @@ Grafana Cloud.
 
 - Prefer the repo's existing verification scripts and Make targets over ad hoc
   checks.
-- Use `scripts/verify-local-stack.sh` for end-to-end local stack verification
+- Use `go run scripts/verify-local-stack.go` for end-to-end local stack verification
   when changes affect telemetry flow, dashboards, collector pipelines, or
   service identity.
 - For narrow changes, run targeted validation first, such as:

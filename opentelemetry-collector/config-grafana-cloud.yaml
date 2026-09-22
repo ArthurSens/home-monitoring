@@ -1,0 +1,21 @@
+exporters:
+  otlp_http/grafana_cloud:
+    endpoint: https://otlp-gateway-prod-sa-east-1.grafana.net/otlp
+    auth:
+      authenticator: basicauth/grafana_cloud
+
+extensions:
+  basicauth/grafana_cloud:
+    client_auth:
+      username_file: /run/secrets/grafana_cloud_instance_id
+      password_file: /run/secrets/grafana_cloud_api_token
+
+service:
+  extensions: [docker_observer, basicauth/grafana_cloud, pprof, zpages, health_check]
+  pipelines:
+    metrics:
+      exporters: [otlp_http/prometheus, otlp_http/grafana_cloud]
+    logs:
+      exporters: [otlp_http/loki, otlp_http/grafana_cloud]
+    traces:
+      exporters: [otlp_http/tempo, otlp_http/grafana_cloud]
