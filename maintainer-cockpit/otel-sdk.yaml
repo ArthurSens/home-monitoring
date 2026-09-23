@@ -4,6 +4,8 @@ resource:
   attributes:
     - name: service.name
       value: maintainer-cockpit
+    - name: service.instance.id
+      value: maintainer-cockpit
 
 logger_provider:
   processors:

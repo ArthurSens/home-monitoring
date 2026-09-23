@@ -50,11 +50,11 @@ jobs:
           mkdir -p grafana/storage prometheus/storage loki/storage tempo/storage pyroscope/storage
           chmod -R 777 grafana/storage prometheus/storage loki/storage tempo/storage pyroscope/storage
 
-      - name: Validate verification script
-        run: bash -n scripts/verify-local-stack.sh
+      - name: Compile verification command
+        run: go test scripts/verify-local-stack.go
 
       - name: Verify local stack
-        run: scripts/verify-local-stack.sh --timeout 900
+        run: go run scripts/verify-local-stack.go --timeout 900
 
       - name: Collect stack diagnostics on failure
         if: failure()

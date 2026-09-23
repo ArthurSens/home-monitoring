@@ -25,7 +25,7 @@ jobs:
       - name: Detect configuration changes
         id: changes
         run: |
-          pattern='^(\.github/workflows/config-validation\.yml|docker-compose\.yml|alertmanager/.*\.ya?ml|loki/.*\.ya?ml|prometheus/.*\.ya?ml|tempo/.*\.ya?ml|opentelemetry-collector/.*)$'
+          pattern='^(\.github/workflows/config-validation\.yml|docker-compose(\.platform)?\.yml|alertmanager/.*\.ya?ml|loki/.*\.ya?ml|prometheus/.*\.ya?ml|tempo/.*\.ya?ml|opentelemetry-collector/.*)$'
 
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             changed_files="$(git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}")"
@@ -68,6 +68,10 @@ jobs:
       - name: Validate Compose configuration
         if: steps.changes.outputs.changed == 'true'
         run: docker compose config --quiet
+
+      - name: Validate platform Compose configuration
+        if: steps.changes.outputs.changed == 'true'
+        run: docker compose -f docker-compose.yml -f docker-compose.platform.yml config --quiet
 
       - name: Validate Prometheus configuration
         if: steps.changes.outputs.changed == 'true'
@@ -114,6 +118,18 @@ jobs:
         if: steps.changes.outputs.changed == 'true'
         run: docker compose build otel-collector
 
-      - name: Validate collector configuration
+      - name: Validate platform collector configuration
         if: steps.changes.outputs.changed == 'true'
-        run: docker compose run --rm --no-deps otel-collector validate --config=/etc/otel-collector-config.yaml --feature-gates=service.profilesSupport
+        run: >-
+          docker compose run --rm --no-deps otel-collector validate
+          --config=/etc/otel-collector/config.yaml
+          --feature-gates=service.profilesSupport
+
+      - name: Validate complete collector configuration
+        if: steps.changes.outputs.changed == 'true'
+        run: >-
+          docker compose run --rm --no-deps otel-collector validate
+          --config=/etc/otel-collector/config.yaml
+          --config=/etc/otel-collector/config-applications.yaml
+          --config=/etc/otel-collector/config-grafana-cloud.yaml
+          --feature-gates=service.profilesSupport
