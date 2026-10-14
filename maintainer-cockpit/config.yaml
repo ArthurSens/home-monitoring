@@ -63,6 +63,7 @@ collections:
       - open-telemetry/opentelemetry-collector-contrib
       - open-telemetry/opentelemetry-collector-releases
       - open-telemetry/opentelemetry-collector
+      - open-telemetry/opentelemetry-specification
       - open-telemetry/opentelemetry-python
       - open-telemetry/opentelemetry-java
       - open-telemetry/opentelemetry-cpp
@@ -84,6 +85,9 @@ collections:
         mode: search
         query: 'prometheus'
       open-telemetry/opentelemetry-collector:
+        mode: search
+        query: 'prometheus'
+      open-telemetry/opentelemetry-specification:
         mode: search
         query: 'prometheus'
       open-telemetry/opentelemetry-python:
