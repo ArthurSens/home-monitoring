@@ -60,6 +60,7 @@ collections:
     name: Prometheus<->OpenTelemetry Interoperability
     description: Open pull requests related to Prometheus and OpenTelemetry interoperability.
     repositories:
+      - prometheus/prometheus
       - open-telemetry/opentelemetry-collector-contrib
       - open-telemetry/opentelemetry-collector-releases
       - open-telemetry/opentelemetry-collector
@@ -78,6 +79,10 @@ collections:
       - open-telemetry/opentelemetry-swift
     model_provider: openai
     discovery:
+      prometheus/prometheus:
+        mode: search
+        # Labels alone miss unlabeled OTLP and OpenTelemetry interoperability work.
+        query: 'otlp OR opentelemetry OR otel in:title,body'
       open-telemetry/opentelemetry-collector-contrib:
         mode: search
         query: 'is:pr is:open label:pkg/translator/prometheusremotewrite,receiver/prometheus,pkg/translator/prometheus,exporter/prometheusremotewrite,exporter/prometheus,receiver/prometheusremotewrite'
