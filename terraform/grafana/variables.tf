@@ -20,18 +20,6 @@ variable "prometheus_datasource_uid" {
   default     = "grafanacloud-prom"
 }
 
-variable "hydration_slo_window" {
-  description = "Grafana SLO objective window."
-  type        = string
-  default     = "30d"
-}
-
-variable "hydration_slo_objective" {
-  description = "Fraction of days in the SLO window where hydration should reach the daily target."
-  type        = number
-  default     = 0.95
-}
-
 variable "collector_export_slo_window" {
   description = "Grafana SLO objective window for collector export reliability."
   type        = string
@@ -42,11 +30,6 @@ variable "collector_export_slo_objective" {
   description = "Fraction of collector telemetry items exported successfully in the SLO window."
   type        = number
   default     = 0.995
-}
-
-variable "oncall_user_ids" {
-  description = "Grafana IRM user IDs to include in the hydration on-call schedule."
-  type        = list(string)
 }
 
 variable "homelab_ops_oncall_user_ids" {
