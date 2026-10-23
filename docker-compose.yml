@@ -86,7 +86,7 @@ services:
       - "9100:9100"
 
   garmin_exporter_arthur:
-    image: ghcr.io/barnes-c/garmin_exporter:1.1.4@sha256:0da1851098baf2bba1c5ee38977457367c59366999a532ee52a7bad77511200a
+    image: ghcr.io/barnes-c/garmin_exporter:1.1.6@sha256:aea63bb891480c43d6791f6f1e9e271f2c79ba70ac8bf50000e0be14ae81ea1e
     restart: unless-stopped
     environment:
       - OTEL_SERVICE_NAME=garmin_exporter_arthur
@@ -99,7 +99,7 @@ services:
       - garmin_data:/data
 
   garmin_exporter_julia:
-    image: ghcr.io/barnes-c/garmin_exporter:1.1.4@sha256:0da1851098baf2bba1c5ee38977457367c59366999a532ee52a7bad77511200a
+    image: ghcr.io/barnes-c/garmin_exporter:1.1.6@sha256:aea63bb891480c43d6791f6f1e9e271f2c79ba70ac8bf50000e0be14ae81ea1e
     restart: unless-stopped
     environment:
       - OTEL_SERVICE_NAME=garmin_exporter_julia
